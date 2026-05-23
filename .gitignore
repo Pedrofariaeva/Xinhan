@@ -3,3 +3,15 @@ node_modules/
 .next/
 .vercel/
 *.env*.local
+.vercel
+
+# Local documents — not part of the codebase
+docs1/
+docs2/
+docs3/
+*.doc
+*.docx
+*.pdf
+*.pptx
+*.ppt
+*.key
