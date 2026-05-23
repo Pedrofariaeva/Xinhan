@@ -1,0 +1,9 @@
+docs1/
+docs2/
+docs3/
+*.doc
+*.docx
+*.pdf
+*.pptx
+*.ppt
+*.key
