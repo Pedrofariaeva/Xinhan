@@ -1,11 +1,1155 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Xinhan</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xinhan Chinese Language School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --jade-900: #0f291e;
+      --jade-800: #1b4332;
+      --jade-700: #2d6a4f;
+      --jade-600: #40916c;
+      --jade-500: #52b788;
+      --jade-400: #74c69d;
+      --jade-100: #d8f3dc;
+      --jade-50: #f1f8f4;
+      --gold-600: #b8860b;
+      --gold-500: #d4a574;
+      --gold-400: #e8c39e;
+      --gold-100: #faf3e8;
+      --paper: #fdfcfa;
+      --ink: #1a1a1a;
+      --ink-light: #4a4a4a;
+      --ink-muted: #8a8a8a;
+      --radius: 12px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+
+    /* Navigation */
+    nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(253, 252, 250, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+
+    .nav-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 72px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+    }
+
+    .logo-mark {
+      width: 40px; height: 40px;
+      background: var(--jade-800);
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: var(--gold-400);
+      font-family: 'Noto Serif SC', serif;
+      font-size: 18px;
+      font-weight: 700;
+    }
+
+    .logo-text {
+      font-family: 'Playfair Display', serif;
+      font-size: 22px;
+      font-weight: 700;
+      color: var(--jade-900);
+      letter-spacing: -0.5px;
+    }
+
+    .logo-text span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 11px;
+      font-weight: 500;
+      color: var(--ink-muted);
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      margin-top: -2px;
+    }
+
+    .nav-links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--ink-light);
+      font-size: 14px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 8px;
+      transition: all 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--jade-800);
+      background: var(--jade-50);
+    }
+
+    .nav-links .btn {
+      background: var(--jade-800);
+      color: #fff !important;
+      padding: 10px 22px;
+      font-weight: 600;
+    }
+
+    .nav-links .btn:hover {
+      background: var(--jade-700);
+    }
+
+    .nav-links .btn-outline {
+      background: transparent;
+      color: var(--jade-800) !important;
+      border: 1.5px solid var(--jade-800);
+      padding: 10px 22px;
+    }
+
+    .nav-links .btn-outline:hover {
+      background: var(--jade-50);
+    }
+
+    /* Hero */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      padding: 120px 24px 80px;
+      background:
+        radial-gradient(ellipse at 20% 50%, rgba(45,106,79,0.08) 0%, transparent 50%),
+        radial-gradient(ellipse at 80% 20%, rgba(212,165,116,0.08) 0%, transparent 50%),
+        var(--paper);
+      overflow: hidden;
+    }
+
+    .hero::before {
+      content: '';
+      position: absolute;
+      top: -10%; right: -5%;
+      width: 500px; height: 500px;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M30 5 L55 30 L30 55 L5 30 Z' fill='none' stroke='%232d6a4f' stroke-opacity='0.06' stroke-width='1'/%3E%3C/svg%3E");
+      opacity: 0.6;
+      pointer-events: none;
+    }
+
+    .hero-inner {
+      max-width: 1200px;
+      width: 100%;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+    }
+
+    .hero-content {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--jade-50);
+      border: 1px solid var(--jade-100);
+      color: var(--jade-700);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 1.5px;
+      text-transform: uppercase;
+      padding: 8px 16px;
+      border-radius: 100px;
+      margin-bottom: 28px;
+    }
+
+    .hero-eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      background: var(--jade-500);
+      border-radius: 50%;
+    }
+
+    .hero h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: 64px;
+      line-height: 1.1;
+      font-weight: 700;
+      color: var(--jade-900);
+      margin-bottom: 24px;
+    }
+
+    .hero h1 .chinese {
+      font-family: 'Noto Serif SC', serif;
+      color: var(--jade-700);
+      font-size: 0.85em;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: var(--ink-light);
+      max-width: 480px;
+      margin-bottom: 36px;
+      line-height: 1.7;
+    }
+
+    .hero-buttons {
+      display: flex;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .btn-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--jade-800);
+      color: #fff;
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 15px;
+      transition: all 0.2s;
+      border: none;
+      cursor: pointer;
+    }
+
+    .btn-primary:hover {
+      background: var(--jade-700);
+      transform: translateY(-1px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .btn-secondary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: transparent;
+      color: var(--jade-800);
+      text-decoration: none;
+      padding: 16px 32px;
+      border-radius: var(--radius);
+      font-weight: 600;
+      font-size: 15px;
+      border: 1.5px solid var(--jade-800);
+      transition: all 0.2s;
+      cursor: pointer;
+    }
+
+    .btn-secondary:hover {
+      background: var(--jade-50);
+    }
+
+    /* Hero visual */
+    .hero-visual {
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .hero-card {
+      background: #fff;
+      border-radius: 24px;
+      padding: 40px;
+      box-shadow: var(--shadow-lg);
+      border: 1px solid rgba(0,0,0,0.04);
+      max-width: 420px;
+      width: 100%;
+      position: relative;
+    }
+
+    .hero-card::after {
+      content: '';
+      position: absolute;
+      top: -20px; right: -20px;
+      width: 100px; height: 100px;
+      background: var(--gold-100);
+      border-radius: 20px;
+      z-index: -1;
+    }
+
+    .hero-card .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 24px;
+    }
+
+    .hero-card .avatar {
+      width: 48px; height: 48px;
+      background: var(--jade-100);
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Noto Serif SC', serif;
+      color: var(--jade-700);
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .hero-card .card-title {
+      font-weight: 600;
+      font-size: 15px;
+    }
+
+    .hero-card .card-subtitle {
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    .hero-card .progress-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .progress-item {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .progress-icon {
+      width: 36px; height: 36px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 14px;
+      flex-shrink: 0;
+    }
+
+    .progress-info { flex: 1; }
+
+    .progress-info .label {
+      font-size: 13px;
+      font-weight: 600;
+      margin-bottom: 6px;
+    }
+
+    .progress-bar {
+      height: 6px;
+      background: var(--jade-50);
+      border-radius: 100px;
+      overflow: hidden;
+    }
+
+    .progress-bar .fill {
+      height: 100%;
+      border-radius: 100px;
+      transition: width 1.5s ease;
+    }
+
+    .scroll-indicator {
+      position: absolute;
+      bottom: 32px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--ink-muted);
+      font-size: 12px;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      animation: bounce 2s infinite;
+    }
+
+    @keyframes bounce {
+      0%, 100% { transform: translateX(-50%) translateY(0); }
+      50% { transform: translateX(-50%) translateY(8px); }
+    }
+
+    /* Section styling */
+    .section {
+      padding: 100px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .section-header {
+      text-align: center;
+      margin-bottom: 64px;
+    }
+
+    .section-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 42px;
+      font-weight: 700;
+      color: var(--jade-900);
+      margin-bottom: 16px;
+    }
+
+    .section-header p {
+      color: var(--ink-light);
+      font-size: 17px;
+      max-width: 560px;
+      margin: 0 auto;
+    }
+
+    .section-header .chinese-subtitle {
+      font-family: 'Noto Serif SC', serif;
+      color: var(--jade-600);
+      font-size: 18px;
+      margin-top: 8px;
+    }
+
+    /* HSK Level Cards */
+    .hsk-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 24px;
+    }
+
+    .hsk-card {
+      background: #fff;
+      border-radius: 20px;
+      padding: 32px;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hsk-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+      background: var(--jade-500);
+    }
+
+    .hsk-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .hsk-card .level-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--jade-50);
+      color: var(--jade-700);
+      font-size: 12px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      padding: 6px 14px;
+      border-radius: 100px;
+      margin-bottom: 16px;
+    }
+
+    .hsk-card h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 24px;
+      font-weight: 700;
+      color: var(--jade-900);
+      margin-bottom: 8px;
+    }
+
+    .hsk-card .chinese-title {
+      font-family: 'Noto Serif SC', serif;
+      color: var(--jade-600);
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .hsk-card p {
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.7;
+      margin-bottom: 20px;
+    }
+
+    .hsk-card .topics {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+    }
+
+    .hsk-card .topic-tag {
+      font-size: 12px;
+      font-weight: 500;
+      color: var(--jade-700);
+      background: var(--jade-50);
+      padding: 6px 12px;
+      border-radius: 100px;
+    }
+
+    .hsk-card .doc-count {
+      margin-top: 20px;
+      font-size: 13px;
+      color: var(--ink-muted);
+      font-weight: 500;
+    }
+
+    /* Theme Chapters */
+    .themes-section {
+      background: var(--jade-50);
+      padding: 100px 24px;
+    }
+
+    .themes-section .section-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .theme-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .theme-card {
+      background: #fff;
+      border-radius: 16px;
+      padding: 28px;
+      border: 1px solid rgba(0,0,0,0.04);
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .theme-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow);
+      border-color: var(--jade-200, #b7e4c7);
+    }
+
+    .theme-card .icon {
+      width: 48px; height: 48px;
+      border-radius: 14px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 22px;
+      margin-bottom: 16px;
+    }
+
+    .theme-card h4 {
+      font-size: 16px;
+      font-weight: 600;
+      color: var(--jade-900);
+      margin-bottom: 6px;
+    }
+
+    .theme-card p {
+      font-size: 13px;
+      color: var(--ink-muted);
+    }
+
+    /* Featured Content */
+    .featured-section {
+      padding: 100px 24px;
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .featured-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 28px;
+    }
+
+    .featured-card {
+      background: #fff;
+      border-radius: 20px;
+      overflow: hidden;
+      border: 1px solid rgba(0,0,0,0.05);
+      box-shadow: var(--shadow-sm);
+      transition: all 0.3s;
+    }
+
+    .featured-card:hover {
+      box-shadow: var(--shadow-lg);
+    }
+
+    .featured-card .card-visual {
+      height: 180px;
+      background: var(--jade-800);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .featured-card .card-visual::before {
+      content: attr(data-emoji);
+      font-size: 64px;
+      opacity: 0.9;
+    }
+
+    .featured-card .card-visual::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 60px;
+      background: linear-gradient(to top, rgba(0,0,0,0.2), transparent);
+    }
+
+    .featured-card .card-body {
+      padding: 28px;
+    }
+
+    .featured-card .card-tag {
+      display: inline-block;
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      color: var(--jade-700);
+      background: var(--jade-50);
+      padding: 4px 10px;
+      border-radius: 100px;
+      margin-bottom: 12px;
+    }
+
+    .featured-card h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px;
+      font-weight: 700;
+      color: var(--jade-900);
+      margin-bottom: 8px;
+    }
+
+    .featured-card p {
+      font-size: 14px;
+      color: var(--ink-light);
+      line-height: 1.6;
+    }
+
+    /* Stats Bar */
+    .stats-bar {
+      background: var(--jade-800);
+      padding: 60px 24px;
+    }
+
+    .stats-inner {
+      max-width: 1000px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+      gap: 32px;
+      text-align: center;
+    }
+
+    .stat-item .number {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--gold-400);
+      line-height: 1;
+    }
+
+    .stat-item .label {
+      font-size: 14px;
+      color: rgba(255,255,255,0.7);
+      margin-top: 8px;
+      font-weight: 500;
+    }
+
+    /* CTA Section */
+    .cta-section {
+      padding: 120px 24px;
+      text-align: center;
+      background:
+        radial-gradient(ellipse at 50% 50%, rgba(45,106,79,0.06) 0%, transparent 70%);
+    }
+
+    .cta-section h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 48px;
+      font-weight: 700;
+      color: var(--jade-900);
+      margin-bottom: 20px;
+    }
+
+    .cta-section p {
+      font-size: 18px;
+      color: var(--ink-light);
+      max-width: 520px;
+      margin: 0 auto 36px;
+    }
+
+    /* Footer */
+    footer {
+      background: var(--jade-900);
+      color: rgba(255,255,255,0.6);
+      padding: 60px 24px 32px;
+    }
+
+    .footer-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+
+    .footer-brand .logo-mark {
+      background: var(--jade-700);
+      color: var(--gold-400);
+      margin-bottom: 16px;
+    }
+
+    .footer-brand p {
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+
+    .footer-col h5 {
+      color: #fff;
+      font-size: 13px;
+      font-weight: 600;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+
+    .footer-col a {
+      display: block;
+      color: rgba(255,255,255,0.5);
+      text-decoration: none;
+      font-size: 14px;
+      padding: 6px 0;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: var(--gold-400);
+    }
+
+    .footer-bottom {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding-top: 32px;
+      border-top: 1px solid rgba(255,255,255,0.08);
+      font-size: 13px;
+      color: rgba(255,255,255,0.35);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    /* Mobile */
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero h1 { font-size: 42px; }
+      .hero-visual { order: -1; }
+      .hero-card { margin: 0 auto; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+
+    @media (max-width: 640px) {
+      .hero h1 { font-size: 36px; }
+      .section-header h2 { font-size: 32px; }
+      .cta-section h2 { font-size: 36px; }
+      .nav-links { display: none; }
+      .footer-inner { grid-template-columns: 1fr; }
+      .stats-inner { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
 </head>
 <body>
-  <h1>Coming soon</h1>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="index.html" class="logo">
+        <div class="logo-mark">新</div>
+        <div class="logo-text">Xinhan<span>Chinese Language School</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="#curriculum">Curriculum</a>
+        <a href="#themes">Themes</a>
+        <a href="#featured">Featured</a>
+        <a href="signin.html" class="btn-outline">Sign In</a>
+        <a href="signup.html" class="btn">Get Started</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-eyebrow">Since 2018 &middot; Hainan, China</div>
+        <h1>Master Mandarin.<br><span class="chinese">掌握中文，</span><br>Unlock China.</h1>
+        <p>Professional Chinese language education for global learners. From HSK 1 foundations to advanced business Mandarin, guided by expert teachers with real classroom experience.</p>
+        <div class="hero-buttons">
+          <a href="#curriculum" class="btn-primary">
+            Explore Curriculum
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+          </a>
+          <a href="signup.html" class="btn-secondary">Start Free Trial</a>
+        </div>
+      </div>
+      <div class="hero-visual">
+        <div class="hero-card">
+          <div class="card-header">
+            <div class="avatar">李</div>
+            <div>
+              <div class="card-title">Your Learning Journey</div>
+              <div class="card-subtitle">Track progress across all levels</div>
+            </div>
+          </div>
+          <div class="progress-list">
+            <div class="progress-item">
+              <div class="progress-icon" style="background:#d8f3dc;color:#2d6a4f;">HSK1</div>
+              <div class="progress-info">
+                <div class="label">Greetings & Basics</div>
+                <div class="progress-bar"><div class="fill" style="width:100%;background:#52b788;"></div></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-icon" style="background:#fff3d0;color:#b8860b;">HSK3</div>
+              <div class="progress-info">
+                <div class="label">Daily Life & Travel</div>
+                <div class="progress-bar"><div class="fill" style="width:72%;background:#d4a574;"></div></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-icon" style="background:#e9f5ee;color:#40916c;">HSK5</div>
+              <div class="progress-info">
+                <div class="label">Advanced Oral Training</div>
+                <div class="progress-bar"><div class="fill" style="width:45%;background:#40916c;"></div></div>
+              </div>
+            </div>
+            <div class="progress-item">
+              <div class="progress-icon" style="background:#f4f3fd;color:#9f92ef;">BM</div>
+              <div class="progress-info">
+                <div class="label">Business Mandarin</div>
+                <div class="progress-bar"><div class="fill" style="width:18%;background:#9f92ef;"></div></div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="scroll-indicator">
+      <span>Scroll</span>
+      <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 5v14M5 12l7 7 7-7"/></svg>
+    </div>
+  </section>
+
+  <!-- Stats Bar -->
+  <section class="stats-bar">
+    <div class="stats-inner">
+      <div class="stat-item">
+        <div class="number">62</div>
+        <div class="label">Unique Lessons</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">6</div>
+        <div class="label">HSK Levels</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">15</div>
+        <div class="label">Learning Themes</div>
+      </div>
+      <div class="stat-item">
+        <div class="number">8+</div>
+        <div class="label">Years Teaching</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HSK Curriculum -->
+  <section id="curriculum" class="section">
+    <div class="section-header">
+      <h2>Structured by HSK Level</h2>
+      <p>A complete progression from beginner to advanced, aligned with the official Chinese Proficiency Test.</p>
+      <div class="chinese-subtitle">汉语水平考试课程体系</div>
+    </div>
+    <div class="hsk-grid">
+      <div class="hsk-card">
+        <div class="level-badge">Beginner</div>
+        <h3>HSK 1</h3>
+        <div class="chinese-title">一级 · 起步</div>
+        <p>Master pinyin, tones, and fundamental greetings. Build your first 150 words with dialogues on names, countries, and daily introductions.</p>
+        <div class="topics">
+          <span class="topic-tag">Greetings</span>
+          <span class="topic-tag">Pinyin & Tones</span>
+          <span class="topic-tag">Question Words</span>
+        </div>
+        <div class="doc-count">3 lesson materials</div>
+      </div>
+
+      <div class="hsk-card">
+        <div class="level-badge" style="background:#fff3d0;color:#b8860b;">Elementary</div>
+        <h3>HSK 2</h3>
+        <div class="chinese-title">二级 · 基础</div>
+        <p>Expand to 300 words. Practice picture descriptions, true/false comprehension, and daily habits with structured speaking drills.</p>
+        <div class="topics">
+          <span class="topic-tag">Daily Habits</span>
+          <span class="topic-tag">Time & Numbers</span>
+          <span class="topic-tag">Buying Fruit</span>
+          <span class="topic-tag">Countries</span>
+        </div>
+        <div class="doc-count">8 lesson materials</div>
+      </div>
+
+      <div class="hsk-card">
+        <div class="level-badge" style="background:#e9f5ee;color:#2d6a4f;">Intermediate</div>
+        <h3>HSK 3</h3>
+        <div class="chinese-title">三级 · 进阶</div>
+        <p>Handle real-life situations: giving directions, describing places, talking about family and health with expanded vocabulary.</p>
+        <div class="topics">
+          <span class="topic-tag">Travel & Places</span>
+          <span class="topic-tag">Directions</span>
+          <span class="topic-tag">Family</span>
+          <span class="topic-tag">Health & Body</span>
+        </div>
+        <div class="doc-count">6 lesson materials</div>
+      </div>
+
+      <div class="hsk-card">
+        <div class="level-badge" style="background:#e5e2fb;color:#5e4fb8;">Upper-Int.</div>
+        <h3>HSK 3–4</h3>
+        <div class="chinese-title">三四级 · 提高</div>
+        <p>Story-based learning with Chinese idioms, complex grammar (让/叫/被 structures), and rich reading passages on travel and education.</p>
+        <div class="topics">
+          <span class="topic-tag">Holiday Travel</span>
+          <span class="topic-tag">Education Stories</span>
+          <span class="topic-tag">Grammar Focus</span>
+        </div>
+        <div class="doc-count">5 mixed materials</div>
+      </div>
+
+      <div class="hsk-card">
+        <div class="level-badge" style="background:#dce5f3;color:#225890;">Advanced</div>
+        <h3>HSK 4</h3>
+        <div class="chinese-title">四级 · 熟练</div>
+        <p>The largest content bank: 6 real exam papers plus themed lessons on work, shopping, marriage, environment, art, and education.</p>
+        <div class="topics">
+          <span class="topic-tag">Work & Career</span>
+          <span class="topic-tag">Love & Relationships</span>
+          <span class="topic-tag">Environment</span>
+          <span class="topic-tag">Beijing Opera</span>
+          <span class="topic-tag">Exam Practice</span>
+        </div>
+        <div class="doc-count">18 lesson materials + 6 real exams</div>
+      </div>
+
+      <div class="hsk-card">
+        <div class="level-badge" style="background:#f1f8f4;color:#1b4332;">Proficient</div>
+        <h3>HSK 5</h3>
+        <div class="chinese-title">五级 · 精通</div>
+        <p>Polished oral training modules: 10-minute readings on reading culture, art, environment, and education with vocabulary and speaking prompts.</p>
+        <div class="topics">
+          <span class="topic-tag">Oral Training</span>
+          <span class="topic-tag">Reading Culture</span>
+          <span class="topic-tag">Art & Environment</span>
+          <span class="topic-tag">Real Exams</span>
+        </div>
+        <div class="doc-count">8 lesson materials</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Themes -->
+  <section id="themes" class="themes-section">
+    <div class="section-inner">
+      <div class="section-header">
+        <h2>Explore by Theme</h2>
+        <p>Cross-cutting topics that connect language to real Chinese life and culture.</p>
+        <div class="chinese-subtitle">主题探索 · 文化之旅</div>
+      </div>
+      <div class="theme-grid">
+        <div class="theme-card">
+          <div class="icon" style="background:#d8f3dc;">&#x1f3c3;</div>
+          <h4>Health & Sports</h4>
+          <p>Body parts, illness, exercise dialogues</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#fff3d0;">&#x1f3e2;</div>
+          <h4>Work & Career</h4>
+          <p>Job interviews, office culture, business terms</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#e5e2fb;">&#x1f48f;</div>
+          <h4>Love & Relationships</h4>
+          <p>Marriage, friendship, social dynamics</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#fedeca;">&#x1f3ad;</div>
+          <h4>Art & Culture</h4>
+          <p>Beijing Opera, Chinese mythology, classics</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#dce5f3;">&#x1f30d;</div>
+          <h4>Environment</h4>
+          <p>Pollution, forests, seasons, sustainability</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#f1f8f4;">&#x1f4da;</div>
+          <h4>Education</h4>
+          <p>Study habits, teaching, parenting approaches</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#faf3e8;">&#x2708;&#xfe0f;</div>
+          <h4>Travel & Places</h4>
+          <p>Directions, holidays, countries & languages</p>
+        </div>
+        <div class="theme-card">
+          <div class="icon" style="background:#e9f5ee;">&#x1f469;&#x200d;&#x1f3eb;</div>
+          <h4>Business Mandarin</h4>
+          <p>Negotiations, appointments, email etiquette</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured -->
+  <section id="featured" class="featured-section">
+    <div class="section-header">
+      <h2>Featured Content</h2>
+      <p>Hand-picked premium materials from our teaching archive.</p>
+      <div class="chinese-subtitle">精选课程 · 独家内容</div>
+    </div>
+    <div class="featured-grid">
+      <div class="featured-card">
+        <div class="card-visual" data-emoji="&#x1f3ad;" style="background:#2d6a4f;"></div>
+        <div class="card-body">
+          <span class="card-tag">HSK 4 &middot; Culture</span>
+          <h4>Beijing Opera Deep Dive</h4>
+          <p>Explore costume, performance, and music vocabulary through rich reading passages on 京剧.</p>
+        </div>
+      </div>
+      <div class="featured-card">
+        <div class="card-visual" data-emoji="&#x1f4ac;" style="background:#225890;"></div>
+        <div class="card-body">
+          <span class="card-tag">General &middot; Culture</span>
+          <h4>Chinese Non-Verbal Communication</h4>
+          <p>Lesson 14: posture, clothing, facial expressions, and gestures for Western business professionals.</p>
+        </div>
+      </div>
+      <div class="featured-card">
+        <div class="card-visual" data-emoji="&#x1f4dc;" style="background:#b8860b;"></div>
+        <div class="card-body">
+          <span class="card-tag">HSK 3–4 &middot; Mythology</span>
+          <h4>Graded Chinese Myths</h4>
+          <p>Jingwei fills the sea, Yugong moves mountains, and Straw Boat Arrows — with bilingual glossaries.</p>
+        </div>
+      </div>
+      <div class="featured-card">
+        <div class="card-visual" data-emoji="&#x1f399;&#xfe0f;" style="background:#5e4fb8;"></div>
+        <div class="card-body">
+          <span class="card-tag">HSK 5–6 &middot; Speaking</span>
+          <h4>口语训练 Oral Training Series</h4>
+          <p>10-minute readings + vocabulary + speaking prompts. Perfect love, true friends, work & interviews.</p>
+        </div>
+      </div>
+      <div class="featured-card">
+        <div class="card-visual" data-emoji="&#x1f4dd;" style="background:#40916c;"></div>
+        <div class="card-body">
+          <span class="card-tag">HSK 4 &middot; Exam Prep</span>
+          <h4>Official HSK 4 Real Exams</h4>
+          <p>6 complete official exam papers with full listening, reading, and writing sections. Includes answer keys.</p>
+        </div>
+      </div>
+      <div class="featured-card">
+        <div class="card-visual" data-emoji="&#x1f3e2;" style="background:#1b4332;"></div>
+        <div class="card-body">
+          <span class="card-tag">HSK 4–5 &middot; Business</span>
+          <h4>Business Mandarin Proposals</h4>
+          <p>3–5 month speaking programs covering greetings, appointments, negotiations, and email writing.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Start Your Mandarin Journey</h2>
+    <p>Join professionals from around the world learning Chinese with Xinhan's proven curriculum.</p>
+    <div class="hero-buttons" style="justify-content:center;">
+      <a href="signup.html" class="btn-primary">
+        Create Free Account
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12h14M12 5l7 7-7 7"/></svg>
+      </a>
+      <a href="signin.html" class="btn-secondary">Already a student? Sign In</a>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <div class="logo-mark">新</div>
+        <p>Xinhan Chinese Language School. Professional Mandarin education in Hainan, China since 2018.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Learn</h5>
+        <a href="#curriculum">HSK Curriculum</a>
+        <a href="#themes">Themes</a>
+        <a href="#featured">Featured</a>
+        <a href="#">Business Mandarin</a>
+      </div>
+      <div class="footer-col">
+        <h5>Account</h5>
+        <a href="signin.html">Sign In</a>
+        <a href="signup.html">Create Account</a>
+        <a href="#">My Progress</a>
+        <a href="#">Settings</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="#">About Xinhan</a>
+        <a href="#">Teachers</a>
+        <a href="#">Hainan, China</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>&copy; 2026 Xinhan Chinese Language School. All rights reserved.</span>
+      <span>新汉中文学校</span>
+    </div>
+  </footer>
+
 </body>
 </html>

@@ -1,4 +1,4 @@
-# Xinhan Protocol — Single Source of Truth (v1.0)
+# Xinhan Protocol — Single Source of Truth (v1.1)
 # Last updated: 2026-05-24
 # Applies to: Kimi (Maestro) for Xinhan Chinese Language School
 
@@ -18,6 +18,47 @@
 5. **NEVER modify `.env.local` or Vercel environment variables** — ask first, every time.
 
 6. **NEVER start work without doing the Startup Protocol first.** No exceptions, not even for "quick fixes".
+
+---
+
+## 🚀 DEPLOYMENT RULES — READ THIS EVERY TIME
+
+### Default Rule
+**ALWAYS deploy to preview/staging (NOT production).**
+
+Pedro does **NOT** test locally. The only way he reviews work is via a live preview URL. Therefore, the default and automatic action after completing work is to deploy to a **Vercel preview deployment** (any branch that is NOT `main`).
+
+### Production Deployment — Explicit Approval Required
+You may ONLY deploy to production (`main` branch) if Pedro uses **one of these exact phrases** (or unmistakably equivalent intent):
+
+- "yes you can deploy"
+- "ok" (in direct response to a deploy request)
+- "deploy to production"
+- "push to main"
+- "go ahead and deploy"
+- "ship it"
+
+**Anything else = NO.** Examples that are NOT approval:
+- "looks good" (feedback on code, not deploy approval)
+- "thanks" (acknowledgment, not approval)
+- "let's see" (unclear intent — ask again)
+- silence / no response
+
+### Deployment Decision Tree
+```
+Work completed?
+  ├── Is Pedro's last message an EXPLICIT production approval phrase?
+  │     ├── YES → commit, push to main, Vercel deploys to production
+  │     └── NO  → commit, push to feature branch, Vercel deploys to PREVIEW
+  └── Done
+```
+
+### Branches
+
+| Branch | URL | Push allowed? | When to use |
+|--------|-----|---------------|-------------|
+| `main` | xinhan.com (production) | 🚫 Pedro's EXPLICIT approval ONLY | When Pedro explicitly says to deploy |
+| `dev` / feature branches | Vercel preview URL | ✅ Default. Always push here. | Every session unless Pedro explicitly overrides |
 
 ---
 
@@ -81,6 +122,10 @@ git push origin <branch>
 A commit that is not pushed does not exist for Pedro.
 Do NOT ask "should I push?" — just push. Always. Every time.
 
+**BUT:** Push to the CORRECT branch:
+- Default: feature branch or `dev` → triggers **preview deployment**
+- ONLY `main` if Pedro gave **explicit production approval**
+
 ---
 
 ## ✅ Exit Protocol — Triggered by "cld", "claudino", "exit", or "stop"
@@ -94,15 +139,6 @@ When Pedro says any of these words (as the whole message or clear intent):
 5. Update `.ai/learnings.md` — record any new patterns or gotchas discovered
 
 Then reply: **"✓ Session saved."** and stop.
-
----
-
-## Branches
-
-| Branch | URL | Push allowed? |
-|--------|-----|---------------|
-| `dev` / feature branches | Vercel preview | ✅ Your working branch |
-| `main` | xinhan.com (production) | 🚫 Pedro's explicit approval only |
 
 ---
 
@@ -127,6 +163,8 @@ This includes:
 - How to organize the docs folders
 - Whether to publish specific content publicly
 - Design or branding decisions
+- Which branch to push to
+- Whether to deploy to production
 - Anything where you catch yourself writing "I'll assume…" or "probably…" or "I think…"
 
 ---
