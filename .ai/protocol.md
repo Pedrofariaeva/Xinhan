@@ -1,4 +1,4 @@
-# Xinhan Protocol — Single Source of Truth (v1.1)
+# Xinhan Protocol — Single Source of Truth (v1.2)
 # Last updated: 2026-05-24
 # Applies to: Kimi (Maestro) for Xinhan Chinese Language School
 
@@ -8,7 +8,7 @@
 
 1. **NEVER delete or move teaching materials** from `docs1/`, `docs2/`, `docs3/` without Pedro's explicit approval. These are the school's content archive.
 
-2. **NEVER push to `main` without Pedro saying "push to main"** — `main` = production (Vercel). Work on a feature branch or `dev` if one exists.
+2. **NEVER push to `main` without Pedro saying "push to main"** — `main` = xinhan.org (production). Work on `stage` branch.
 
 3. **NEVER commit without updating `.ai/` files** — `history.md`, `tasks.md`, `plan.txt` minimum. Every session.
 
@@ -23,13 +23,26 @@
 
 ## 🚀 DEPLOYMENT RULES — READ THIS EVERY TIME
 
-### Default Rule
-**ALWAYS deploy to preview/staging (NOT production).**
+### Infrastructure (must be checked every session)
 
-Pedro does **NOT** test locally. The only way he reviews work is via a live preview URL. Therefore, the default and automatic action after completing work is to deploy to a **Vercel preview deployment** (any branch that is NOT `main`).
+| Environment | Branch | Domain |
+|-------------|--------|--------|
+| **Staging / Preview** | `stage` | `stage.xinhan.org` |
+| **Production** | `main` | `xinhan.org` |
+
+**Pedro does NOT test locally.** The only way he reviews work is via `stage.xinhan.org`.
+
+### The Rule
+After completing work:
+1. Commit to the current branch.
+2. **Merge or push to `stage` branch.**
+3. Vercel auto-deploys `stage` → `stage.xinhan.org`.
+4. Tell Pedro: "Deployed to stage.xinhan.org."
+
+**NEVER end a session without pushing to `stage`.** A commit that is not on `stage` does not exist for Pedro.
 
 ### Production Deployment — Explicit Approval Required
-You may ONLY deploy to production (`main` branch) if Pedro uses **one of these exact phrases** (or unmistakably equivalent intent):
+You may ONLY deploy to production (`main` branch / `xinhan.org`) if Pedro uses **one of these exact phrases** (or unmistakably equivalent intent):
 
 - "yes you can deploy"
 - "ok" (in direct response to a deploy request)
@@ -47,18 +60,13 @@ You may ONLY deploy to production (`main` branch) if Pedro uses **one of these e
 ### Deployment Decision Tree
 ```
 Work completed?
-  ├── Is Pedro's last message an EXPLICIT production approval phrase?
-  │     ├── YES → commit, push to main, Vercel deploys to production
-  │     └── NO  → commit, push to feature branch, Vercel deploys to PREVIEW
-  └── Done
+  ├── Commit to current branch
+  ├── Push / merge to `stage`
+  ├── Vercel deploys to stage.xinhan.org
+  └── Is Pedro's last message an EXPLICIT production approval phrase?
+        ├── YES → push to main, Vercel deploys to xinhan.org
+        └── NO  → STOP. Do NOT touch main.
 ```
-
-### Branches
-
-| Branch | URL | Push allowed? | When to use |
-|--------|-----|---------------|-------------|
-| `main` | xinhan.com (production) | 🚫 Pedro's EXPLICIT approval ONLY | When Pedro explicitly says to deploy |
-| `dev` / feature branches | Vercel preview URL | ✅ Default. Always push here. | Every session unless Pedro explicitly overrides |
 
 ---
 
@@ -72,7 +80,7 @@ git log --oneline -5            # see what changed recently
 
 Then read in order:
 1. `.ai/protocol.md` — this file (you are reading it now ✅)
-2. `.ai/context.md` — project overview, stack, key paths
+2. `.ai/context.md` — **deployment infrastructure, staging/production domains, branch mapping**
 3. `.ai/plan.txt` — current roadmap and priorities
 4. `.ai/tasks.md` — what is pending and in progress
 5. `.ai/history.md` (last 30 lines) — what happened last session
@@ -101,6 +109,7 @@ Before writing a single line of implementation:
 
 ```
 [ ] Committing to the correct branch (NOT main unless Pedro explicitly said so)
+[ ] Pushing to stage after commit so Pedro can review on stage.xinhan.org
 [ ] .ai/history.md updated with what was done and why
 [ ] .ai/tasks.md updated (completed items moved, new items added)
 [ ] .ai/plan.txt updated (completed steps marked [x])
@@ -111,20 +120,18 @@ Before writing a single line of implementation:
 
 ---
 
-## 🚀 Push is MANDATORY after every commit — no exceptions
+## 🚀 Push to stage is MANDATORY after every commit — no exceptions
 
 After every commit, immediately run:
 ```sh
-git push origin <branch>
+git push origin stage
 ```
 
-**Never end a coding session without pushing.**
-A commit that is not pushed does not exist for Pedro.
-Do NOT ask "should I push?" — just push. Always. Every time.
+**Never end a coding session without pushing to `stage`.**
+A commit that is not on `stage` does not exist for Pedro.
+Do NOT ask "should I push?" — just push. Always. Every time. To `stage`.
 
-**BUT:** Push to the CORRECT branch:
-- Default: feature branch or `dev` → triggers **preview deployment**
-- ONLY `main` if Pedro gave **explicit production approval**
+**BUT:** ONLY push to `main` if Pedro gave **explicit production approval**.
 
 ---
 
@@ -142,12 +149,21 @@ Then reply: **"✓ Session saved."** and stop.
 
 ---
 
+## Branches
+
+| Branch | Domain | Push allowed? | When to use |
+|--------|--------|---------------|-------------|
+| `stage` | stage.xinhan.org | ✅ Default. Always push here. | Every session |
+| `main` | xinhan.org (production) | 🚫 Pedro's EXPLICIT approval ONLY | When Pedro explicitly says to deploy |
+
+---
+
 ## Commit Format
 
 ```sh
 git add <specific files>          # NEVER "git add -A" blindly
 git commit -m "type(scope): what happened and why"
-git push origin <branch>          # always push after commit
+git push origin stage             # always stage, never main unless approved
 ```
 
 Types: `feat | fix | refactor | style | test | docs | chore`
