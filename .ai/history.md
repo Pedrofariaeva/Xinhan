@@ -21,16 +21,17 @@
 - **What:** Built front page (`index.html`), sign-in (`signin.html`), and sign-up (`signup.html`) pages.
 - **Protocol breaches:**
   1. **Skipped Startup Protocol** — did NOT run `git branch --show-current`, did NOT read `.ai/` files, did NOT confirm with Pedro before coding.
-  2. **Failed to deploy** — created files locally but did not commit or push anywhere. Pedro expected a preview deployment (he does not test locally).
+  2. **Failed to deploy to correct staging URL** — pushed to random feature branch `feat/frontend-pages` instead of `stage` branch. Pedro reviews on `stage.xinhan.org`, not random Vercel preview URLs.
   3. **Caused repeated discussion** — Pedro has had to clarify deployment rules multiple times across projects.
 - **What changed:**
   - `index.html` — complete redesign from "Coming soon" to full landing page with HSK curriculum, themes, featured content
   - `signin.html` — new file, matches video-astrolaby auth card model
   - `signup.html` — new file, matches video-astrolaby auth card model with role selection
 - **Protocol updates made:**
-  - `protocol.md` v1.1 — added explicit "DEPLOYMENT RULES" section with decision tree, exact approval phrases, and branch behavior
+  - `protocol.md` v1.1 → v1.2 — added explicit deployment infrastructure table, stage branch requirement, exact approval phrases
+  - `context.md` — added deployment infrastructure section with stage.xinhan.org mapping
   - `learnings.md` — recorded deployment pattern
   - `decisions.md` — recorded preview-as-default workflow
   - `tasks.md` — updated completed items
   - `plan.txt` — marked steps complete
-- **Status:** Files created locally. Awaiting Pedro's instruction on whether to commit to a feature branch for preview deployment.
+- **Deployment status:** All changes now on `stage` branch → `stage.xinhan.org`
