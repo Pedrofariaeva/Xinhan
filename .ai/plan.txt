@@ -1,0 +1,14 @@
+# Xinhan — Current Plan
+
+## Active Phase
+
+1. [ ] Set up `.ai/` protocol system ← DONE
+2. [ ] Define website goals and page structure with Pedro
+3. [ ] Choose tech stack (keep vanilla HTML or move to framework?)
+4. [ ] Build MVP website
+5. [ ] Organize teaching materials for web presentation
+
+## Notes
+
+- See `CONTENT_AUDIT.md` for content inventory and curriculum gap analysis.
+- Do NOT reorganize `docs1/2/3/` without Pedro's explicit approval.
