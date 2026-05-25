@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getDb } from '@/lib/mongodb'
-import { comparePassword, signToken, COOKIE_NAME, COOKIE_MAX_AGE } from '@/lib/auth'
+import { comparePassword } from '@/lib/auth'
+import { signToken, COOKIE_NAME, COOKIE_MAX_AGE } from '@/lib/auth-edge'
 
 export async function POST(req: NextRequest) {
   try {
