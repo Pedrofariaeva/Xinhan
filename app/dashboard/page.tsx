@@ -1,7 +1,7 @@
 import { cookies } from 'next/headers'
 import { redirect } from 'next/navigation'
 import Link from 'next/link'
-import { verifyToken, COOKIE_NAME } from '@/lib/auth'
+import { verifyToken, COOKIE_NAME } from '@/lib/auth-edge'
 import SignOutButton from './SignOutButton'
 
 async function getUser() {

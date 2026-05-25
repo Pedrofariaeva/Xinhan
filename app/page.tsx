@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { cookies } from 'next/headers'
-import { verifyToken, COOKIE_NAME } from '@/lib/auth'
+import { verifyToken, COOKIE_NAME } from '@/lib/auth-edge'
 
 async function getUser() {
   const cookieStore = await cookies()
