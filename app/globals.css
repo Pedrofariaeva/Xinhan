@@ -300,6 +300,125 @@ nav {
 .featured-card h4 { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; color: var(--jade-900); margin-bottom: 8px; }
 .featured-card p { font-size: 14px; color: var(--ink-light); line-height: 1.6; }
 
+/* ─── Testimonials ─── */
+.testimonials-section {
+  background: var(--jade-900);
+  padding: 100px 24px;
+}
+.testimonials-inner {
+  max-width: 1200px;
+  margin: 0 auto;
+}
+.testimonials-section .section-header h2 { color: #fff; }
+.testimonials-section .section-header p  { color: rgba(255,255,255,0.6); }
+.testimonials-section .section-header .chinese-subtitle { color: var(--gold-400); }
+
+.testimonials-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 24px;
+  margin-bottom: 56px;
+}
+.testimonial-card {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 20px;
+  padding: 32px 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  transition: background 0.2s, border-color 0.2s;
+}
+.testimonial-card:hover {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(212,165,116,0.3);
+}
+.testimonial-stars {
+  color: var(--gold-400);
+  font-size: 18px;
+  letter-spacing: 2px;
+}
+.testimonial-quote {
+  font-size: 15px;
+  color: rgba(255,255,255,0.8);
+  line-height: 1.75;
+  flex: 1;
+  font-style: italic;
+}
+.testimonial-author {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+.testimonial-avatar {
+  width: 44px; height: 44px;
+  border-radius: 50%;
+  background: var(--jade-700);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--gold-400);
+  flex-shrink: 0;
+}
+.testimonial-name {
+  font-size: 14px;
+  font-weight: 600;
+  color: #fff;
+}
+.testimonial-role {
+  font-size: 12px;
+  color: rgba(255,255,255,0.45);
+  margin-top: 2px;
+}
+
+/* Trustpilot bar */
+.trustpilot-bar {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 32px;
+  flex-wrap: wrap;
+  padding: 28px 32px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid rgba(255,255,255,0.08);
+  border-radius: 16px;
+}
+.trustpilot-score {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.trustpilot-label {
+  font-size: 15px;
+  color: rgba(255,255,255,0.85);
+}
+.trustpilot-label strong { color: #fff; }
+.trustpilot-stars {
+  color: #00B67A;
+  font-size: 20px;
+  letter-spacing: 2px;
+}
+.trustpilot-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  color: rgba(255,255,255,0.7);
+  text-decoration: none;
+  padding: 10px 20px;
+  border: 1.5px solid rgba(255,255,255,0.15);
+  border-radius: 10px;
+  transition: all 0.2s;
+}
+.trustpilot-link:hover {
+  color: #fff;
+  border-color: rgba(255,255,255,0.35);
+  background: rgba(255,255,255,0.06);
+}
+
 /* ─── Stats ─── */
 .stats-bar { background: var(--jade-800); padding: 60px 24px; }
 .stats-inner {

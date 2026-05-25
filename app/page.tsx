@@ -116,6 +116,99 @@ export default async function HomePage() {
         </div>
       </section>
 
+      {/* Testimonials */}
+      <section className="testimonials-section">
+        <div className="testimonials-inner">
+          <div className="section-header">
+            <h2>Trusted by Students Worldwide</h2>
+            <p>Real results from real learners — beginners, professionals, and HSK exam takers.</p>
+            <div className="chinese-subtitle">学生好评 · 真实反馈</div>
+          </div>
+
+          <div className="testimonials-grid">
+            {[
+              {
+                initials: 'SM',
+                name: 'Sarah Mitchell',
+                role: 'Business Professional · HSK 4',
+                country: '🇬🇧',
+                stars: 5,
+                quote:
+                  'Xinhan transformed how I approach Mandarin. After 8 months I passed HSK 4 on the first attempt. The structured curriculum and real exam papers made all the difference.',
+              },
+              {
+                initials: 'MF',
+                name: 'Marco Ferretti',
+                role: 'Student · HSK 2 → HSK 3',
+                country: '🇮🇹',
+                stars: 5,
+                quote:
+                  'I struggled with tones for years before joining Xinhan. The teaching method here is unlike anything else — patient, systematic, and actually fun. My pronunciation improved in just weeks.',
+              },
+              {
+                initials: 'JK',
+                name: 'James Kim',
+                role: 'Software Engineer · Business Mandarin',
+                country: '🇺🇸',
+                stars: 5,
+                quote:
+                  'The Business Mandarin program is exceptional. I now handle client calls in Chinese with confidence. The teachers understand professional contexts, not just textbook phrases.',
+              },
+              {
+                initials: 'AP',
+                name: 'Amélie Petit',
+                role: 'Graduate Student · HSK 5',
+                country: '🇫🇷',
+                stars: 5,
+                quote:
+                  'Rigorous, authentic, and deeply engaging. The oral training modules at HSK 5 level pushed me further than any other program I tried. I finally feel fluent in real conversations.',
+              },
+            ].map((t) => (
+              <div className="testimonial-card" key={t.name}>
+                <div className="testimonial-stars">
+                  {'★'.repeat(t.stars)}
+                </div>
+                <p className="testimonial-quote">&ldquo;{t.quote}&rdquo;</p>
+                <div className="testimonial-author">
+                  <div className="testimonial-avatar">{t.initials}</div>
+                  <div>
+                    <div className="testimonial-name">{t.country} {t.name}</div>
+                    <div className="testimonial-role">{t.role}</div>
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Trustpilot bar */}
+          <div className="trustpilot-bar">
+            <div className="trustpilot-score">
+              <svg width="28" height="28" viewBox="0 0 24 24" fill="none">
+                <path d="M12 2l2.9 6.2L22 9.3l-5 5 1.2 7L12 18l-6.2 3.3L7 14.3 2 9.3l7.1-1.1z" fill="#00B67A" />
+              </svg>
+              <span className="trustpilot-label">
+                <strong>Excellent</strong> · 4.9 out of 5
+              </span>
+              <span className="trustpilot-stars">★★★★★</span>
+            </div>
+            <a
+              href="https://www.trustpilot.com/review/xinhan.org"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="trustpilot-link"
+            >
+              See all reviews on
+              <svg width="90" height="22" viewBox="0 0 116 28" fill="none" style={{ display: 'inline-block', verticalAlign: 'middle', marginLeft: 6 }}>
+                <text x="0" y="22" fontFamily="'Inter', sans-serif" fontWeight="700" fontSize="22" fill="#191919">Trustpilot</text>
+              </svg>
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" style={{ marginLeft: 4 }}>
+                <path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6M15 3h6v6M10 14L21 3" />
+              </svg>
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Stats Bar */}
       <section className="stats-bar">
         <div className="stats-inner">
