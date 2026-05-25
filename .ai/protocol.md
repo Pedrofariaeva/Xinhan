@@ -1,72 +1,35 @@
-# Xinhan Protocol — Single Source of Truth (v1.2)
+# Universal Pepe / Claudino Protocol — Single Source of Truth (v7.0)
 # Last updated: 2026-05-24
-# Applies to: Kimi (Maestro) for Xinhan Chinese Language School
+# Applies to: ALL agents — Kimi (Maestro), Claude Code, OpenCode (Claudino)
+#
+# Kimi is the LEAD AGENT (Maestro). All other agents report to Kimi.
+# If local rules in .ai/protocol.md conflict with universal rules, LOCAL wins.
+
+---
+
+## 🎭 Agent Hierarchy
+
+| Agent | Role | Tool |
+|-------|------|------|
+| **Kimi** | Maestro / Orchestrator | `pep` / `pepe` |
+| **Claude Code** | Specialist | `claude` (Anthropic CLI) |
+| **Claudino (OpenCode)** | Specialist | `cld` / `claudino` |
+
+**All agents report to Kimi.** After every session, write to `.ai/history.md`, update `.ai/tasks.md`, and add a handoff note under `## 📬 Reports to Maestro` in `.ai/tasks.md`.
 
 ---
 
 ## 🔴 RED LINES — ABSOLUTE PROHIBITIONS
 
-1. **NEVER delete or move teaching materials** from `docs1/`, `docs2/`, `docs3/` without Pedro's explicit approval. These are the school's content archive.
-
-2. **NEVER push to `main` without Pedro saying "push to main"** — `main` = xinhan.org (production). Work on `stage` branch.
-
-3. **NEVER commit without updating `.ai/` files** — `history.md`, `tasks.md`, `plan.txt` minimum. Every session.
-
-4. **NEVER assume when you have a doubt — ASK PEDRO FIRST.**
-   If uncertain about ANYTHING (which doc folder to use, how to structure the site, what content to publish) — STOP. Ask. Do NOT guess.
-
-5. **NEVER modify `.env.local` or Vercel environment variables** — ask first, every time.
-
-6. **NEVER start work without doing the Startup Protocol first.** No exceptions, not even for "quick fixes".
-
----
-
-## 🚀 DEPLOYMENT RULES — READ THIS EVERY TIME
-
-### Infrastructure (must be checked every session)
-
-| Environment | Branch | Domain |
-|-------------|--------|--------|
-| **Staging / Preview** | `stage` | `stage.xinhan.org` |
-| **Production** | `main` | `xinhan.org` |
-
-**Pedro does NOT test locally.** The only way he reviews work is via `stage.xinhan.org`.
-
-### The Rule
-After completing work:
-1. Commit to the current branch.
-2. **Merge or push to `stage` branch.**
-3. Vercel auto-deploys `stage` → `stage.xinhan.org`.
-4. Tell Pedro: "Deployed to stage.xinhan.org."
-
-**NEVER end a session without pushing to `stage`.** A commit that is not on `stage` does not exist for Pedro.
-
-### Production Deployment — Explicit Approval Required
-You may ONLY deploy to production (`main` branch / `xinhan.org`) if Pedro uses **one of these exact phrases** (or unmistakably equivalent intent):
-
-- "yes you can deploy"
-- "ok" (in direct response to a deploy request)
-- "deploy to production"
-- "push to main"
-- "go ahead and deploy"
-- "ship it"
-
-**Anything else = NO.** Examples that are NOT approval:
-- "looks good" (feedback on code, not deploy approval)
-- "thanks" (acknowledgment, not approval)
-- "let's see" (unclear intent — ask again)
-- silence / no response
-
-### Deployment Decision Tree
-```
-Work completed?
-  ├── Commit to current branch
-  ├── Push / merge to `stage`
-  ├── Vercel deploys to stage.xinhan.org
-  └── Is Pedro's last message an EXPLICIT production approval phrase?
-        ├── YES → push to main, Vercel deploys to xinhan.org
-        └── NO  → STOP. Do NOT touch main.
-```
+1. **NEVER push to `main` or `master` without Pedro explicitly saying "push to main"**
+2. **NEVER push broken builds** — run the full quality gate before EVERY commit
+3. **NEVER commit without updating `.ai/` files** — `history.md`, `tasks.md`, `plan.txt` minimum
+4. **NEVER implement business logic without asking Pedro first**
+5. **NEVER delete files** — ask first
+6. **NEVER modify `package.json` dependencies** — ask first
+7. **NEVER change `.env` variables** — ask first
+8. **NEVER assume when you have a doubt — ASK PEDRO FIRST.** Stop. Ask. Do NOT guess.
+9. **NEVER start coding without doing the Startup Protocol first**
 
 ---
 
@@ -74,18 +37,20 @@ Work completed?
 
 Run these commands first:
 ```sh
-git branch --show-current       # confirm branch
-git log --oneline -5            # see what changed recently
+git branch --show-current
+git log --oneline -5
 ```
 
 Then read in order:
 1. `.ai/protocol.md` — this file (you are reading it now ✅)
-2. `.ai/context.md` — **deployment infrastructure, staging/production domains, branch mapping**
+2. `.ai/context.md` — project overview, stack, key paths
 3. `.ai/plan.txt` — current roadmap and priorities
 4. `.ai/tasks.md` — what is pending and in progress
 5. `.ai/history.md` (last 30 lines) — what happened last session
 6. `.ai/decisions.md` — architectural decisions already made
 7. `.ai/learnings.md` — patterns discovered, gotchas, validated rules
+8. `.ai/metrics.md` — what approaches work best
+9. `.ai/kimi-maestro.md` — Kimi strategy file (delegation rules)
 
 Then **confirm with Pedro** before touching anything:
 > "I'm on branch `<branch>`. Last commit: `<message>`. Ready for instructions."
@@ -94,94 +59,98 @@ Then **confirm with Pedro** before touching anything:
 
 ---
 
+## 🧠 Memory Write Protocol (prevents race conditions)
+
+When writing to any `.ai/` file:
+1. Check if `.ai/.memory-lock` exists — if yes, wait 1s, retry up to 3 times
+2. Write your PID to `.ai/.memory-lock`
+3. Read current file, append/update, write
+4. Remove `.ai/.memory-lock`, update `.ai/.last-writer` with your agent name
+
+---
+
 ## ✅ Before You Write Any Code — Mandatory Pre-Coding Check
 
-Before writing a single line of implementation:
-
-1. **State what you understood** — repeat back what Pedro asked for, in your own words
+1. **State what you understood** — repeat back what Pedro asked for
 2. **State what files you will change** — list them explicitly
-3. **State any assumptions you are making** — if you have ANY assumption, that is a question you must ask Pedro instead
-4. **Wait for Pedro to say "yes, go ahead"** or correct you
+3. **State any assumptions** — if you have ANY, that is a question for Pedro
+4. **Wait for Pedro to say "yes, go ahead"**
+
+---
+
+## 🧮 Quality Gate (run before EVERY commit, in order)
+
+1. `npm run lint` — ESLint + Prettier (zero errors)
+2. `npx tsc --noEmit` — TypeScript (zero type errors)
+3. `npm test` — all tests pass
+4. `npm run build` — build succeeds
+5. Responsive check — verify UI at 1280px, 768px, 375px
+
+If any step fails: STOP, fix, re-run all from step 1. Never commit with failures.
 
 ---
 
 ## ✅ Before Every Commit — Mandatory Pre-Commit Checklist
 
 ```
-[ ] Committing to the correct branch (NOT main unless Pedro explicitly said so)
-[ ] Pushing to stage after commit so Pedro can review on stage.xinhan.org
+[ ] Quality gate passes (all 5 steps)
+[ ] Committing to correct branch (NOT main/master unless Pedro said so)
 [ ] .ai/history.md updated with what was done and why
 [ ] .ai/tasks.md updated (completed items moved, new items added)
 [ ] .ai/plan.txt updated (completed steps marked [x])
+[ ] .ai/metrics.md updated with session data
+[ ] .ai/learnings.md updated if new patterns discovered
 [ ] No files with secrets added (.env, credentials)
-[ ] git add lists only the files I intentionally changed
-[ ] Teaching materials in docs1/2/3 were NOT accidentally moved or deleted
+[ ] git add lists only files I intentionally changed
 ```
 
 ---
 
-## 🚀 Push to stage is MANDATORY after every commit — no exceptions
+## 🚀 Commit & Push Flow
 
-After every commit, immediately run:
 ```sh
-git push origin stage
+git add <specific files>          # NEVER "git add -A" blindly
+git commit -m "type(scope): what happened and why"
+git push origin <branch>
 ```
 
-**Never end a coding session without pushing to `stage`.**
-A commit that is not on `stage` does not exist for Pedro.
-Do NOT ask "should I push?" — just push. Always. Every time. To `stage`.
+Types: `feat | fix | refactor | style | test | docs | chore`
 
-**BUT:** ONLY push to `main` if Pedro gave **explicit production approval**.
+**Never end a session without pushing.** A commit that is not pushed does not exist for Pedro.
+
+---
+
+## 📚 Learning Protocol
+
+When you discover a pattern or solve a novel problem:
+1. Add entry to `.ai/learnings.md` with date, context, approach, success rating
+2. Before starting similar tasks, check `learnings.md` for relevant entries
 
 ---
 
 ## ✅ Exit Protocol — Triggered by "cld", "claudino", "exit", or "stop"
 
-When Pedro says any of these words (as the whole message or clear intent):
+When Pedro says to end the session:
 
-1. Append to `.ai/history.md` — dated entry, bullet points of what was done and why
-2. Update `.ai/tasks.md` — move completed items, add newly discovered tasks
+1. Acquire lock (`.ai/.memory-lock`)
+2. Append to `.ai/history.md` — dated entry, bullet points of what was done and why
 3. Update `.ai/plan.txt` — mark completed steps `[x]`, update status
-4. Update `.ai/decisions.md` — record any architectural decisions made
-5. Update `.ai/learnings.md` — record any new patterns or gotchas discovered
+4. Update `.ai/tasks.md` — move completed items, add newly discovered tasks
+5. Update `.ai/metrics.md` with session data
+6. Update `.ai/decisions.md` — record any architectural decisions made
+7. Update `.ai/learnings.md` — record any new patterns or gotchas discovered
+8. Release lock
 
 Then reply: **"✓ Session saved."** and stop.
 
 ---
 
-## Branches
+## Protected Actions (require Pedro's explicit instruction)
 
-| Branch | Domain | Push allowed? | When to use |
-|--------|--------|---------------|-------------|
-| `stage` | stage.xinhan.org | ✅ Default. Always push here. | Every session |
-| `main` | xinhan.org (production) | 🚫 Pedro's EXPLICIT approval ONLY | When Pedro explicitly says to deploy |
-
----
-
-## Commit Format
-
-```sh
-git add <specific files>          # NEVER "git add -A" blindly
-git commit -m "type(scope): what happened and why"
-git push origin stage             # always stage, never main unless approved
-```
-
-Types: `feat | fix | refactor | style | test | docs | chore`
-
----
-
-## When You Are Unsure — ASK (RED LINE #4)
-
-**Any doubt = full stop. Do not proceed until Pedro answers.**
-
-This includes:
-- Which teaching materials to feature on the site
-- How to organize the docs folders
-- Whether to publish specific content publicly
-- Design or branding decisions
-- Which branch to push to
-- Whether to deploy to production
-- Anything where you catch yourself writing "I'll assume…" or "probably…" or "I think…"
+- Merging into `main` or `master`
+- Deleting any file
+- Modifying `package.json` dependencies
+- Changing `.env` or environment variables
 
 ---
 
@@ -194,5 +163,6 @@ This includes:
 | `plan.txt` | Mark completed steps `[x]`, update status |
 | `decisions.md` | Record any architectural or design decision made |
 | `learnings.md` | Add patterns, gotchas, validated rules |
+| `metrics.md` | Session data, what approaches work best |
 
 These are Pedro's memory across all AI tools. Stale files = broken context = wasted sessions.
