@@ -35,6 +35,27 @@
 
 ---
 
+## 2026-05-24 — Unified Pepe/Claudino Protocol System (v7.2)
+
+**Context:** Pedro has 13+ repos across GitHub. Each had fragmented or outdated protocol files (v6.1, v9.0, none at all). Setting up protocols for new projects required manual copying and conversation with AI agents.
+
+**Decision:**
+1. Create a single universal master protocol at `~/.config/claudino/templates/protocol.md` (v7.2).
+2. Make `pepe.sh` fully self-installing — it creates templates, Kimi hooks, and claudino templates on first run.
+3. `pep` launches Kimi with auto-injected protocol via `SessionStart` hook.
+4. `claude-code` launches Claude Code with `CLAUDE.md` auto-generated from the master protocol.
+5. Pedro's existing `cld`/`claudino` OpenCode launcher is preserved untouched.
+6. All repos share the same protocol source. Update once → all LLMs everywhere get it.
+
+**Consequences:**
+- Zero setup for new projects. `cd` into any folder → protocol auto-scaffolds.
+- No more "setup conversation" with AI agents.
+- Risk: updating the master protocol overwrites project-specific rules in generic repos. Astrolaby's v9.0 custom protocol is protected by version detection.
+
+**Agent:** Kimi (Maestro)
+
+---
+
 ## Template
 
 ```

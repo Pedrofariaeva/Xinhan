@@ -18,6 +18,7 @@
 - [ ] Move non-educational/personal docs out of teaching folders (ask Pedro first)
 - [ ] Decide which teaching materials to feature/publish publicly
 - [x] Connect auth pages to real backend (done 2026-05-25 — real MongoDB auth with JWT)
+- [x] Build universal pepe/claudino protocol system for all repos (done 2026-05-24 — v7.2 deployed to all GitHub repos)
 
 ---
 

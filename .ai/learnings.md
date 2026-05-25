@@ -26,6 +26,22 @@
 
 ---
 
+## 2026-05-24 — Universal Protocol Engineering
+
+**What:** Built a single master protocol (`~/.pepe-template/.ai/protocol.md` v7.2) that auto-injects into all AI sessions across all repos via self-installing `pepe.sh`, Kimi `SessionStart` hooks, and Claude Code `CLAUDE.md`.
+
+**Why it matters:** Pedro has 13+ repos. Previously, every new project required a "setup conversation" with AI agents to establish rules. Now `cd` into any folder and the protocol is already there. This eliminates ~5 minutes of boilerplate per session and prevents rule drift across projects.
+
+**Key technical insights:**
+1. **Self-installing heredoc scripts are the ultimate portability.** `pepe.sh` embeds all templates as heredocs. One `curl` → one `source` → fully configured system. No package managers, no dependencies beyond `sed` and `git`.
+2. **Version detection protects custom protocols.** Astrolaby's v9.0 custom protocol was detected by `grep '^VERSION:'` and skipped during universal sync. Only `CLAUDE.md` was updated. This preserves project-specific rules.
+3. **Kimi `SessionStart` hooks + Claude `CLAUDE.md` auto-read = zero-latency injection.** Kimi gets the protocol via shell hook output; Claude Code gets it via file read. Neither requires modifying the LLM binary.
+4. **Preserve existing muscle memory.** Pedro's `cld`/`claudino` OpenCode launcher was left untouched. The new `claude-code` command is additive, not replacement.
+
+**Validated by:** Successfully deployed to all 13+ repos in `~/Documents/GitHub/`. Pedro confirmed this is exactly what he wanted — zero setup, universal rules, project-specific overrides preserved.
+
+---
+
 ## Template
 
 ```

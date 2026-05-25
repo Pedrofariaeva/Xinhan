@@ -1,5 +1,22 @@
 # Xinhan — Session History
 
+## 2026-05-24 — Kimi (Maestro) — Universal Protocol System Build
+
+- **What:** Built and deployed a unified pepe/claudino protocol system across ALL Pedro's GitHub repos.
+- **Why:** Pedro was frustrated that every new project required manual protocol setup. He wanted `pep`/`cld` to work everywhere without setup conversations.
+- **What changed:**
+  - Created `~/Documents/GitHub/pepe-protocol/` — portable installer repo with self-installing shell functions
+  - `pepe.sh` is now fully self-installing: templates, Kimi hooks, and claudino templates auto-create on first run
+  - Unified protocol v7.2: one master file (`~/.config/claudino/templates/protocol.md`) injects into ALL LLM sessions
+  - Added explicit deployment rules: **preview is default**, local only if Pedro asks, production forbidden without explicit approval
+  - Added `pep` alias for Kimi, `claude-code` wrapper for Claude Code (Anthropic)
+  - Preserved Pedro's existing `cld`/`claudino` OpenCode launcher — no shadowing
+  - Added `gh-projects` helper to list all GitHub projects
+  - Updated ALL 13 repos with v7.2 protocol and `CLAUDE.md`:
+    - Acharya-Measure-Prototype, adene-data, claudito, FactionWars, hsk_Youxi, marcopolo21, marcopoloxxi, trackonperformance, train-astrolaby, videoastrolaby, Xinhan
+    - astrolaby: custom v9.0 protocol preserved, only `CLAUDE.md` updated
+- **Status:** Done. Next session: `pep` or `cld` anywhere auto-scaffolds `.ai/` + `CLAUDE.md` and launches with protocol loaded.
+
 ## 2026-05-24 — Kimi (Maestro)
 
 - **What:** Initialized the `.ai/` protocol system for Xinhan project.
