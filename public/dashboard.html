@@ -174,14 +174,14 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <div class="logo-mark">新</div>
       <div class="logo-text">Xinhan</div>
     </a>
     <div class="nav-links">
       <span id="userName"></span>
-      <a href="dashboard.html">Dashboard</a>
-      <a href="index.html">Home</a>
+      <a href="/dashboard.html">Dashboard</a>
+      <a href="/">Home</a>
       <button onclick="logout()">Sign Out</button>
     </div>
   </div>
@@ -198,7 +198,7 @@
   <div id="teacherSection" style="display:none;">
     <div class="teacher-tools">
       <span>👨‍🏫 Teacher Tools:</span>
-      <a href="teacher.html">Manage Assignments</a>
+      <a href="/teacher.html">Manage Assignments</a>
     </div>
   </div>
 
@@ -207,12 +207,17 @@
   <div class="lesson-grid" id="lessonGrid"></div>
 </div>
 
-<script src="js/auth.js"></script>
-<script src="js/data.js"></script>
-<script src="js/progress.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/data.js"></script>
+<script src="/js/progress.js"></script>
 <script>
-  if (!requireAuth()) { /* redirect handled in auth.js */ }
+  (async function init() {
+    await fetchUser();
+    if (!isLoggedIn()) { location.href = '/signin.html'; return; }
+    renderDashboard();
+  })();
 
+  function renderDashboard() {
   const user = getCurrentUser();
   document.getElementById('userName').textContent = user.name;
   document.getElementById('welcomeTitle').textContent =
@@ -298,7 +303,7 @@
       const levelColor = l.level <= 2 ? '#d8f3dc' : l.level <= 4 ? '#dce5f3' : '#e5e2fb';
       const levelText = l.level <= 2 ? '#2d6a4f' : l.level <= 4 ? '#225890' : '#5e4fb8';
       return `
-        <div class="lesson-card" onclick="location.href='lesson.html?id=${l.id}'">
+        <div class="lesson-card" onclick="location.href='/lesson.html?id=${l.id}'">
           ${isDone ? `<div class="complete-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>` : ''}
           <span class="level-badge" style="background:${levelColor};color:${levelText};">${l.hsk}</span>
           <h3>${l.title}</h3>
@@ -316,6 +321,8 @@
   }
 
   renderGrid(visibleLessons);
+  }
+  renderDashboard();
 </script>
 
 </body>

@@ -124,12 +124,12 @@
 
 <nav>
   <div class="nav-inner">
-    <a href="index.html" class="logo">
+    <a href="/" class="logo">
       <div class="logo-mark">新</div>
       <div class="logo-text">Xinhan</div>
     </a>
     <div class="nav-links">
-      <a href="dashboard.html">Dashboard</a>
+      <a href="/dashboard.html">Dashboard</a>
       <button onclick="logout()">Sign Out</button>
     </div>
   </div>
@@ -154,12 +154,17 @@
   </div>
 </div>
 
-<script src="js/auth.js"></script>
-<script src="js/data.js"></script>
-<script src="js/progress.js"></script>
+<script src="/js/auth.js"></script>
+<script src="/js/data.js"></script>
+<script src="/js/progress.js"></script>
 <script>
-  if (!requireAuth()) { /* redirect handled */ }
+  (async function init() {
+    await fetchUser();
+    if (!isLoggedIn()) { location.href = '/signin.html'; return; }
+    runLesson();
+  })();
 
+  async function runLesson() {
   const params = new URLSearchParams(location.search);
   const lessonId = params.get('id');
   const lesson = LESSONS.find(l => l.id === lessonId);
@@ -299,7 +304,7 @@
     } else {
       markLessonComplete(user.id, lesson.id);
       alert('Lesson completed! Great job!');
-      location.href = 'dashboard.html';
+      location.href = '/dashboard.html';
     }
   }
 
@@ -318,6 +323,8 @@
 
   recordLessonAccess(user.id, lesson.id);
   renderSlide();
+  }
+  runLesson();
 </script>
 
 </body>
