@@ -17,7 +17,7 @@
 - [ ] Clean up duplicate files across docs1/2/3 (ask Pedro first)
 - [ ] Move non-educational/personal docs out of teaching folders (ask Pedro first)
 - [ ] Decide which teaching materials to feature/publish publicly
-- [ ] Connect auth pages to real backend
+- [x] Connect auth pages to real backend (done 2026-05-25 — real MongoDB auth with JWT)
 
 ---
 
@@ -35,4 +35,8 @@
 
 ## 📬 Reports to Maestro
 
-*No reports yet.*
+- [2026-05-25] **Claude Code (Claudino)** — Implemented real auth for Xinhan
+  - Files: `middleware.ts`, `lib/auth.ts`, `lib/auth-edge.ts`, `lib/mongodb.ts`, `app/api/auth/*`, `app/signin/`, `app/signup/`, `app/dashboard/`, `app/globals.css`, `app/layout.tsx`, `.env.local`
+  - Commit: `fe8608e`
+  - Status: done — build passes, pushed to `stage`
+  - Handoff: **IMPORTANT** — Pedro must add `JWT_SECRET` to Vercel env vars for production. Value: `Bh9FgMEH/ZnrGzRa9K80XuxDZkG0yJVqZYvefaLWW3Q=`. Go to vercel.com → Xinhan project → Settings → Environment Variables → add `JWT_SECRET` for Preview + Production environments.
