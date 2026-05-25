@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Teacher · Xinhan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --jade-900: #0f291e; --jade-800: #1b4332; --jade-700: #2d6a4f;
+      --jade-600: #40916c; --jade-500: #52b788; --jade-400: #74c69d;
+      --jade-100: #d8f3dc; --jade-50: #f1f8f4;
+      --gold-500: #d4a574; --gold-400: #e8c39e; --gold-100: #faf3e8;
+      --paper: #fdfcfa; --ink: #1a1a1a; --ink-light: #4a4a4a; --ink-muted: #8a8a8a;
+      --radius: 12px; --shadow: 0 4px 24px rgba(0,0,0,0.08);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: 'Inter', sans-serif; color: var(--ink); background: var(--paper); line-height: 1.6; }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(253,252,250,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 36px; height: 36px; background: var(--jade-800); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-400); font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 700;
+    }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--jade-900); }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a, .nav-links button {
+      text-decoration: none; color: var(--ink-light); font-size: 13px; font-weight: 500;
+      padding: 8px 14px; border-radius: 8px; border: none; background: none; cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links button:hover { color: var(--jade-800); background: var(--jade-50); }
+
+    /* Layout */
+    .teacher { padding: 96px 24px 48px; max-width: 1200px; margin: 0 auto; }
+    .teacher h1 {
+      font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--jade-900);
+      margin-bottom: 8px;
+    }
+    .teacher > p { color: var(--ink-muted); margin-bottom: 32px; }
+
+    /* Two-column layout */
+    .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+    @media (max-width: 900px) { .two-col { grid-template-columns: 1fr; } }
+
+    /* Panel */
+    .panel {
+      background: #fff; border-radius: 16px; padding: 28px;
+      border: 1px solid rgba(0,0,0,0.05); box-shadow: 0 2px 12px rgba(0,0,0,0.04);
+    }
+    .panel h2 { font-size: 18px; font-weight: 600; margin-bottom: 20px; color: var(--jade-900); }
+
+    /* Student list */
+    .student-row {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .student-row:last-child { border-bottom: none; }
+    .student-info { display: flex; align-items: center; gap: 12px; }
+    .student-avatar {
+      width: 36px; height: 36px; border-radius: 50%; background: var(--jade-100);
+      display: flex; align-items: center; justify-content: center;
+      color: var(--jade-700); font-weight: 600; font-size: 13px;
+    }
+    .student-name { font-weight: 600; font-size: 14px; }
+    .student-email { font-size: 12px; color: var(--ink-muted); }
+    .student-stats { font-size: 12px; color: var(--jade-700); font-weight: 500; }
+    .student-row button {
+      padding: 8px 16px; border-radius: 8px; border: 1.5px solid var(--jade-800);
+      background: transparent; color: var(--jade-800); font-size: 12px; font-weight: 600;
+      cursor: pointer;
+    }
+    .student-row button:hover { background: var(--jade-50); }
+
+    /* Lesson selector */
+    .lesson-list { max-height: 400px; overflow-y: auto; }
+    .lesson-select {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 0; border-bottom: 1px solid rgba(0,0,0,0.04);
+    }
+    .lesson-select input[type="checkbox"] {
+      width: 18px; height: 18px; accent-color: var(--jade-700);
+    }
+    .lesson-select label { flex: 1; font-size: 13px; cursor: pointer; }
+    .lesson-select .hsk-tag {
+      font-size: 10px; font-weight: 700; text-transform: uppercase;
+      padding: 3px 8px; border-radius: 100px; background: var(--jade-50); color: var(--jade-700);
+    }
+
+    /* Actions */
+    .actions { margin-top: 20px; display: flex; gap: 12px; }
+    .btn {
+      padding: 12px 24px; border-radius: 10px; font-size: 14px; font-weight: 600;
+      cursor: pointer; border: none; transition: all 0.2s;
+    }
+    .btn-primary { background: var(--jade-800); color: #fff; }
+    .btn-primary:hover { background: var(--jade-700); }
+    .btn-secondary { background: transparent; color: var(--jade-800); border: 1.5px solid var(--jade-800); }
+    .btn-secondary:hover { background: var(--jade-50); }
+
+    .alert {
+      display: none; padding: 12px 16px; border-radius: 10px; margin-bottom: 20px;
+      font-size: 13px; font-weight: 500;
+    }
+    .alert.success { background: var(--jade-50); color: var(--jade-800); border: 1px solid var(--jade-100); }
+    .alert.show { display: block; }
+
+    @media (max-width: 640px) {
+      .teacher { padding-top: 80px; }
+      .teacher h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">新</div>
+      <div class="logo-text">Xinhan</div>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <button onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="teacher">
+  <h1>Teacher Assignment Center</h1>
+  <p>Select a student, then choose lessons to assign.</p>
+
+  <div class="alert success" id="alert">Assignments saved successfully!</div>
+
+  <div class="two-col">
+    <div class="panel">
+      <h2>Students</h2>
+      <div id="studentList"></div>
+    </div>
+
+    <div class="panel">
+      <h2>Lesson Library</h2>
+      <div class="lesson-list" id="lessonList"></div>
+      <div class="actions">
+        <button class="btn btn-primary" onclick="saveAssignments()">Save Assignments</button>
+        <button class="btn btn-secondary" onclick="location.href='dashboard.html'">Back to Dashboard</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/progress.js"></script>
+<script>
+  if (!requireTeacher()) { /* redirect handled */ }
+
+  let selectedStudentId = null;
+  let selectedLessons = new Set();
+
+  // Render students
+  const students = getAuth().users.filter(u => u.role === 'student');
+  const studentList = document.getElementById('studentList');
+  studentList.innerHTML = students.map(s => {
+    const stats = getStudentStats(s.id);
+    return `
+      <div class="student-row" onclick="selectStudent('${s.id}', this)" style="cursor:pointer;">
+        <div class="student-info">
+          <div class="student-avatar">${s.name.charAt(0)}</div>
+          <div>
+            <div class="student-name">${s.name}</div>
+            <div class="student-email">${s.email}</div>
+          </div>
+        </div>
+        <div class="student-stats">${stats.completed}/${stats.assigned} done</div>
+        <button onclick="event.stopPropagation();selectStudent('${s.id}', this.parentElement)">Select</button>
+      </div>
+    `;
+  }).join('');
+
+  // Render lessons
+  const lessonList = document.getElementById('lessonList');
+  lessonList.innerHTML = LESSONS.map(l => `
+    <div class="lesson-select">
+      <input type="checkbox" id="chk-${l.id}" value="${l.id}" onchange="toggleLesson('${l.id}')">
+      <label for="chk-${l.id}">${l.title}</label>
+      <span class="hsk-tag">${l.hsk}</span>
+    </div>
+  `).join('');
+
+  function selectStudent(id, rowEl) {
+    selectedStudentId = id;
+    selectedLessons = new Set(getAssignedLessons(id));
+
+    // Visual selection
+    document.querySelectorAll('.student-row').forEach(r => r.style.background = '');
+    rowEl.style.background = 'var(--jade-50)';
+
+    // Update checkboxes
+    LESSONS.forEach(l => {
+      const chk = document.getElementById('chk-' + l.id);
+      if (chk) chk.checked = selectedLessons.has(l.id);
+    });
+  }
+
+  function toggleLesson(id) {
+    if (selectedLessons.has(id)) selectedLessons.delete(id);
+    else selectedLessons.add(id);
+  }
+
+  function saveAssignments() {
+    if (!selectedStudentId) {
+      alert('Please select a student first.');
+      return;
+    }
+    assignLessons(selectedStudentId, Array.from(selectedLessons));
+    document.getElementById('alert').classList.add('show');
+    setTimeout(() => document.getElementById('alert').classList.remove('show'), 3000);
+
+    // Refresh stats
+    const stats = getStudentStats(selectedStudentId);
+    const row = document.querySelector(`.student-row:nth-child(${getAuth().users.filter(u=>u.role==='student').findIndex(u=>u.id===selectedStudentId)+1}) .student-stats`);
+    if (row) row.textContent = `${stats.completed}/${stats.assigned} done`;
+  }
+</script>
+
+</body>
+</html>

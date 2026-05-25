@@ -1,0 +1,324 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Lesson · Xinhan</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --jade-900: #0f291e; --jade-800: #1b4332; --jade-700: #2d6a4f;
+      --jade-600: #40916c; --jade-500: #52b788; --jade-400: #74c69d;
+      --jade-100: #d8f3dc; --jade-50: #f1f8f4;
+      --gold-500: #d4a574; --gold-400: #e8c39e; --gold-100: #faf3e8;
+      --paper: #fdfcfa; --ink: #1a1a1a; --ink-light: #4a4a4a; --ink-muted: #8a8a8a;
+      --radius: 12px; --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: 'Inter', sans-serif; color: var(--ink); background: var(--paper);
+      line-height: 1.6; overflow-x: hidden;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(253,252,250,0.95); backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 56px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 32px; height: 32px; background: var(--jade-800); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-400); font-family: 'Noto Serif SC', serif; font-size: 14px; font-weight: 700;
+    }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 16px; font-weight: 700; color: var(--jade-900); }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a, .nav-links button {
+      text-decoration: none; color: var(--ink-light); font-size: 13px; font-weight: 500;
+      padding: 8px 14px; border-radius: 8px; border: none; background: none; cursor: pointer;
+    }
+    .nav-links a:hover, .nav-links button:hover { color: var(--jade-800); background: var(--jade-50); }
+
+    /* Slide Viewer */
+    .viewer { padding-top: 56px; display: flex; flex-direction: column; min-height: 100vh; }
+    .slide-stage {
+      flex: 1; display: flex; align-items: center; justify-content: center;
+      padding: 40px 24px; background: linear-gradient(135deg, #f8faf9 0%, #f1f8f4 100%);
+    }
+    .slide-card {
+      background: #fff; border-radius: 20px; padding: 48px 56px;
+      max-width: 800px; width: 100%; min-height: 480px;
+      box-shadow: var(--shadow-lg); border: 1px solid rgba(0,0,0,0.04);
+      display: flex; flex-direction: column;
+    }
+    .slide-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 32px; padding-bottom: 20px;
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .slide-header .badge {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.5px; text-transform: uppercase;
+      padding: 6px 14px; border-radius: 100px; background: var(--jade-50); color: var(--jade-700);
+    }
+    .slide-header .counter { font-size: 13px; color: var(--ink-muted); font-weight: 500; }
+
+    .slide-content { flex: 1; }
+    .slide-content h2 {
+      font-family: 'Playfair Display', serif; font-size: 28px; font-weight: 700;
+      color: var(--jade-900); margin-bottom: 8px;
+    }
+    .slide-content .zh-title {
+      font-family: 'Noto Serif SC', serif; font-size: 20px; color: var(--jade-600); margin-bottom: 24px;
+    }
+    .slide-content p { font-size: 16px; color: var(--ink-light); line-height: 1.8; margin-bottom: 16px; }
+    .slide-content .vocab-list {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 12px; margin: 24px 0;
+    }
+    .vocab-item {
+      background: var(--jade-50); border-radius: 10px; padding: 14px 16px;
+      border: 1px solid var(--jade-100);
+    }
+    .vocab-item .hanzi { font-family: 'Noto Serif SC', serif; font-size: 18px; font-weight: 600; color: var(--jade-900); }
+    .vocab-item .pinyin { font-size: 13px; color: var(--jade-600); margin: 2px 0; }
+    .vocab-item .meaning { font-size: 13px; color: var(--ink-muted); }
+
+    /* Controls */
+    .controls {
+      background: #fff; border-top: 1px solid rgba(0,0,0,0.06);
+      padding: 16px 24px; display: flex; align-items: center; justify-content: center; gap: 16px;
+    }
+    .ctrl-btn {
+      padding: 10px 20px; border-radius: 10px; border: 1.5px solid var(--jade-800);
+      background: transparent; color: var(--jade-800); font-size: 14px; font-weight: 600;
+      cursor: pointer; transition: all 0.2s; display: flex; align-items: center; gap: 8px;
+    }
+    .ctrl-btn:hover { background: var(--jade-50); }
+    .ctrl-btn.primary { background: var(--jade-800); color: #fff; }
+    .ctrl-btn.primary:hover { background: var(--jade-700); }
+    .ctrl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    .progress-track {
+      flex: 1; max-width: 300px; height: 6px; background: #e8e8e8;
+      border-radius: 100px; overflow: hidden;
+    }
+    .progress-fill {
+      height: 100%; background: var(--jade-500); border-radius: 100px;
+      transition: width 0.4s ease;
+    }
+
+    @media (max-width: 640px) {
+      .slide-card { padding: 28px 24px; min-height: 400px; }
+      .slide-content h2 { font-size: 22px; }
+      .slide-content .zh-title { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">新</div>
+      <div class="logo-text">Xinhan</div>
+    </a>
+    <div class="nav-links">
+      <a href="dashboard.html">Dashboard</a>
+      <button onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="viewer">
+  <div class="slide-stage">
+    <div class="slide-card">
+      <div class="slide-header">
+        <span class="badge" id="lessonBadge">HSK 1</span>
+        <span class="counter" id="slideCounter">Slide 1 of 1</span>
+      </div>
+      <div class="slide-content" id="slideContent">
+        <!-- Content injected here -->
+      </div>
+    </div>
+  </div>
+  <div class="controls">
+    <button class="ctrl-btn" id="prevBtn" onclick="prevSlide()">← Previous</button>
+    <div class="progress-track"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+    <button class="ctrl-btn primary" id="nextBtn" onclick="nextSlide()">Next →</button>
+  </div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/progress.js"></script>
+<script>
+  if (!requireAuth()) { /* redirect handled */ }
+
+  const params = new URLSearchParams(location.search);
+  const lessonId = params.get('id');
+  const lesson = LESSONS.find(l => l.id === lessonId);
+
+  if (!lesson) {
+    document.getElementById('slideContent').innerHTML = '<h2>Lesson not found</h2>';
+    throw new Error('Lesson not found');
+  }
+
+  // Check access for students
+  const user = getCurrentUser();
+  if (user.role === 'student') {
+    const assigned = getAssignedLessons(user.id);
+    if (!assigned.includes(lesson.id)) {
+      document.getElementById('slideContent').innerHTML =
+        '<h2>Access Denied</h2><p>This lesson has not been assigned to you. Please contact your teacher.</p>';
+      document.querySelector('.controls').style.display = 'none';
+      throw new Error('Not assigned');
+    }
+  }
+
+  document.getElementById('lessonBadge').textContent = lesson.hsk + ' · ' + lesson.theme;
+
+  // Generate demo slides from lesson metadata
+  const slides = generateSlides(lesson);
+  let currentSlide = 0;
+
+  function generateSlides(lesson) {
+    const s = [];
+    // Slide 1: Title
+    s.push({
+      title: lesson.title,
+      zhTitle: lesson.titleZh,
+      html: `<h2>${lesson.title}</h2><div class="zh-title">${lesson.titleZh}</div><p>${lesson.description}</p><p><strong>Type:</strong> ${lesson.type} &nbsp;|&nbsp; <strong>Quality:</strong> ${lesson.quality === 1 ? 'Excellent' : 'Good'}</p>`
+    });
+    // Slide 2: Tags & Info
+    s.push({
+      title: 'About This Lesson',
+      zhTitle: '关于本课',
+      html: `<h2>About This Lesson</h2><div class="zh-title">关于本课</div><p><strong>HSK Level:</strong> ${lesson.hsk}</p><p><strong>Theme:</strong> ${lesson.theme}</p><p><strong>Tags:</strong> ${lesson.tags.join(', ')}</p><p><strong>Source:</strong> ${lesson.source}</p>`
+    });
+    // Slide 3: Key Vocabulary (demo)
+    if (lesson.theme.includes('Greetings') || lesson.hsk === 'HSK 1') {
+      s.push({
+        title: 'Key Vocabulary',
+        zhTitle: '核心词汇',
+        html: `<h2>Key Vocabulary</h2><div class="zh-title">核心词汇</div>
+          <div class="vocab-list">
+            <div class="vocab-item"><div class="hanzi">你好</div><div class="pinyin">nǐ hǎo</div><div class="meaning">Hello</div></div>
+            <div class="vocab-item"><div class="hanzi">谢谢</div><div class="pinyin">xièxie</div><div class="meaning">Thank you</div></div>
+            <div class="vocab-item"><div class="hanzi">名字</div><div class="pinyin">míngzi</div><div class="meaning">Name</div></div>
+            <div class="vocab-item"><div class="hanzi">什么</div><div class="pinyin">shénme</div><div class="meaning">What</div></div>
+          </div>`
+      });
+    } else if (lesson.theme.includes('Sports') || lesson.theme.includes('Health')) {
+      s.push({
+        title: 'Key Vocabulary',
+        zhTitle: '核心词汇',
+        html: `<h2>Key Vocabulary</h2><div class="zh-title">核心词汇</div>
+          <div class="vocab-list">
+            <div class="vocab-item"><div class="hanzi">运动</div><div class="pinyin">yùndòng</div><div class="meaning">Exercise / Sports</div></div>
+            <div class="vocab-item"><div class="hanzi">身体</div><div class="pinyin">shēntǐ</div><div class="meaning">Body</div></div>
+            <div class="vocab-item"><div class="hanzi">生病</div><div class="pinyin">shēngbìng</div><div class="meaning">Get sick</div></div>
+            <div class="vocab-item"><div class="hanzi">以后</div><div class="pinyin">yǐhòu</div><div class="meaning">After</div></div>
+          </div>`
+      });
+    } else {
+      s.push({
+        title: 'Key Vocabulary',
+        zhTitle: '核心词汇',
+        html: `<h2>Key Vocabulary</h2><div class="zh-title">核心词汇</div>
+          <div class="vocab-list">
+            <div class="vocab-item"><div class="hanzi">学习</div><div class="pinyin">xuéxí</div><div class="meaning">Study / Learn</div></div>
+            <div class="vocab-item"><div class="hanzi">练习</div><div class="pinyin">liànxí</div><div class="meaning">Practice</div></div>
+            <div class="vocab-item"><div class="hanzi">理解</div><div class="pinyin">lǐjiě</div><div class="meaning">Understand</div></div>
+            <div class="vocab-item"><div class="hanzi">问题</div><div class="pinyin">wèntí</div><div class="meaning">Question / Problem</div></div>
+          </div>`
+      });
+    }
+    // Slide 4: Reading / Dialogue (demo)
+    s.push({
+      title: 'Reading Practice',
+      zhTitle: '阅读练习',
+      html: `<h2>Reading Practice</h2><div class="zh-title">阅读练习</div>
+        <p style="font-family:'Noto Serif SC',serif;font-size:18px;line-height:2;color:var(--jade-900);">
+        你好！我叫李明。我是中国人。我今年二十五岁。我喜欢运动和看书。请问，你叫什么名字？</p>
+        <p style="margin-top:16px;"><em>Hello! My name is Li Ming. I am Chinese. I am 25 years old. I like sports and reading. May I ask, what is your name?</em></p>`
+    });
+    // Slide 5: Comprehension Questions
+    s.push({
+      title: 'Comprehension Check',
+      zhTitle: '理解检查',
+      html: `<h2>Comprehension Check</h2><div class="zh-title">理解检查</div>
+        <p>1. What is Li Ming's nationality?</p>
+        <p>2. How old is Li Ming?</p>
+        <p>3. What are his hobbies?</p>
+        <p style="margin-top:24px;color:var(--ink-muted);font-size:14px;">💡 Tip: Write your answers in your notebook and discuss with your teacher.</p>`
+    });
+    // Slide 6: Speaking Prompt
+    s.push({
+      title: 'Speaking Practice',
+      zhTitle: '口语练习',
+      html: `<h2>Speaking Practice</h2><div class="zh-title">口语练习</div>
+        <p>Introduce yourself in Chinese. Include:</p>
+        <ul style="margin-left:20px;color:var(--ink-light);">
+          <li>Your name</li>
+          <li>Your nationality</li>
+          <li>Your age</li>
+          <li>Your hobbies</li>
+        </ul>
+        <p style="margin-top:16px;color:var(--ink-muted);font-size:14px;">⏱️ Target: 2-minute spoken introduction</p>`
+    });
+    // Slide 7: Complete
+    s.push({
+      title: 'Lesson Complete!',
+      zhTitle: '课程完成！',
+      html: `<h2>Lesson Complete!</h2><div class="zh-title">课程完成！</div>
+        <p>Great work! You have finished <strong>${lesson.title}</strong>.</p>
+        <p style="margin-top:16px;">Next: Review the vocabulary and complete the speaking exercise with your teacher.</p>`
+    });
+    return s;
+  }
+
+  function renderSlide() {
+    const slide = slides[currentSlide];
+    document.getElementById('slideContent').innerHTML = slide.html;
+    document.getElementById('slideCounter').textContent = `Slide ${currentSlide + 1} of ${slides.length}`;
+    document.getElementById('progressFill').style.width = ((currentSlide + 1) / slides.length * 100) + '%';
+    document.getElementById('prevBtn').disabled = currentSlide === 0;
+    document.getElementById('nextBtn').textContent = currentSlide === slides.length - 1 ? 'Finish ✓' : 'Next →';
+  }
+
+  function nextSlide() {
+    if (currentSlide < slides.length - 1) {
+      currentSlide++;
+      renderSlide();
+    } else {
+      markLessonComplete(user.id, lesson.id);
+      alert('Lesson completed! Great job!');
+      location.href = 'dashboard.html';
+    }
+  }
+
+  function prevSlide() {
+    if (currentSlide > 0) {
+      currentSlide--;
+      renderSlide();
+    }
+  }
+
+  // Keyboard nav
+  document.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight' || e.key === ' ') nextSlide();
+    if (e.key === 'ArrowLeft') prevSlide();
+  });
+
+  recordLessonAccess(user.id, lesson.id);
+  renderSlide();
+</script>
+
+</body>
+</html>

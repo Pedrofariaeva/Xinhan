@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Dashboard · Xinhan Chinese Language School</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600;700&family=Noto+Serif+SC:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --jade-900: #0f291e;
+      --jade-800: #1b4332;
+      --jade-700: #2d6a4f;
+      --jade-600: #40916c;
+      --jade-500: #52b788;
+      --jade-400: #74c69d;
+      --jade-100: #d8f3dc;
+      --jade-50: #f1f8f4;
+      --gold-600: #b8860b;
+      --gold-500: #d4a574;
+      --gold-400: #e8c39e;
+      --gold-100: #faf3e8;
+      --paper: #fdfcfa;
+      --ink: #1a1a1a;
+      --ink-light: #4a4a4a;
+      --ink-muted: #8a8a8a;
+      --radius: 12px;
+      --shadow-sm: 0 1px 2px rgba(0,0,0,0.04);
+      --shadow: 0 4px 24px rgba(0,0,0,0.08);
+      --shadow-lg: 0 12px 48px rgba(0,0,0,0.12);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      color: var(--ink);
+      background: var(--paper);
+      line-height: 1.6;
+    }
+
+    /* Nav */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+      background: rgba(253,252,250,0.95);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid rgba(0,0,0,0.06);
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 24px;
+      height: 64px; display: flex; align-items: center; justify-content: space-between;
+    }
+    .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .logo-mark {
+      width: 36px; height: 36px; background: var(--jade-800); border-radius: 8px;
+      display: flex; align-items: center; justify-content: center;
+      color: var(--gold-400); font-family: 'Noto Serif SC', serif; font-size: 16px; font-weight: 700;
+    }
+    .logo-text { font-family: 'Playfair Display', serif; font-size: 18px; font-weight: 700; color: var(--jade-900); }
+    .nav-links { display: flex; align-items: center; gap: 8px; }
+    .nav-links a, .nav-links button {
+      text-decoration: none; color: var(--ink-light); font-size: 13px; font-weight: 500;
+      padding: 8px 14px; border-radius: 8px; border: none; background: none; cursor: pointer;
+      transition: all 0.2s;
+    }
+    .nav-links a:hover, .nav-links button:hover { color: var(--jade-800); background: var(--jade-50); }
+    .nav-links .btn {
+      background: var(--jade-800); color: #fff !important; padding: 8px 18px; font-weight: 600;
+    }
+    .nav-links .btn:hover { background: var(--jade-700); }
+    #userName { font-weight: 600; color: var(--jade-800); margin-right: 8px; }
+
+    /* Layout */
+    .dashboard { padding: 96px 24px 48px; max-width: 1200px; margin: 0 auto; }
+    .dashboard-header { margin-bottom: 32px; }
+    .dashboard-header h1 {
+      font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--jade-900);
+    }
+    .dashboard-header p { color: var(--ink-muted); font-size: 15px; margin-top: 4px; }
+
+    /* Stats */
+    .stats-row {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 16px;
+      margin-bottom: 32px;
+    }
+    .stat-card {
+      background: #fff; border-radius: 14px; padding: 20px 24px;
+      border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-sm);
+    }
+    .stat-card .number {
+      font-family: 'Playfair Display', serif; font-size: 32px; font-weight: 700; color: var(--jade-800);
+    }
+    .stat-card .label { font-size: 13px; color: var(--ink-muted); margin-top: 4px; }
+
+    /* Tabs */
+    .tabs { display: flex; gap: 8px; margin-bottom: 24px; flex-wrap: wrap; }
+    .tab {
+      padding: 10px 18px; border-radius: 10px; border: 1.5px solid transparent;
+      background: transparent; color: var(--ink-muted); font-size: 14px; font-weight: 500;
+      cursor: pointer; transition: all 0.2s;
+    }
+    .tab.active { background: var(--jade-50); color: var(--jade-800); border-color: var(--jade-200, #b7e4c7); }
+    .tab:hover:not(.active) { background: #f5f5f5; }
+
+    /* Search */
+    .search-bar {
+      width: 100%; max-width: 400px; padding: 12px 16px;
+      border: 1.5px solid #e8e8e8; border-radius: 10px;
+      font-size: 14px; font-family: 'Inter', sans-serif;
+      outline: none; transition: all 0.2s; margin-bottom: 24px;
+    }
+    .search-bar:focus { border-color: var(--jade-500); box-shadow: 0 0 0 3px rgba(82,183,136,0.12); }
+
+    /* Lesson Grid */
+    .lesson-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+    .lesson-card {
+      background: #fff; border-radius: 16px; padding: 24px;
+      border: 1px solid rgba(0,0,0,0.05); box-shadow: var(--shadow-sm);
+      transition: all 0.25s; cursor: pointer; position: relative;
+    }
+    .lesson-card:hover { transform: translateY(-3px); box-shadow: var(--shadow); border-color: var(--jade-200, #b7e4c7); }
+    .lesson-card .level-badge {
+      display: inline-block; font-size: 11px; font-weight: 700; letter-spacing: 0.5px;
+      text-transform: uppercase; padding: 4px 10px; border-radius: 100px; margin-bottom: 12px;
+    }
+    .lesson-card h3 { font-size: 16px; font-weight: 600; color: var(--jade-900); margin-bottom: 4px; }
+    .lesson-card .zh { font-family: 'Noto Serif SC', serif; color: var(--jade-600); font-size: 14px; margin-bottom: 10px; }
+    .lesson-card p { font-size: 13px; color: var(--ink-muted); line-height: 1.6; margin-bottom: 14px; }
+    .lesson-card .meta { display: flex; gap: 8px; flex-wrap: wrap; }
+    .lesson-card .meta-tag {
+      font-size: 11px; font-weight: 500; color: var(--jade-700);
+      background: var(--jade-50); padding: 4px 10px; border-radius: 100px;
+    }
+    .lesson-card .progress-bar {
+      height: 6px; background: var(--jade-50); border-radius: 100px;
+      overflow: hidden; margin-top: 14px;
+    }
+    .lesson-card .progress-fill {
+      height: 100%; border-radius: 100px; background: var(--jade-500);
+      transition: width 0.5s ease;
+    }
+    .lesson-card .complete-badge {
+      position: absolute; top: 16px; right: 16px;
+      width: 24px; height: 24px; background: var(--jade-500);
+      border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    }
+    .lesson-card .complete-badge svg { width: 14px; height: 14px; color: #fff; }
+
+    .empty-state {
+      text-align: center; padding: 60px 24px; color: var(--ink-muted);
+    }
+    .empty-state h3 { font-size: 20px; color: var(--ink-light); margin-bottom: 8px; }
+
+    /* Teacher view */
+    .teacher-tools {
+      background: var(--gold-100); border-radius: 14px; padding: 20px 24px;
+      margin-bottom: 24px; display: flex; gap: 12px; align-items: center; flex-wrap: wrap;
+    }
+    .teacher-tools span { font-size: 14px; font-weight: 600; color: var(--jade-900); }
+    .teacher-tools a {
+      background: var(--jade-800); color: #fff; text-decoration: none;
+      padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600;
+    }
+    .teacher-tools a:hover { background: var(--jade-700); }
+
+    @media (max-width: 640px) {
+      .dashboard { padding-top: 80px; }
+      .dashboard-header h1 { font-size: 24px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <div class="nav-inner">
+    <a href="index.html" class="logo">
+      <div class="logo-mark">新</div>
+      <div class="logo-text">Xinhan</div>
+    </a>
+    <div class="nav-links">
+      <span id="userName"></span>
+      <a href="dashboard.html">Dashboard</a>
+      <a href="index.html">Home</a>
+      <button onclick="logout()">Sign Out</button>
+    </div>
+  </div>
+</nav>
+
+<div class="dashboard">
+  <div class="dashboard-header">
+    <h1 id="welcomeTitle">Welcome</h1>
+    <p id="welcomeSub">Your learning journey continues here.</p>
+  </div>
+
+  <div class="stats-row" id="statsRow"></div>
+
+  <div id="teacherSection" style="display:none;">
+    <div class="teacher-tools">
+      <span>👨‍🏫 Teacher Tools:</span>
+      <a href="teacher.html">Manage Assignments</a>
+    </div>
+  </div>
+
+  <div class="tabs" id="tabs"></div>
+  <input type="text" class="search-bar" id="searchBar" placeholder="Search lessons by title, theme, or tag...">
+  <div class="lesson-grid" id="lessonGrid"></div>
+</div>
+
+<script src="js/auth.js"></script>
+<script src="js/data.js"></script>
+<script src="js/progress.js"></script>
+<script>
+  if (!requireAuth()) { /* redirect handled in auth.js */ }
+
+  const user = getCurrentUser();
+  document.getElementById('userName').textContent = user.name;
+  document.getElementById('welcomeTitle').textContent =
+    user.role === 'teacher' ? 'Teacher Dashboard' : 'Your Lessons';
+  document.getElementById('welcomeSub').textContent =
+    user.role === 'teacher'
+      ? 'Assign lessons and track student progress.'
+      : 'Complete your assigned lessons to advance.';
+
+  if (user.role === 'teacher') {
+    document.getElementById('teacherSection').style.display = 'block';
+  }
+
+  // Stats
+  const assignedIds = user.role === 'student' ? getAssignedLessons(user.id) : [];
+  const visibleLessons = user.role === 'teacher'
+    ? LESSONS
+    : LESSONS.filter(l => assignedIds.includes(l.id));
+
+  const completedCount = user.role === 'student'
+    ? assignedIds.filter(id => isLessonComplete(user.id, id)).length
+    : 0;
+
+  const statsRow = document.getElementById('statsRow');
+  if (user.role === 'student') {
+    statsRow.innerHTML = `
+      <div class="stat-card"><div class="number">${assignedIds.length}</div><div class="label">Assigned Lessons</div></div>
+      <div class="stat-card"><div class="number">${completedCount}</div><div class="label">Completed</div></div>
+      <div class="stat-card"><div class="number">${assignedIds.length > 0 ? Math.round((completedCount/assignedIds.length)*100) : 0}%</div><div class="label">Progress</div></div>
+      <div class="stat-card"><div class="number">${LESSONS.length}</div><div class="label">Total Library</div></div>
+    `;
+  } else {
+    const students = getAuth().users.filter(u => u.role === 'student');
+    statsRow.innerHTML = `
+      <div class="stat-card"><div class="number">${students.length}</div><div class="label">Students</div></div>
+      <div class="stat-card"><div class="number">${LESSONS.length}</div><div class="label">Total Lessons</div></div>
+      <div class="stat-card"><div class="number">${assignedIds.length}</div><div class="label">Assignments Made</div></div>
+    `;
+  }
+
+  // Tabs
+  const hskGroups = groupByHsk();
+  const tabsEl = document.getElementById('tabs');
+  const allTab = document.createElement('button');
+  allTab.className = 'tab active';
+  allTab.textContent = 'All';
+  allTab.onclick = () => { setActiveTab(allTab); renderGrid(visibleLessons); };
+  tabsEl.appendChild(allTab);
+
+  Object.keys(hskGroups).sort((a,b) => {
+    const na = parseFloat(a.replace(/HSK\s*/,'').replace('–','.'));
+    const nb = parseFloat(b.replace(/HSK\s*/,'').replace('–','.'));
+    return (isNaN(na)?99:na) - (isNaN(nb)?99:nb);
+  }).forEach(hsk => {
+    const btn = document.createElement('button');
+    btn.className = 'tab';
+    btn.textContent = hsk;
+    btn.onclick = () => { setActiveTab(btn); renderGrid(visibleLessons.filter(l => l.hsk === hsk)); };
+    tabsEl.appendChild(btn);
+  });
+
+  function setActiveTab(el) {
+    tabsEl.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+    el.classList.add('active');
+  }
+
+  // Search
+  document.getElementById('searchBar').addEventListener('input', e => {
+    const q = e.target.value.trim();
+    if (!q) { setActiveTab(allTab); renderGrid(visibleLessons); return; }
+    renderGrid(searchLessons(q).filter(l => user.role === 'teacher' || assignedIds.includes(l.id)));
+  });
+
+  // Render grid
+  function renderGrid(lessons) {
+    const grid = document.getElementById('lessonGrid');
+    if (lessons.length === 0) {
+      grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1;"><h3>No lessons found</h3><p>Try a different search or check back later.</p></div>`;
+      return;
+    }
+    grid.innerHTML = lessons.map(l => {
+      const isDone = user.role === 'student' && isLessonComplete(user.id, l.id);
+      const levelColor = l.level <= 2 ? '#d8f3dc' : l.level <= 4 ? '#dce5f3' : '#e5e2fb';
+      const levelText = l.level <= 2 ? '#2d6a4f' : l.level <= 4 ? '#225890' : '#5e4fb8';
+      return `
+        <div class="lesson-card" onclick="location.href='lesson.html?id=${l.id}'">
+          ${isDone ? `<div class="complete-badge"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3"><path d="M5 13l4 4L19 7"/></svg></div>` : ''}
+          <span class="level-badge" style="background:${levelColor};color:${levelText};">${l.hsk}</span>
+          <h3>${l.title}</h3>
+          <div class="zh">${l.titleZh}</div>
+          <p>${l.description}</p>
+          <div class="meta">
+            ${l.tags.slice(0,3).map(t => `<span class="meta-tag">${t}</span>`).join('')}
+          </div>
+          ${user.role === 'student' && assignedIds.includes(l.id) ? `
+            <div class="progress-bar"><div class="progress-fill" style="width:${isDone?100:0}%"></div></div>
+          ` : ''}
+        </div>
+      `;
+    }).join('');
+  }
+
+  renderGrid(visibleLessons);
+</script>
+
+</body>
+</html>
