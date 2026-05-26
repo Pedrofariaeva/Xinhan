@@ -488,6 +488,13 @@ footer { background: var(--jade-900); color: rgba(255,255,255,0.6); padding: 60p
 }
 .alert.show { display: flex; }
 .alert svg { flex-shrink: 0; width: 18px; height: 18px; }
+.alert-success {
+  display: none; align-items: center; gap: 10px;
+  background: #e8f5e9; color: #2e7d32; font-size: 13px; font-weight: 500;
+  padding: 12px 14px; border-radius: 10px; margin-bottom: 20px; border: 1px solid #a5d6a7;
+}
+.alert-success.show { display: flex; }
+.alert-success svg { flex-shrink: 0; width: 18px; height: 18px; }
 .form-group { margin-bottom: 18px; }
 .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--ink-light); margin-bottom: 6px; }
 .form-group input,

@@ -1,35 +1,46 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
 export default function SignUpPage() {
   const router = useRouter()
   const [error, setError] = useState('')
+  const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
+
+  const nameRef = useRef<HTMLInputElement>(null)
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
+  const confirmRef = useRef<HTMLInputElement>(null)
+  const roleRef = useRef<HTMLSelectElement>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
+    setSuccess('')
 
-    const form = e.currentTarget
-    const name = (form.elements.namedItem('name') as HTMLInputElement).value.trim()
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim()
-    const password = (form.elements.namedItem('password') as HTMLInputElement).value
-    const confirmPassword = (form.elements.namedItem('confirmPassword') as HTMLInputElement).value
-    const role = (form.elements.namedItem('role') as HTMLSelectElement).value
+    const name = nameRef.current?.value.trim() ?? ''
+    const email = emailRef.current?.value.trim() ?? ''
+    const password = passwordRef.current?.value ?? ''
+    const confirmPassword = confirmRef.current?.value ?? ''
+    const role = roleRef.current?.value ?? 'student'
 
-    if (!name || !email || !password) {
-      setError('Please fill in all fields.')
+    // Client-side validation — fast, no round trip
+    if (!name) { setError('Please enter your full name.'); return }
+    if (!email) { setError('Please enter your email address.'); return }
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+      setError('Please enter a valid email address.')
+      return
+    }
+    if (!password) { setError('Please choose a password.'); return }
+    if (password.length < 6) {
+      setError('Password must be at least 6 characters long.')
       return
     }
     if (password !== confirmPassword) {
-      setError('Passwords do not match.')
-      return
-    }
-    if (password.length < 6) {
-      setError('Password must be at least 6 characters.')
+      setError('Passwords do not match. Please check and try again.')
       return
     }
 
@@ -42,18 +53,22 @@ export default function SignUpPage() {
         body: JSON.stringify({ name, email, password, role }),
       })
 
-      const data = await res.json()
+      const data: { ok?: boolean; error?: string; name?: string } = await res.json()
 
-      if (!res.ok) {
-        setError(data.error || 'Something went wrong.')
+      if (!res.ok || !data.ok) {
+        setError(data.error ?? `Registration failed (${res.status}). Please try again.`)
         setLoading(false)
         return
       }
 
-      router.push('/dashboard')
-      router.refresh()
-    } catch {
-      setError('Something went wrong. Please try again.')
+      setSuccess(`Account created! Welcome, ${data.name ?? name}. Taking you to your dashboard…`)
+      setTimeout(() => {
+        router.push('/dashboard')
+        router.refresh()
+      }, 800)
+    } catch (err) {
+      console.error('[signup]', err)
+      setError('Network error — check your connection and try again.')
       setLoading(false)
     }
   }
@@ -75,6 +90,7 @@ export default function SignUpPage() {
             <p>Start learning Mandarin with Xinhan</p>
           </div>
 
+          {/* Error alert */}
           {error && (
             <div className="alert show">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -85,35 +101,51 @@ export default function SignUpPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          {/* Success alert */}
+          {success && (
+            <div className="alert-success show">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                <path d="M22 4L12 14.01l-3-3" />
+              </svg>
+              <span>{success}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} noValidate>
             <div className="form-group">
               <label htmlFor="name">Full Name</label>
               <input
+                ref={nameRef}
                 type="text"
                 id="name"
                 name="name"
-                placeholder="Your name"
+                placeholder="Your full name"
                 required
                 autoComplete="name"
+                autoFocus
+                disabled={loading}
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
+                ref={emailRef}
                 type="email"
                 id="email"
                 name="email"
                 placeholder="you@example.com"
                 required
                 autoComplete="email"
+                disabled={loading}
               />
             </div>
 
             <div className="form-group">
               <label htmlFor="role">I am a</label>
               <div className="select-wrapper">
-                <select id="role" name="role" required defaultValue="student">
+                <select ref={roleRef} id="role" name="role" required disabled={loading}>
                   <option value="student">Student</option>
                   <option value="teacher">Teacher</option>
                   <option value="business">Business Professional</option>
@@ -124,12 +156,14 @@ export default function SignUpPage() {
             <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
+                ref={passwordRef}
                 type="password"
                 id="password"
                 name="password"
                 placeholder="At least 6 characters"
                 required
                 autoComplete="new-password"
+                disabled={loading}
               />
               <div className="hint">Must be at least 6 characters</div>
             </div>
@@ -137,17 +171,22 @@ export default function SignUpPage() {
             <div className="form-group">
               <label htmlFor="confirmPassword">Confirm Password</label>
               <input
+                ref={confirmRef}
                 type="password"
                 id="confirmPassword"
                 name="confirmPassword"
                 placeholder="Repeat your password"
                 required
                 autoComplete="new-password"
+                disabled={loading}
               />
             </div>
 
             <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? <span className="spinner" /> : 'Create Account'}
+              {loading
+                ? <><span className="spinner" /> Creating account…</>
+                : 'Create Account'
+              }
             </button>
           </form>
 

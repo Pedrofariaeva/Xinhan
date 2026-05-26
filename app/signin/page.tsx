@@ -1,6 +1,6 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, useRef } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 
@@ -8,15 +8,22 @@ export default function SignInPage() {
   const router = useRouter()
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
+  const [success, setSuccess] = useState('')
+  const emailRef = useRef<HTMLInputElement>(null)
+  const passwordRef = useRef<HTMLInputElement>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setError('')
-    setLoading(true)
+    setSuccess('')
 
-    const form = e.currentTarget
-    const email = (form.elements.namedItem('email') as HTMLInputElement).value.trim()
-    const password = (form.elements.namedItem('password') as HTMLInputElement).value
+    const email = emailRef.current?.value.trim() ?? ''
+    const password = passwordRef.current?.value ?? ''
+
+    if (!email) { setError('Please enter your email address.'); return }
+    if (!password) { setError('Please enter your password.'); return }
+
+    setLoading(true)
 
     try {
       const res = await fetch('/api/auth/signin', {
@@ -25,18 +32,23 @@ export default function SignInPage() {
         body: JSON.stringify({ email, password }),
       })
 
-      const data = await res.json()
+      const data: { ok?: boolean; error?: string; name?: string } = await res.json()
 
-      if (!res.ok) {
-        setError(data.error || 'Invalid email or password.')
+      if (!res.ok || !data.ok) {
+        setError(data.error ?? `Sign in failed (${res.status}). Please try again.`)
         setLoading(false)
         return
       }
 
-      router.push('/dashboard')
-      router.refresh()
-    } catch {
-      setError('Something went wrong. Please try again.')
+      setSuccess(`Welcome back, ${data.name ?? 'student'}! Redirecting…`)
+      // Small delay so user sees the success message
+      setTimeout(() => {
+        router.push('/dashboard')
+        router.refresh()
+      }, 600)
+    } catch (err) {
+      console.error('[signin]', err)
+      setError('Network error — check your connection and try again.')
       setLoading(false)
     }
   }
@@ -58,6 +70,7 @@ export default function SignInPage() {
             <p>Sign in to continue your Mandarin journey</p>
           </div>
 
+          {/* Error alert */}
           {error && (
             <div className="alert show">
               <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -68,42 +81,61 @@ export default function SignInPage() {
             </div>
           )}
 
-          <form onSubmit={handleSubmit}>
+          {/* Success alert */}
+          {success && (
+            <div className="alert-success show">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
+                <path d="M22 4L12 14.01l-3-3" />
+              </svg>
+              <span>{success}</span>
+            </div>
+          )}
+
+          <form onSubmit={handleSubmit} noValidate>
             <div className="form-group">
               <label htmlFor="email">Email</label>
               <input
+                ref={emailRef}
                 type="email"
                 id="email"
                 name="email"
                 placeholder="you@example.com"
                 required
                 autoComplete="email"
+                autoFocus
+                disabled={loading}
               />
             </div>
 
             <div className="form-group">
               <div className="password-row">
                 <label htmlFor="password">Password</label>
-                <a href="#">Forgot?</a>
+                <a href="#">Forgot password?</a>
               </div>
               <input
+                ref={passwordRef}
                 type="password"
                 id="password"
                 name="password"
                 placeholder="Enter your password"
                 required
                 autoComplete="current-password"
+                disabled={loading}
               />
             </div>
 
             <button type="submit" className="btn-submit" disabled={loading}>
-              {loading ? <span className="spinner" /> : 'Sign In'}
+              {loading
+                ? <><span className="spinner" /> Signing in…</>
+                : 'Sign In'
+              }
             </button>
           </form>
 
           <div className="auth-footer">
             Don&apos;t have an account?{' '}
-            <Link href="/signup">Create one</Link>
+            <Link href="/signup">Create one — it&apos;s free</Link>
           </div>
         </div>
       </div>
