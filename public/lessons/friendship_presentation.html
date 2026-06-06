@@ -1,0 +1,657 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Friendship Presentation</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        html, body {
+            width: 100%; height: 100%;
+            font-family: 'Segoe UI', 'Microsoft YaHei', 'PingFang SC', sans-serif;
+            overflow: hidden;
+            background: #1a1a2e;
+        }
+        .presentation {
+            width: 100vw; height: 100vh;
+            position: relative;
+        }
+        .slide {
+            width: 100%; height: 100%;
+            position: absolute; top: 0; left: 0;
+            display: none;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 80px;
+            transition: opacity 0.4s ease;
+        }
+        .slide.active { display: flex; }
+        .slide-bg-1 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 50%, #fecfef 100%); }
+        .slide-bg-2 { background: linear-gradient(135deg, #a18cd1 0%, #fbc2eb 100%); }
+        .slide-bg-3 { background: linear-gradient(135deg, #84fab0 0%, #8fd3f4 100%); }
+        .slide-bg-4 { background: linear-gradient(135deg, #fccb90 0%, #d57eeb 100%); }
+        .slide-bg-5 { background: linear-gradient(135deg, #e0c3fc 0%, #8ec5fc 100%); }
+        .slide-bg-6 { background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%); }
+        .slide-bg-7 { background: linear-gradient(135deg, #a1c4fd 0%, #c2e9fb 100%); }
+        .slide-bg-8 { background: linear-gradient(135deg, #d4fc79 0%, #96e6a1 100%); }
+        .slide-bg-9 { background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); }
+        .slide-bg-10 { background: linear-gradient(135deg, #fdcbf1 0%, #e6dee9 100%); }
+        .slide-bg-11 { background: linear-gradient(135deg, #89f7fe 0%, #66a6ff 100%); }
+        .slide-bg-12 { background: linear-gradient(135deg, #fddb92 0%, #d1fdff 100%); }
+        .slide-bg-13 { background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%); }
+        .slide-bg-14 { background: linear-gradient(135deg, #ff9a9e 0%, #fecfef 99%, #fecfef 100%); }
+        .slide-bg-15 { background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: #fff; }
+        .slide-bg-16 { background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%); color: #fff; }
+        .slide-bg-17 { background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%); color: #fff; }
+        .slide-bg-18 { background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%); }
+        .slide-bg-19 { background: linear-gradient(135deg, #fa709a 0%, #fee140 100%); }
+        .slide-bg-20 { background: linear-gradient(135deg, #30cfd0 0%, #330867 100%); color: #fff; }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 20px;
+            text-align: center;
+            color: #2d3436;
+            text-shadow: 2px 2px 4px rgba(255,255,255,0.3);
+        }
+        h2 {
+            font-size: 2.8rem;
+            font-weight: 600;
+            margin-bottom: 30px;
+            text-align: center;
+            color: #2d3436;
+        }
+        h3 {
+            font-size: 2rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            color: #2d3436;
+            width: 100%;
+            max-width: 900px;
+        }
+        p, li {
+            font-size: 1.6rem;
+            line-height: 1.8;
+            color: #2d3436;
+            max-width: 900px;
+            width: 100%;
+        }
+        ul { list-style: none; padding: 0; max-width: 900px; width: 100%; }
+        li { padding: 8px 0; padding-left: 30px; position: relative; }
+        li::before {
+            content: "♥";
+            position: absolute; left: 0;
+            color: #e84393;
+            font-size: 1.2rem;
+        }
+        .subtitle {
+            font-size: 1.8rem;
+            color: #636e72;
+            text-align: center;
+            margin-top: 10px;
+        }
+        .highlight-box {
+            background: rgba(255,255,255,0.7);
+            border-radius: 20px;
+            padding: 30px 40px;
+            margin: 20px 0;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 8px 32px rgba(0,0,0,0.1);
+        }
+        .two-col {
+            display: flex;
+            gap: 40px;
+            max-width: 1000px;
+            width: 100%;
+        }
+        .col { flex: 1; }
+        .example-text {
+            background: rgba(255,255,255,0.8);
+            padding: 25px;
+            border-radius: 15px;
+            font-size: 1.3rem;
+            line-height: 1.9;
+            border-left: 5px solid #e84393;
+            max-width: 900px;
+            width: 100%;
+            margin: 15px 0;
+        }
+        .dialogue {
+            background: rgba(255,255,255,0.85);
+            padding: 20px 30px;
+            border-radius: 15px;
+            margin: 10px 0;
+            max-width: 800px;
+            width: 100%;
+        }
+        .dialogue-line { font-size: 1.4rem; padding: 6px 0; }
+        .dialogue-a { color: #0984e3; font-weight: 600; }
+        .dialogue-b { color: #e84393; font-weight: 600; }
+        .vocab-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 15px;
+            max-width: 900px;
+            width: 100%;
+        }
+        .vocab-item {
+            background: rgba(255,255,255,0.75);
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 1.4rem;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .vocab-item .emoji { font-size: 1.8rem; }
+        .vocab-item .word { font-weight: 600; }
+        .vocab-item .mean { color: #636e72; font-size: 1.1rem; margin-left: auto; }
+        .slide-number {
+            position: absolute;
+            bottom: 25px; right: 40px;
+            font-size: 1rem;
+            color: rgba(0,0,0,0.4);
+            font-weight: 600;
+        }
+        .slide-bg-15 .slide-number, .slide-bg-16 .slide-number, .slide-bg-17 .slide-number, .slide-bg-20 .slide-number {
+            color: rgba(255,255,255,0.6);
+        }
+        .progress-bar {
+            position: absolute;
+            bottom: 0; left: 0;
+            height: 6px;
+            background: rgba(232, 67, 147, 0.8);
+            transition: width 0.3s ease;
+        }
+        .nav-hint {
+            position: absolute;
+            bottom: 25px; left: 40px;
+            font-size: 0.9rem;
+            color: rgba(0,0,0,0.4);
+        }
+        .fill-blank {
+            display: inline-block;
+            min-width: 80px;
+            border-bottom: 2px solid #e84393;
+            margin: 0 5px;
+            text-align: center;
+            color: #e84393;
+            font-weight: 600;
+        }
+        .story-box {
+            background: rgba(255,255,255,0.85);
+            padding: 30px;
+            border-radius: 20px;
+            max-width: 900px;
+            width: 100%;
+            font-size: 1.4rem;
+            line-height: 2;
+            border: 3px dashed #e84393;
+        }
+        .homework-list li::before { content: "✎"; color: #0984e3; }
+        @media (max-width: 768px) {
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.6rem; }
+            p, li { font-size: 1.1rem; }
+            .slide { padding: 30px; }
+            .two-col { flex-direction: column; }
+        }
+    </style>
+</head>
+<body>
+<div class="presentation">
+
+<!-- Slide 1: Title -->
+<div class="slide active slide-bg-1">
+    <h1>💖 Friendship</h1>
+    <p class="subtitle">The Best Gift in Life</p>
+    <p class="subtitle" style="margin-top:30px; font-size:1.3rem;">A 2-Hour Journey to Better Speaking & Writing</p>
+    <p class="subtitle" style="margin-top:10px; font-size:1.1rem; color:#b2bec3;">For Grade 7 • Spoken English • Test Prep</p>
+    <div class="slide-number">1 / 20</div>
+    <div class="progress-bar" style="width:5%"></div>
+    <div class="nav-hint">← → or click to navigate</div>
+</div>
+
+<!-- Slide 2: Warm-up -->
+<div class="slide slide-bg-2">
+    <h2>🤔 Warm-Up Discussion</h2>
+    <div class="highlight-box">
+        <h3>Think & Share:</h3>
+        <ul>
+            <li>How many good friends do you have?</li>
+            <li>What do you and your friends like to do together?</li>
+            <li>Can you describe your best friend in <strong>3 words</strong>?</li>
+            <li>What makes a <strong>true friend</strong>?</li>
+        </ul>
+    </div>
+    <div class="slide-number">2 / 20</div>
+    <div class="progress-bar" style="width:10%"></div>
+</div>
+
+<!-- Slide 3: Types of Friends -->
+<div class="slide slide-bg-3">
+    <h2>👥 Types of Friends</h2>
+    <div class="vocab-grid">
+        <div class="vocab-item"><span class="emoji">⭐</span><span class="word">best friend</span><span class="mean">最好的朋友</span></div>
+        <div class="vocab-item"><span class="emoji">🤝</span><span class="word">close friend</span><span class="mean">亲密的朋友</span></div>
+        <div class="vocab-item"><span class="emoji">📚</span><span class="word">classmate</span><span class="mean">同学</span></div>
+        <div class="vocab-item"><span class="emoji">💻</span><span class="word">online friend</span><span class="mean">网友</span></div>
+        <div class="vocab-item"><span class="emoji">🏠</span><span class="word">neighbor</span><span class="mean">邻居</span></div>
+        <div class="vocab-item"><span class="emoji">🏃</span><span class="word">teammate</span><span class="mean">队友</span></div>
+        <div class="vocab-item"><span class="emoji">✉️</span><span class="word">pen pal</span><span class="mean">笔友</span></div>
+        <div class="vocab-item"><span class="emoji">👶</span><span class="word">childhood friend</span><span class="mean">发小</span></div>
+    </div>
+    <div class="slide-number">3 / 20</div>
+    <div class="progress-bar" style="width:15%"></div>
+</div>
+
+<!-- Slide 4: Personality Adjectives 1 -->
+<div class="slide slide-bg-4">
+    <h2>✨ Personality Adjectives (1)</h2>
+    <div class="vocab-grid">
+        <div class="vocab-item"><span class="emoji">😊</span><span class="word">kind</span><span class="mean">善良的</span></div>
+        <div class="vocab-item"><span class="emoji">🆘</span><span class="word">helpful</span><span class="mean">乐于助人的</span></div>
+        <div class="vocab-item"><span class="emoji">🤣</span><span class="word">funny</span><span class="mean">有趣的</span></div>
+        <div class="vocab-item"><span class="emoji">🗣️</span><span class="word">outgoing</span><span class="mean">外向的</span></div>
+        <div class="vocab-item"><span class="emoji">😇</span><span class="word">honest</span><span class="mean">诚实的</span></div>
+        <div class="vocab-item"><span class="emoji">🛡️</span><span class="word">loyal</span><span class="mean">忠诚的</span></div>
+        <div class="vocab-item"><span class="emoji">📖</span><span class="word">hard-working</span><span class="mean">勤奋的</span></div>
+        <div class="vocab-item"><span class="emoji">💡</span><span class="word">clever</span><span class="mean">聪明的</span></div>
+    </div>
+    <div class="slide-number">4 / 20</div>
+    <div class="progress-bar" style="width:20%"></div>
+</div>
+
+<!-- Slide 5: Personality Adjectives 2 -->
+<div class="slide slide-bg-5">
+    <h2>🌈 Personality Adjectives (2)</h2>
+    <div class="vocab-grid">
+        <div class="vocab-item"><span class="emoji">😌</span><span class="word">patient</span><span class="mean">有耐心的</span></div>
+        <div class="vocab-item"><span class="emoji">❤️</span><span class="word">caring</span><span class="mean">关心他人的</span></div>
+        <div class="vocab-item"><span class="emoji">🦁</span><span class="word">brave</span><span class="mean">勇敢的</span></div>
+        <div class="vocab-item"><span class="emoji">🎨</span><span class="word">creative</span><span class="mean">有创造力的</span></div>
+        <div class="vocab-item"><span class="emoji">🤫</span><span class="word">shy / quiet</span><span class="mean">害羞的/安静的</span></div>
+        <div class="vocab-item"><span class="emoji">🎁</span><span class="word">generous</span><span class="mean">大方的</span></div>
+        <div class="vocab-item"><span class="emoji">🧘</span><span class="word">understanding</span><span class="mean">善解人意的</span></div>
+        <div class="vocab-item"><span class="emoji">⚽</span><span class="word">sporty</span><span class="mean">爱运动的</span></div>
+    </div>
+    <div class="slide-number">5 / 20</div>
+    <div class="progress-bar" style="width:25%"></div>
+</div>
+
+<!-- Slide 6: Key Phrases -->
+<div class="slide slide-bg-6">
+    <h2>💬 Key Phrases About Friendship</h2>
+    <div class="two-col">
+        <div class="col">
+            <div class="highlight-box">
+                <ul>
+                    <li><strong>get along well with</strong> 与…相处融洽</li>
+                    <li><strong>have something in common</strong> 有共同之处</li>
+                    <li><strong>be good at</strong> 擅长</li>
+                    <li><strong>care about</strong> 关心</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="highlight-box">
+                <ul>
+                    <li><strong>help ... with ...</strong> 帮助…做…</li>
+                    <li><strong>share ... with ...</strong> 与…分享</li>
+                    <li><strong>trust each other</strong> 互相信任</li>
+                    <li><strong>keep secrets</strong> 保守秘密</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">6 / 20</div>
+    <div class="progress-bar" style="width:30%"></div>
+</div>
+
+<!-- Slide 7: Grammar - Describing People -->
+<div class="slide slide-bg-7">
+    <h2>📐 Grammar: Describing People</h2>
+    <div class="highlight-box">
+        <h3>Present Simple</h3>
+        <p style="margin-top:15px; font-size:1.4rem;">
+            <strong>He / She + is / has + ...</strong>
+        </p>
+        <ul style="margin-top:15px;">
+            <li>She is <strong>tall and thin</strong>.</li>
+            <li>He <strong>has short black hair</strong>.</li>
+            <li>She <strong>wears glasses</strong>.</li>
+            <li>He is <strong>very funny and outgoing</strong>.</li>
+            <li>She <strong>is good at English</strong>.</li>
+        </ul>
+    </div>
+    <div class="slide-number">7 / 20</div>
+    <div class="progress-bar" style="width:35%"></div>
+</div>
+
+<!-- Slide 8: Grammar - Habits -->
+<div class="slide slide-bg-8">
+    <h2>🔄 Present Simple vs. Present Continuous</h2>
+    <div class="two-col">
+        <div class="col">
+            <div class="highlight-box">
+                <h3>Simple (habits)</h3>
+                <ul>
+                    <li>She <strong>always helps</strong> me.</li>
+                    <li>We <strong>usually chat</strong> after school.</li>
+                    <li>He <strong>often shares</strong> his snacks.</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="highlight-box">
+                <h3>Continuous (now)</h3>
+                <ul>
+                    <li>She <strong>is helping</strong> me now.</li>
+                    <li>We <strong>are chatting</strong> on WeChat.</li>
+                    <li>He <strong>is sharing</strong> his umbrella.</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <p style="text-align:center; margin-top:20px; font-size:1.3rem; color:#636e72;">Use <strong>always / usually / often</strong> with Present Simple!</p>
+    <div class="slide-number">8 / 20</div>
+    <div class="progress-bar" style="width:40%"></div>
+</div>
+
+<!-- Slide 9: Speaking Model -->
+<div class="slide slide-bg-9">
+    <h2>🎤 Speaking Model</h2>
+    <h3>My Best Friend</h3>
+    <div class="example-text">
+        Lin Mei is my best friend. We have been classmates since Grade 5. She is kind and hard-working. She has long hair and always wears a smile. She is good at English and often helps me with my homework. We both love playing badminton after school. Last week, she shared her umbrella with me when it rained. I think a good friend is someone who truly cares about you. Lin Mei is such a friend.
+    </div>
+    <p style="text-align:center; color:#636e72; margin-top:10px;">Count the new words she uses!</p>
+    <div class="slide-number">9 / 20</div>
+    <div class="progress-bar" style="width:45%"></div>
+</div>
+
+<!-- Slide 10: Speaking Framework -->
+<div class="slide slide-bg-10">
+    <h2>📝 Speaking Framework</h2>
+    <div class="highlight-box">
+        <h3>How to Describe Your Best Friend (1 minute)</h3>
+        <ul style="margin-top:15px;">
+            <li><strong>1. Basic info:</strong> name, age, how you met</li>
+            <li><strong>2. Appearance:</strong> height, hair, glasses, clothes</li>
+            <li><strong>3. Personality:</strong> kind, funny, helpful...</li>
+            <li><strong>4. Hobbies:</strong> good at, likes to...</li>
+            <li><strong>5. A story:</strong> what you did together</li>
+            <li><strong>6. Why you like him/her:</strong> your feeling</li>
+        </ul>
+    </div>
+    <div class="slide-number">10 / 20</div>
+    <div class="progress-bar" style="width:50%"></div>
+</div>
+
+<!-- Slide 11: Speaking Practice -->
+<div class="slide slide-bg-11">
+    <h2>🗣️ Speaking Practice: Pair Work</h2>
+    <div class="two-col">
+        <div class="col">
+            <div class="highlight-box">
+                <h3>Student A</h3>
+                <p style="margin-top:10px;">Describe your best friend. Use at least <strong>5 new words</strong> from today's lesson.</p>
+            </div>
+        </div>
+        <div class="col">
+            <div class="highlight-box">
+                <h3>Student B</h3>
+                <p style="margin-top:10px;">Listen carefully. Then ask <strong>one follow-up question</strong>:</p>
+                <ul style="margin-top:10px; font-size:1.2rem;">
+                    <li>How long have you known each other?</li>
+                    <li>What do you usually do together?</li>
+                    <li>What makes him/her special?</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">11 / 20</div>
+    <div class="progress-bar" style="width:55%"></div>
+</div>
+
+<!-- Slide 12: Writing Structure -->
+<div class="slide slide-bg-12">
+    <h2>✍️ Writing Structure</h2>
+    <div class="highlight-box">
+        <h3>A Good Paragraph About a Friend</h3>
+        <ul style="margin-top:15px;">
+            <li><strong>Topic sentence:</strong> Who is this person?</li>
+            <li><strong>Detail 1:</strong> Appearance (looks)</li>
+            <li><strong>Detail 2:</strong> Personality & hobbies</li>
+            <li><strong>Detail 3:</strong> A story or memory</li>
+            <li><strong>Closing sentence:</strong> Why is this friendship important?</li>
+        </ul>
+    </div>
+    <p style="margin-top:15px; color:#636e72; font-size:1.3rem; text-align:center;">Target length: <strong>60–80 words</strong> (typical test requirement)</p>
+    <div class="slide-number">12 / 20</div>
+    <div class="progress-bar" style="width:60%"></div>
+</div>
+
+<!-- Slide 13: Writing Practice -->
+<div class="slide slide-bg-13">
+    <h2>✏️ Guided Writing Practice</h2>
+    <h3>Fill in the blanks:</h3>
+    <div class="example-text" style="font-size:1.3rem; line-height:2.4;">
+        My best friend is <span class="fill-blank">name</span>. We met <span class="fill-blank">when/where</span>. He/She is <span class="fill-blank">adj.</span> and <span class="fill-blank">adj.</span>. He/She has <span class="fill-blank">appearance</span>. We both like <span class="fill-blank">hobby</span>. Last week, <span class="fill-blank">a story</span>. I feel <span class="fill-blank">feeling</span> because <span class="fill-blank">reason</span>.
+    </div>
+    <p style="text-align:center; margin-top:15px; color:#e84393; font-weight:600;">Now rewrite it as a full paragraph!</p>
+    <div class="slide-number">13 / 20</div>
+    <div class="progress-bar" style="width:65%"></div>
+</div>
+
+<!-- Slide 14: Test Prep - My Best Friend -->
+<div class="slide slide-bg-14">
+    <h2>🎯 Test Prep: "My Best Friend"</h2>
+    <div class="highlight-box">
+        <h3>Common Writing Prompt (60–80 words)</h3>
+        <p style="margin-top:15px; font-size:1.3rem;">Write about your best friend. Include:</p>
+        <ul style="margin-top:10px;">
+            <li>Introduction: name & relationship</li>
+            <li>Appearance & personality</li>
+            <li>Hobbies & abilities</li>
+            <li>Why you are good friends</li>
+        </ul>
+    </div>
+    <div class="example-text" style="margin-top:15px; font-size:1.2rem;">
+        <strong>Tip:</strong> Use connecting words: <em>and, but, because, so, when, if</em>
+    </div>
+    <div class="slide-number">14 / 20</div>
+    <div class="progress-bar" style="width:70%"></div>
+</div>
+
+<!-- Slide 15: Test Prep - Narrative -->
+<div class="slide slide-bg-15">
+    <h2>📝 Test Prep: Narrative Writing</h2>
+    <div class="highlight-box" style="background:rgba(255,255,255,0.15);">
+        <h3 style="color:#fff;">"An Unforgettable Day with My Friend"</h3>
+        <p style="margin-top:15px; color:#fff; font-size:1.3rem;">Key elements to include:</p>
+        <ul style="margin-top:10px;">
+            <li style="color:#fff;"><strong>When & Where</strong> – set the scene</li>
+            <li style="color:#fff;"><strong>What happened</strong> – the event</li>
+            <li style="color:#fff;"><strong>How you helped each other</strong></li>
+            <li style="color:#fff;"><strong>What you learned</strong> about friendship</li>
+        </ul>
+    </div>
+    <p style="margin-top:15px; color:#fbc2eb; font-size:1.2rem; text-align:center;">Use past tense: <em>was, were, did, went, helped, shared...</em></p>
+    <div class="slide-number">15 / 20</div>
+    <div class="progress-bar" style="width:75%"></div>
+</div>
+
+<!-- Slide 16: Dialogue - Making Friends -->
+<div class="slide slide-bg-16">
+    <h2>🎭 Dialogue: Making Friends</h2>
+    <div class="dialogue">
+        <div class="dialogue-line"><span class="dialogue-a">A:</span> Hi! I'm Lily. What's your name?</div>
+        <div class="dialogue-line"><span class="dialogue-b">B:</span> I'm Mei. Nice to meet you!</div>
+        <div class="dialogue-line"><span class="dialogue-a">A:</span> Nice to meet you too! Do you like playing basketball?</div>
+        <div class="dialogue-line"><span class="dialogue-b">B:</span> Yes, I love it! I play every weekend.</div>
+        <div class="dialogue-line"><span class="dialogue-a">A:</span> Great! We can play together after school.</div>
+        <div class="dialogue-line"><span class="dialogue-b">B:</span> That's wonderful! Let's be friends.</div>
+    </div>
+    <p style="margin-top:20px; text-align:center; color:#fbc2eb;">Practice with a partner! Try changing the hobby.</p>
+    <div class="slide-number">16 / 20</div>
+    <div class="progress-bar" style="width:80%"></div>
+</div>
+
+<!-- Slide 17: Dialogue - Helping a Friend -->
+<div class="slide slide-bg-17">
+    <h2>🎭 Dialogue: Helping a Friend</h2>
+    <div class="dialogue">
+        <div class="dialogue-line"><span class="dialogue-a">A:</span> You look sad. What's wrong?</div>
+        <div class="dialogue-line"><span class="dialogue-b">B:</span> I failed my English test. I feel terrible.</div>
+        <div class="dialogue-line"><span class="dialogue-a">A:</span> Don't worry. I can help you with vocabulary.</div>
+        <div class="dialogue-line"><span class="dialogue-b">B:</span> Really? That's so kind of you!</div>
+        <div class="dialogue-line"><span class="dialogue-a">A:</span> We can study together every Saturday.</div>
+        <div class="dialogue-line"><span class="dialogue-b">B:</span> Thank you! You are a true friend.</div>
+    </div>
+    <p style="margin-top:20px; text-align:center; color:#c2e9fb;">Key phrases: <em>Don't worry. / I can help you with... / That's so kind of you!</em></p>
+    <div class="slide-number">17 / 20</div>
+    <div class="progress-bar" style="width:85%"></div>
+</div>
+
+<!-- Slide 18: Story & Discussion -->
+<div class="slide slide-bg-18">
+    <h2>📖 A Story About Friendship</h2>
+    <div class="story-box">
+        <h3>Sharing an Umbrella ☂️</h3>
+        <p style="margin-top:15px;">
+            Last Friday, it rained heavily after school. I forgot my umbrella. My friend Li Hua saw me standing at the school gate. She walked over and said, <em>"Let's share my umbrella!"</em> Her umbrella was small, but we walked home together. We both got a little wet, but we laughed all the way. That day, I learned: <strong>a true friend is someone who gets wet with you.</strong>
+        </p>
+    </div>
+    <div class="highlight-box" style="margin-top:20px; padding:20px;">
+        <p style="font-size:1.3rem;"><strong>Discuss:</strong> What did Li Hua do? Why was it kind? Have you ever helped a friend?</p>
+    </div>
+    <div class="slide-number">18 / 20</div>
+    <div class="progress-bar" style="width:90%"></div>
+</div>
+
+<!-- Slide 19: Review -->
+<div class="slide slide-bg-19">
+    <h2>🔑 Review & Key Takeaways</h2>
+    <div class="two-col">
+        <div class="col">
+            <div class="highlight-box">
+                <h3>Key Words</h3>
+                <ul style="font-size:1.2rem;">
+                    <li>loyal, honest, kind</li>
+                    <li>helpful, funny, caring</li>
+                    <li>get along well with</li>
+                    <li>have something in common</li>
+                    <li>care about, trust</li>
+                    <li>share ... with ...</li>
+                </ul>
+            </div>
+        </div>
+        <div class="col">
+            <div class="highlight-box">
+                <h3>Key Structures</h3>
+                <ul style="font-size:1.2rem;">
+                    <li>He/She <strong>is</strong> + adj.</li>
+                    <li>He/She <strong>has</strong> + noun</li>
+                    <li>We <strong>like to</strong> + verb</li>
+                    <li>We <strong>are good at</strong> + noun/verb-ing</li>
+                    <li>A true friend is someone <strong>who</strong>...</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="slide-number">19 / 20</div>
+    <div class="progress-bar" style="width:95%"></div>
+</div>
+
+<!-- Slide 20: Homework -->
+<div class="slide slide-bg-20">
+    <h2>📝 Homework & Next Steps</h2>
+    <div class="highlight-box" style="background:rgba(255,255,255,0.15);">
+        <ul class="homework-list" style="font-size:1.4rem;">
+            <li style="color:#fff;">Write a paragraph (<strong>80 words</strong>) about your best friend.</li>
+            <li style="color:#fff;">Prepare a <strong>1-minute oral introduction</strong> of your friend.</li>
+            <li style="color:#fff;">Memorize <strong>10 new adjectives</strong> from today's lesson.</li>
+            <li style="color:#fff;">Think of <strong>a short story</strong> about you and a friend to share next class.</li>
+        </ul>
+    </div>
+    <p style="margin-top:30px; font-size:1.6rem; text-align:center; color:#fbc2eb; font-style:italic;">
+        "A friend in need is a friend indeed."
+    </p>
+    <p style="margin-top:10px; text-align:center; color:#fff; font-size:1.1rem;">See you next time! 👋</p>
+    <div class="slide-number">20 / 20</div>
+    <div class="progress-bar" style="width:100%"></div>
+</div>
+
+</div>
+
+<script>
+    let currentSlide = 0;
+    const slides = document.querySelectorAll('.slide');
+    const totalSlides = slides.length;
+
+    function showSlide(n) {
+        slides.forEach(s => s.classList.remove('active'));
+        if (n >= totalSlides) currentSlide = totalSlides - 1;
+        if (n < 0) currentSlide = 0;
+        slides[currentSlide].classList.add('active');
+    }
+
+    function nextSlide() {
+        if (currentSlide < totalSlides - 1) {
+            currentSlide++;
+            showSlide(currentSlide);
+        }
+    }
+
+    function prevSlide() {
+        if (currentSlide > 0) {
+            currentSlide--;
+            showSlide(currentSlide);
+        }
+    }
+
+    document.addEventListener('keydown', (e) => {
+        if (e.key === 'ArrowRight' || e.key === 'ArrowDown' || e.key === ' ') {
+            e.preventDefault();
+            nextSlide();
+        } else if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+            e.preventDefault();
+            prevSlide();
+        } else if (e.key === 'Home') {
+            e.preventDefault();
+            currentSlide = 0;
+            showSlide(currentSlide);
+        } else if (e.key === 'End') {
+            e.preventDefault();
+            currentSlide = totalSlides - 1;
+            showSlide(currentSlide);
+        }
+    });
+
+    document.addEventListener('click', (e) => {
+        const x = e.clientX;
+        const width = window.innerWidth;
+        if (x > width / 2) {
+            nextSlide();
+        } else {
+            prevSlide();
+        }
+    });
+
+    // Touch support
+    let touchStartX = 0;
+    document.addEventListener('touchstart', (e) => {
+        touchStartX = e.changedTouches[0].screenX;
+    });
+    document.addEventListener('touchend', (e) => {
+        const touchEndX = e.changedTouches[0].screenX;
+        if (touchStartX - touchEndX > 50) nextSlide();
+        if (touchEndX - touchStartX > 50) prevSlide();
+    });
+</script>
+</body>
+</html>
