@@ -1,11 +1,21 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState, useRef } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function SignUpPage() {
+  return (
+    <Suspense>
+      <SignUpForm />
+    </Suspense>
+  )
+}
+
+function SignUpForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const next = searchParams.get('next') || '/dashboard'
   const [error, setError] = useState('')
   const [success, setSuccess] = useState('')
   const [loading, setLoading] = useState(false)
@@ -14,7 +24,6 @@ export default function SignUpPage() {
   const emailRef = useRef<HTMLInputElement>(null)
   const passwordRef = useRef<HTMLInputElement>(null)
   const confirmRef = useRef<HTMLInputElement>(null)
-  const roleRef = useRef<HTMLSelectElement>(null)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -25,7 +34,6 @@ export default function SignUpPage() {
     const email = emailRef.current?.value.trim() ?? ''
     const password = passwordRef.current?.value ?? ''
     const confirmPassword = confirmRef.current?.value ?? ''
-    const role = roleRef.current?.value ?? 'student'
 
     // Client-side validation — fast, no round trip
     if (!name) { setError('Please enter your full name.'); return }
@@ -50,7 +58,7 @@ export default function SignUpPage() {
       const res = await fetch('/api/auth/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ name, email, password, role }),
+        body: JSON.stringify({ name, email, password }),
       })
 
       const data: { ok?: boolean; error?: string; name?: string } = await res.json()
@@ -63,7 +71,7 @@ export default function SignUpPage() {
 
       setSuccess(`Account created! Welcome, ${data.name ?? name}. Taking you to your dashboard…`)
       setTimeout(() => {
-        router.push('/dashboard')
+        router.push(next)
         router.refresh()
       }, 800)
     } catch (err) {
@@ -143,17 +151,6 @@ export default function SignUpPage() {
             </div>
 
             <div className="form-group">
-              <label htmlFor="role">I am a</label>
-              <div className="select-wrapper">
-                <select ref={roleRef} id="role" name="role" required disabled={loading}>
-                  <option value="student">Student</option>
-                  <option value="teacher">Teacher</option>
-                  <option value="business">Business Professional</option>
-                </select>
-              </div>
-            </div>
-
-            <div className="form-group">
               <label htmlFor="password">Password</label>
               <input
                 ref={passwordRef}
@@ -192,7 +189,7 @@ export default function SignUpPage() {
 
           <div className="auth-footer">
             Already have an account?{' '}
-            <Link href="/signin">Sign in</Link>
+            <Link href={`/signin${next !== '/dashboard' ? `?next=${encodeURIComponent(next)}` : ''}`}>Sign in</Link>
           </div>
         </div>
       </div>

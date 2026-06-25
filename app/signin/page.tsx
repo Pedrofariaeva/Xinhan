@@ -1,11 +1,21 @@
 'use client'
 
-import { useState, useRef } from 'react'
-import { useRouter } from 'next/navigation'
+import { Suspense, useState, useRef } from 'react'
+import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 
 export default function SignInPage() {
+  return (
+    <Suspense>
+      <SignInForm />
+    </Suspense>
+  )
+}
+
+function SignInForm() {
   const router = useRouter()
+  const searchParams = useSearchParams()
+  const next = searchParams.get('next') || '/dashboard'
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
   const [success, setSuccess] = useState('')
@@ -43,7 +53,7 @@ export default function SignInPage() {
       setSuccess(`Welcome back, ${data.name ?? 'student'}! Redirecting…`)
       // Small delay so user sees the success message
       setTimeout(() => {
-        router.push('/dashboard')
+        router.push(next)
         router.refresh()
       }, 600)
     } catch (err) {
@@ -135,7 +145,7 @@ export default function SignInPage() {
 
           <div className="auth-footer">
             Don&apos;t have an account?{' '}
-            <Link href="/signup">Create one — it&apos;s free</Link>
+            <Link href={`/signup${next !== '/dashboard' ? `?next=${encodeURIComponent(next)}` : ''}`}>Create one — it&apos;s free</Link>
           </div>
         </div>
       </div>

@@ -47,8 +47,8 @@ export default async function DashboardPage() {
             <div className="dash-card-icon" style={{ background: '#d8f3dc' }}>📚</div>
             <h3>My Lessons</h3>
             <p>Browse and continue your HSK lessons across all 6 levels.</p>
-            <Link href="#" className="dash-card-link">
-              Browse lessons →
+            <Link href="/trial-lesson" className="dash-card-link">
+              Try the trial lesson →
             </Link>
           </div>
 

@@ -14,11 +14,10 @@ export async function POST(req: NextRequest) {
       )
     }
 
-    const { name, email, password, role } = body as {
+    const { name, email, password } = body as {
       name: string
       email: string
       password: string
-      role?: string
     }
 
     // Field-level validation with specific messages
@@ -57,7 +56,7 @@ export async function POST(req: NextRequest) {
       name: name.trim(),
       email: email.toLowerCase().trim(),
       password: hashedPassword,
-      role: role || 'student',
+      role: 'student',
       createdAt: new Date(),
       updatedAt: new Date(),
     })
@@ -66,14 +65,13 @@ export async function POST(req: NextRequest) {
       userId: result.insertedId.toString(),
       email: email.toLowerCase().trim(),
       name: name.trim(),
-      role: role || 'student',
+      role: 'student',
     })
 
     const response = NextResponse.json({
       ok: true,
       message: 'Account created successfully!',
       name: name.trim(),
-      role: role || 'student',
     })
 
     response.cookies.set(COOKIE_NAME, token, {

@@ -55,13 +55,13 @@ export default async function HomePage() {
               expert teachers with real classroom experience.
             </p>
             <div className="hero-buttons">
-              <Link href="#curriculum" className="btn-primary">
-                Explore Curriculum
+              <Link href="/trial-lesson" className="btn-primary">
+                Try a Free Trial Lesson
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                   <path d="M5 12h14M12 5l7 7-7 7" />
                 </svg>
               </Link>
-              <Link href="/signup" className="btn-secondary">Start Free Trial</Link>
+              <Link href="#curriculum" className="btn-secondary">Explore Curriculum</Link>
             </div>
           </div>
 
@@ -386,8 +386,8 @@ export default async function HomePage() {
         <h2>Start Your Mandarin Journey</h2>
         <p>Join professionals from around the world learning Chinese with Xinhan&apos;s proven curriculum.</p>
         <div className="hero-buttons" style={{ justifyContent: 'center' }}>
-          <Link href="/signup" className="btn-primary">
-            Create Free Account
+          <Link href="/trial-lesson" className="btn-primary">
+            Try a Free Trial Lesson
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
               <path d="M5 12h14M12 5l7 7-7 7" />
             </svg>
