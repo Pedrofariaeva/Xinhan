@@ -171,6 +171,25 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
 .learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
 .test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
 
+.report-score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.report-score .big { font-size: 2.4rem; font-weight: 800; color: var(--jade); }
+.report-score .pct { font-size: 1rem; font-weight: 700; color: var(--gold); }
+.report-groups { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.report-group-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.66rem; }
+.report-group-name { width: 150px; flex-shrink: 0; color: var(--ink); }
+.report-group-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--cream); overflow: hidden; }
+.report-group-fill { height: 100%; background: var(--jade-mid); border-radius: 5px; }
+.report-group-fill.weak { background: var(--rust-light); }
+.report-group-score { width: 36px; flex-shrink: 0; text-align: right; color: var(--ink-3); }
+.report-missed { background: #fbeaea; border-radius: 8px; padding: 0.8rem 1rem; }
+.report-missed h4 { margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--rust); }
+.report-missed-item { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; font-size: 0.66rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(155,34,38,0.12); }
+.report-missed-item:last-child { border-bottom: none; }
+.report-missed-q { color: var(--ink); flex: 1; min-width: 200px; }
+.report-missed-you { color: #c0392b; text-decoration: line-through; }
+.report-missed-correct { color: #2f7d52; font-weight: 600; }
+.report-perfect { background: var(--jade-pale); border-radius: 8px; padding: 1rem; font-size: 0.72rem; color: var(--jade); font-weight: 600; text-align: center; }
+
 .dialogue-exchange { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1rem; }
 .bubble { display: flex; gap: 0.75rem; align-items: flex-start; }
 .bubble.bubble-b { flex-direction: row-reverse; }
@@ -201,7 +220,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
 }
 </style>
 </head>
-<body>
+<body data-lesson-id="luckin-coffee-ordering">
 
 <div class="deck">
 <div class="deck-brand">
@@ -263,7 +282,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -324,7 +343,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -391,7 +410,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -454,7 +473,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -535,7 +554,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -608,7 +627,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
       <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -688,7 +707,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -721,14 +740,14 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
     <div class="test-badge">Test · 小测验</div>
     <div class="sec-label">Interface Check · 看懂界面</div>
     <h2>你能完成这两步吗？ <span class="py-inline">Nǐ néng wánchéng zhè liǎng bù ma?</span></h2>
-    <div class="quiz-score" data-quiz-score data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="quiz-score" data-quiz-score data-group="group-1" data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
     <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer, like in the game:</strong> the gold circle points at the spot in question. Type Chinese, pinyin, or English and hit Enter or tap 检查.</div>
     <div class="phone-row">
       <div class="phone-block">
@@ -776,7 +795,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -813,14 +832,14 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
     <div class="test-badge">Test · 小测验</div>
     <div class="sec-label">Interface Check · 看懂界面</div>
     <h2>找一找这三个功能 <span class="py-inline">Zhǎo yī zhǎo zhè sān gè gōngnéng.</span></h2>
-    <div class="quiz-score" data-quiz-score data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="quiz-score" data-quiz-score data-group="group-2" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
     <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
     <div class="phone-row">
       <div class="phone-block">
@@ -882,7 +901,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -915,14 +934,14 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
     <div class="test-badge">Test · 小测验</div>
     <div class="sec-label">Interface Check · 看懂界面</div>
     <h2>客制化你的咖啡 <span class="py-inline">Kèzhìhuà nǐ de kāfēi.</span></h2>
-    <div class="quiz-score" data-quiz-score data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="quiz-score" data-quiz-score data-group="group-3" data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
     <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
     <div class="phone-row">
       <div class="phone-block">
@@ -970,7 +989,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -1003,14 +1022,14 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
     <div class="test-badge">Test · 小测验</div>
     <div class="sec-label">Interface Check · 看懂界面</div>
     <h2>付款和取餐 <span class="py-inline">Fùkuǎn hé qǔcān.</span></h2>
-    <div class="quiz-score" data-quiz-score data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="quiz-score" data-quiz-score data-group="group-4" data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
     <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
     <div class="phone-row">
       <div class="phone-block">
@@ -1058,7 +1077,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -1095,14 +1114,14 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
     <div class="test-badge">Test · 小测验</div>
     <div class="sec-label">Interface Check · 看懂界面</div>
     <h2>会员和门店 <span class="py-inline">Huìyuán hé méndiàn.</span></h2>
-    <div class="quiz-score" data-quiz-score data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="quiz-score" data-quiz-score data-group="group-5" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
     <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
     <div class="phone-row">
       <div class="phone-block">
@@ -1163,14 +1182,14 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
     <div class="test-badge">Test · 小测验</div>
     <div class="sec-label">Interface Check · 看懂界面</div>
     <h2>综合挑战：你现在看懂界面了吗？ <span class="py-inline">Zōnghé tiǎozhàn: nǐ xiànzài kàndǒng jièmiàn le ma?</span></h2>
-    <div class="quiz-score" data-quiz-score data-total="5">✅ <span class="score-correct">0</span>/<span class="score-total">5</span> <span class="stars">★</span></div>
+    <div class="quiz-score" data-quiz-score data-group="final" data-total="5">✅ <span class="score-correct">0</span>/<span class="score-total">5</span> <span class="stars">★</span></div>
     <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Final test — no gold circle this time.</strong> Look at the whole screen and say what it's for, in your own words (Chinese, pinyin, or English).</div>
     <div class="phone-row">
       <div class="phone-block">
@@ -1247,7 +1266,31 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
   </div>
 </div>
 
-<!-- ⑲ REVIEW -->
+<!-- ⑲ LESSON REPORT — populated by JS once every test block is answered -->
+<div class="slide" id="lesson-report-slide" style="grid-template-columns:64px 1fr; display:none;">
+  <div class="sidebar dark">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 21 L5 13 M12 21 L12 8 M19 21 L19 16 M23 21 L23 11" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">your report</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Lesson Report · 学习报告</div>
+    <h2>你的学习报告 <span class="py-inline">Nǐ de xuéxí bàogào.</span></h2>
+    <div id="report-score" class="report-score"></div>
+    <div id="report-groups" class="report-groups"></div>
+    <div id="report-missed"></div>
+  </div>
+</div>
+
+<!-- ⑳ REVIEW -->
 <div class="slide" style="grid-template-columns:64px 1fr">
   <div class="sidebar dark">
     <div class="sb-icon">
@@ -1259,7 +1302,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     <div class="sb-prog">
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
 </div>
   </div>
   <div class="content">
@@ -1298,7 +1341,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
   </div>
 </div>
 
-<!-- ⑳ CLOSING -->
+<!-- ㉑ CLOSING -->
 <div class="slide slide-close">
   <div class="close-inner">
     <div class="close-zh">谢谢</div>
@@ -1314,7 +1357,119 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
 
 <script>
 (function () {
-  document.querySelectorAll('.quiz-input').forEach(function (input) {
+  // Generic across lessons: any deck that sets data-lesson-id on <body> and
+  // data-group on each [data-quiz-score] block gets per-answer + final-grade
+  // logging for free. Never blocks the UI — network failures are swallowed,
+  // and with no lessonId (or no server, e.g. opened as a bare file) it just
+  // skips the network calls and behaves exactly like a local-only quiz.
+  var lessonId = document.body.dataset.lessonId || '';
+  var allInputs = Array.prototype.slice.call(document.querySelectorAll('.quiz-input'));
+  var reportShown = false;
+  var wrongAnswers = [];
+
+  var GROUP_NAMES = {
+    'group-1': 'Sign-in & Promos · 登录优惠',
+    'group-2': 'Browse & Discover · 浏览发现',
+    'group-3': 'Customize Order · 客制化',
+    'group-4': 'Checkout & Pickup · 付款取餐',
+    'group-5': 'Loyalty & History · 会员历史',
+    'final': 'Final Test · 综合挑战',
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function logAttempt(payload) {
+    if (!lessonId) return;
+    fetch('/api/lessons/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(function () {});
+  }
+
+  function logCompletion(score, total, groupList) {
+    if (!lessonId) return;
+    fetch('/api/lessons/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lessonId: lessonId, score: score, total: total, groups: groupList }),
+    }).catch(function () {});
+  }
+
+  function buildReport() {
+    var groups = {};
+    document.querySelectorAll('[data-quiz-score]').forEach(function (box) {
+      var groupId = box.dataset.group || 'default';
+      groups[groupId] = {
+        groupId: groupId,
+        score: Number(box.querySelector('.score-correct').textContent),
+        total: Number(box.dataset.total),
+      };
+    });
+    var groupList = Object.keys(groups).map(function (k) { return groups[k]; });
+    var score = groupList.reduce(function (s, g) { return s + g.score; }, 0);
+    var total = groupList.reduce(function (s, g) { return s + g.total; }, 0);
+    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+
+    var scoreBox = document.getElementById('report-score');
+    if (scoreBox) {
+      scoreBox.innerHTML =
+        '<span class="big">' + score + '/' + total + '</span>' +
+        '<span class="pct">' + pct + '%</span>';
+    }
+
+    var groupsBox = document.getElementById('report-groups');
+    if (groupsBox) {
+      groupsBox.innerHTML = groupList.map(function (g) {
+        var p = g.total > 0 ? (g.score / g.total) * 100 : 0;
+        var weak = p < 100 ? ' weak' : '';
+        return '<div class="report-group-row">' +
+          '<div class="report-group-name">' + (GROUP_NAMES[g.groupId] || g.groupId) + '</div>' +
+          '<div class="report-group-bar"><div class="report-group-fill' + weak + '" style="width:' + p + '%"></div></div>' +
+          '<div class="report-group-score">' + g.score + '/' + g.total + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    var missedBox = document.getElementById('report-missed');
+    if (missedBox) {
+      if (wrongAnswers.length === 0) {
+        missedBox.innerHTML = '<div class="report-perfect">完美！Perfect score — every screen, right answer. 🎉</div>';
+      } else {
+        missedBox.innerHTML = '<div class="report-missed"><h4>Words & screens to review · 需要复习的词</h4>' +
+          wrongAnswers.map(function (w) {
+            return '<div class="report-missed-item">' +
+              '<span class="report-missed-q">' + escapeHtml(w.questionText) + '</span>' +
+              '<span class="report-missed-you">' + escapeHtml(w.userAnswer || '(blank)') + '</span>' +
+              '<span class="report-missed-correct">' + w.reveal + '</span>' +
+              '</div>';
+          }).join('') +
+          '</div>';
+      }
+    }
+
+    var slide = document.getElementById('lesson-report-slide');
+    if (slide) {
+      slide.style.display = 'grid';
+      slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    logCompletion(score, total, groupList);
+  }
+
+  function maybeShowReport() {
+    if (reportShown) return;
+    var allDone = allInputs.every(function (i) { return i.disabled; });
+    if (!allDone) return;
+    reportShown = true;
+    buildReport();
+  }
+
+  allInputs.forEach(function (input, globalIndex) {
     var row = input.closest('.quiz-game');
     var feedback = row.querySelector('.quiz-feedback');
     var checkBtn = row.querySelector('.quiz-check-btn');
@@ -1323,6 +1478,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
     });
     var reveal = input.dataset.reveal || '';
     var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+    var questionText = input.closest('.phone-block') ? input.closest('.phone-block').querySelector('.quiz-q').textContent.trim() : '';
 
     function check() {
       if (input.disabled) return;
@@ -1346,6 +1502,23 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
         var counter = scoreBox.querySelector('.score-correct');
         counter.textContent = String(Number(counter.textContent) + 1);
       }
+      if (!correct) {
+        wrongAnswers.push({
+          questionText: questionText,
+          userAnswer: input.value.trim(),
+          reveal: reveal,
+        });
+      }
+
+      logAttempt({
+        lessonId: lessonId,
+        groupId: scoreBox ? scoreBox.dataset.group : 'default',
+        questionIndex: globalIndex,
+        questionText: questionText,
+        userAnswer: input.value.trim(),
+        correct: correct,
+      });
+      maybeShowReport();
     }
 
     input.addEventListener('keydown', function (e) {
