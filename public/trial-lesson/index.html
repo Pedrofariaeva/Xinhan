@@ -147,15 +147,29 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
 .quiz-callout { position: absolute; border: 2px solid #d69e2e; border-radius: 6px; box-shadow: 0 0 0 3px rgba(214,158,46,0.35); pointer-events: none; animation: quiz-pulse 1.6s ease-in-out infinite; }
 @keyframes quiz-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
 .quiz-game { display: flex; flex-direction: column; gap: 0.3rem; }
-.quiz-input { width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #cbb8a0; border-radius: 6px; background: var(--white); color: var(--ink); }
+.quiz-row { display: flex; gap: 0.3rem; }
+.quiz-input { flex: 1; width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #cbb8a0; border-radius: 6px; background: var(--white); color: var(--ink); transition: border-color 0.15s, background 0.15s; }
 .quiz-input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
 .quiz-input:disabled { background: var(--cream); opacity: 0.85; }
+.quiz-input.flash-correct { border-color: #2f7d52; background: #eaf7ef; animation: quiz-pop 0.4s ease; }
+.quiz-input.flash-wrong { border-color: #c0392b; background: #fbeaea; animation: quiz-shake 0.4s ease; }
+.quiz-check-btn { flex-shrink: 0; padding: 6px 10px; font-size: 0.62rem; font-weight: 700; border: none; border-radius: 6px; background: var(--gold); color: #2d241f; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.quiz-check-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.quiz-check-btn:disabled { cursor: default; }
+.quiz-check-btn.correct { background: #2f7d52; color: white; animation: quiz-pop 0.4s ease; }
+.quiz-check-btn.wrong { background: #c0392b; color: white; animation: quiz-shake 0.4s ease; }
+@keyframes quiz-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes quiz-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
 .quiz-hint { font-size: 0.56rem; color: var(--ink-3); }
 .quiz-feedback { font-size: 0.68rem; font-weight: 700; min-height: 1.1em; }
 .quiz-feedback.correct { color: #2f7d52; }
 .quiz-feedback.wrong { color: #c0392b; }
 .quiz-feedback .reveal { display: block; font-weight: 500; color: var(--ink); margin-top: 2px; font-size: 0.62rem; }
 .quiz-feedback .reveal .py { color: var(--gold); }
+.quiz-score { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; font-weight: 700; color: var(--coffee); background: var(--cream); border-radius: 20px; padding: 0.3rem 0.8rem; margin-bottom: 0.8rem; }
+.quiz-score .stars { color: var(--gold); letter-spacing: 1px; }
+.learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
 
 .dialogue-exchange { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1rem; }
 .bubble { display: flex; gap: 0.75rem; align-items: flex-start; }
@@ -247,8 +261,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">warm up</div>
     </div>
     <div class="sb-prog">
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -307,8 +322,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">vocab</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -373,8 +389,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">G1 · 我要</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -435,8 +452,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">G2 · 规格</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -515,8 +533,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">G3 · 糖奶</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
-      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -587,8 +606,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">dialogue</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
@@ -655,7 +675,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
   </div>
 </div>
 
-<!-- ⑧ APP INTERFACE PART 1 — browsing & discovery, real screens -->
+<!-- ⑧ LEARN 1/5 -->
 <div class="slide" style="grid-template-columns:64px 1fr">
   <div class="sidebar gold">
     <div class="sb-icon">
@@ -663,18 +683,19 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
         <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
         <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
-      <div class="sb-label">app order</div>
+      <div class="sb-label">learn 1/5</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
-    <div class="sec-label">How It Really Works · 手机点单 (1/3)</div>
-    <h2>大部分时候，你是用手机点单的 <span class="py-inline">Dà bùfen shíhou, nǐ shì yòng shǒujī diǎndān de.</span></h2>
-    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> at Luckin (and most chains in China) you rarely speak to staff at all — you order in the app or a mini-program, and a screen number just calls you when it's ready. These four screens are what you actually see before you even pick a drink.</div>
-
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>先登录，再领券 <span class="py-inline">Xiān dēnglù, zài lǐng quàn.</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> before you can order, you sign in once. Coupons are auto-applied — you just tap to claim them.</div>
     <div class="phone-row">
       <div class="phone-block">
         <div class="phone-mock"><img src="screens/shot-login.jpg" alt="Luckin app login screen"/></div>
@@ -683,6 +704,90 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="phone-block">
         <div class="phone-mock"><img src="screens/shot-coupon.jpg" alt="Luckin app coupon popup"/></div>
         <div class="phone-step">优惠券 <span style="color:var(--ink-3);font-weight:400;">yōuhuìquàn · coupons</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑨ TEST 1/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 1/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>你能完成这两步吗？ <span class="py-inline">Nǐ néng wánchéng zhè liǎng bù ma?</span></h2>
+    <div class="quiz-score" data-quiz-score data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer, like in the game:</strong> the gold circle points at the spot in question. Type Chinese, pinyin, or English and hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-login.jpg" alt="Luckin app login quiz"/>
+          <div class="quiz-callout" style="top:57%;left:10%;width:78%;height:5%;"></div>
+        </div>
+        <div class="quiz-q">哪个按钮可以登录账号？<span class="py">Nǎge ànniǔ kěyǐ dēnglù zhànghào?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="手机号安全登录|shouji hao anquan denglu|log in with phone number|log in" data-reveal="手机号安全登录 <span class=&quot;py&quot;>shǒujīhào ānquán dēnglù · log in with phone number</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-coupon.jpg" alt="Luckin app coupon quiz"/>
+          <div class="quiz-callout" style="top:14%;left:5%;width:88%;height:10%;"></div>
+        </div>
+        <div class="quiz-q">这是什么？每周可以领一次<span class="py">Zhè shì shénme? Měi zhōu kěyǐ lǐng yí cì.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="专享券|zhuanxiang quan|exclusive coupon|coupon" data-reveal="专享券 <span class=&quot;py&quot;>zhuānxiǎngquàn · exclusive coupon</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ LEARN 2/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 2/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>打开APP，你会看到什么？ <span class="py-inline">Dǎkāi APP, nǐ huì kàndào shénme?</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> the home screen mixes promos, quick services, and a members-only menu — all before you've chosen a drink.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-menu.jpg" alt="Luckin app classic menu"/></div>
+        <div class="phone-step">经典菜单 <span style="color:var(--ink-3);font-weight:400;">jīngdiǎn càidān · classic menu</span></div>
       </div>
       <div class="phone-block">
         <div class="phone-mock"><img src="screens/shot-home-services.jpg" alt="Luckin app home services banner"/></div>
@@ -693,11 +798,78 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
         <div class="phone-step">会员菜单 <span style="color:var(--ink-3);font-weight:400;">huìyuán càidān · member menu</span></div>
       </div>
     </div>
-    <div style="font-size:0.62rem;color:var(--ink-3);">Real screens from the Luckin Coffee app — 真实截图 zhēnshí jiétú.</div>
   </div>
 </div>
 
-<!-- ⑨ APP INTERFACE PART 2 — customize, checkout, pickup, real screens -->
+<!-- ⑪ TEST 2/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 2/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>找一找这三个功能 <span class="py-inline">Zhǎo yī zhǎo zhè sān gè gōngnéng.</span></h2>
+    <div class="quiz-score" data-quiz-score data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-menu.jpg" alt="Luckin app frequent-orders tab quiz"/>
+          <div class="quiz-callout" style="top:19.5%;left:64%;width:31%;height:4%;"></div>
+        </div>
+        <div class="quiz-q">哪个标签可以看到你常点的咖啡？<span class="py">Nǎge biāoqiān kěyǐ kàndào nǐ chángdiǎn de kāfēi?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="我的常点|wo de chang dian|my frequent orders|frequent orders" data-reveal="我的常点 <span class=&quot;py&quot;>wǒ de chángdiǎn · my frequent orders</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-home-services.jpg" alt="Luckin app pickup icon quiz"/>
+          <div class="quiz-callout" style="top:33%;left:6%;width:28%;height:8%;"></div>
+        </div>
+        <div class="quiz-q">想自己到店拿咖啡，点哪个？<span class="py">Xiǎng zìjǐ dàodiàn ná kāfēi, diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="到店取|dao dian qu|pick up in store|pickup" data-reveal="到店取 <span class=&quot;py&quot;>dàodiàn qǔ · pick up in store</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-member-menu.jpg" alt="Luckin app member menu tab quiz"/>
+          <div class="quiz-callout" style="top:19.5%;left:36%;width:28%;height:4%;"></div>
+        </div>
+        <div class="quiz-q">哪个标签是会员专属菜单？<span class="py">Nǎge biāoqiān shì huìyuán zhuānshǔ càidān?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="会员菜单|huiyuan caidan|member menu" data-reveal="会员菜单 <span class=&quot;py&quot;>huìyuán càidān · member menu</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑫ LEARN 3/5 -->
 <div class="slide" style="grid-template-columns:64px 1fr">
   <div class="sidebar gold">
     <div class="sb-icon">
@@ -705,83 +877,259 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
         <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
         <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
       </svg>
-      <div class="sb-label">app order</div>
+      <div class="sb-label">learn 3/5</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
-    <div class="sec-label">How It Really Works · 手机点单 (2/3)</div>
-    <h2>选好以后：规格、付钱、取餐 <span class="py-inline">Xuǎn hǎo yǐhòu: guīgé, fùqián, qǔcān.</span></h2>
-    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> once you've picked a drink, every remaining step happens on screen — size/temp/sugar, then a one-tap confirm, then a pickup number. No spoken Chinese required.</div>
-
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>选好咖啡后，可以怎么客制化？ <span class="py-inline">Xuǎn hǎo kāfēi hòu, kěyǐ zěnme kèzhìhuà?</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> every drink lets you tweak cup size, temperature, sugar, and milk base before adding to cart.</div>
     <div class="phone-row">
       <div class="phone-block">
         <div class="phone-mock"><img src="screens/shot-customize.jpg" alt="Luckin app customize cup/temp/beans"/></div>
-        <div class="phone-step">①杯型/温度 <span style="color:var(--ink-3);font-weight:400;">size/temp</span></div>
+        <div class="phone-step">杯型 / 温度 <span style="color:var(--ink-3);font-weight:400;">size / temperature</span></div>
       </div>
       <div class="phone-block">
         <div class="phone-mock"><img src="screens/shot-sugar-milk.jpg" alt="Luckin app sugar/milk customize"/></div>
-        <div class="phone-step">②糖/奶基 <span style="color:var(--ink-3);font-weight:400;">sugar/milk</span></div>
+        <div class="phone-step">糖 / 奶基 <span style="color:var(--ink-3);font-weight:400;">sugar / milk</span></div>
       </div>
-      <div class="phone-block">
-        <div class="phone-mock"><img src="screens/shot-confirm.jpg" alt="Luckin app confirm order"/></div>
-        <div class="phone-step">③确认订单 <span style="color:var(--ink-3);font-weight:400;">confirm order</span></div>
-      </div>
-      <div class="phone-block">
-        <div class="phone-mock"><img src="screens/shot-done.jpg" alt="Luckin app order completed, pickup number"/></div>
-        <div class="phone-step">④取餐号 <span style="color:var(--ink-3);font-weight:400;">pickup number</span></div>
-      </div>
-    </div>
-    <div class="chip-row" style="margin-top:0.6rem;">
-      <div class="chip"><span class="ch">取餐号</span><span class="py">qǔcānhào · pickup number</span></div>
-      <div class="chip"><span class="ch">自提</span><span class="py">zìtí · self pickup</span></div>
-      <div class="chip"><span class="ch">免密支付</span><span class="py">miǎnmì zhīfù · pay, no password</span></div>
     </div>
   </div>
 </div>
 
-<!-- ⑩ INTERFACE CHECK — fresh real screens the learner hasn't seen explained yet -->
+<!-- ⑬ TEST 3/5 -->
 <div class="slide" style="grid-template-columns:64px 1fr">
   <div class="sidebar rust">
     <div class="sb-icon">
       <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
         <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
       </svg>
-      <div class="sb-label">interface check</div>
+      <div class="sb-label">test 3/5</div>
     </div>
     <div class="sb-prog">
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
 </div>
   </div>
   <div class="content">
-    <div class="sec-label">Interface Check · 看懂界面 (3/3)</div>
-    <h2>你能看懂这些界面吗？ <span class="py-inline">Nǐ néng kàndǒng zhèxiē jièmiàn ma?</span></h2>
-    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer, like in the game:</strong> the gold circle points at the spot in question. Type the Chinese, pinyin, or English meaning and hit Enter — 对/错 feedback shows instantly, just like 看图猜词 in HSK Youxi.</div>
-
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>客制化你的咖啡 <span class="py-inline">Kèzhìhuà nǐ de kāfēi.</span></h2>
+    <div class="quiz-score" data-quiz-score data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
     <div class="phone-row">
       <div class="phone-block">
         <div class="phone-mock">
-          <img src="screens/shot-my-orders.jpg" alt="Luckin app frequent orders quiz"/>
-          <div class="quiz-callout" style="top:25%;left:6%;width:30%;height:5%;"></div>
+          <img src="screens/shot-customize.jpg" alt="Luckin app extra-large cup quiz"/>
+          <div class="quiz-callout" style="top:40%;left:33%;width:48%;height:6%;"></div>
         </div>
-        <div class="quiz-q">① 这个按钮可以重复买上次一样的咖啡，是哪几个字？<span class="py">Zhège ànniǔ shì nǎ jǐ gè zì?</span></div>
+        <div class="quiz-q">想要更大杯，应该点哪个？<span class="py">Xiǎng yào gèng dà bēi, yīnggāi diǎn nǎge?</span></div>
         <div class="quiz-game">
-          <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="再来一单|zai lai yi dan|order again" data-reveal="再来一单 <span class=&quot;py&quot;>zài lái yì dān · order again</span>"/>
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="特大杯|te da bei|extra-large cup|extra large" data-reveal="特大杯 <span class=&quot;py&quot;>tè dà bēi · extra-large cup</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
           <div class="quiz-feedback"></div>
         </div>
       </div>
       <div class="phone-block">
         <div class="phone-mock">
+          <img src="screens/shot-sugar-milk.jpg" alt="Luckin app no sugar quiz"/>
+          <div class="quiz-callout" style="top:12%;left:28%;width:38%;height:5%;"></div>
+        </div>
+        <div class="quiz-q">不想加糖，应该点哪个？<span class="py">Bù xiǎng jiā táng, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="不另外加糖|bu lingwai jia tang|no extra sugar|no sugar" data-reveal="不另外加糖 <span class=&quot;py&quot;>bù lìngwài jiā táng · no extra sugar</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑭ LEARN 4/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 4/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>付钱、取餐，怎么操作？ <span class="py-inline">Fùqián, qǔcān, zěnme cāozuò?</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> checkout is one tap with saved payment, then the app gives you a pickup number — no cashier needed.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-confirm.jpg" alt="Luckin app confirm order"/></div>
+        <div class="phone-step">确认订单 <span style="color:var(--ink-3);font-weight:400;">quèrèn dìngdān · confirm order</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-done.jpg" alt="Luckin app order completed, pickup number"/></div>
+        <div class="phone-step">取餐号 <span style="color:var(--ink-3);font-weight:400;">qǔcānhào · pickup number</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑮ TEST 4/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 4/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>付款和取餐 <span class="py-inline">Fùkuǎn hé qǔcān.</span></h2>
+    <div class="quiz-score" data-quiz-score data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-confirm.jpg" alt="Luckin app pay without password quiz"/>
+          <div class="quiz-callout" style="top:91%;left:60%;width:37%;height:6%;"></div>
+        </div>
+        <div class="quiz-q">想要免密码付款，应该点哪个？<span class="py">Xiǎng yào miǎn mìmǎ fùkuǎn, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="免密支付|mianmi zhifu|pay without password" data-reveal="免密支付 <span class=&quot;py&quot;>miǎnmì zhīfù · pay without password</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-done.jpg" alt="Luckin app order again quiz"/>
+          <div class="quiz-callout" style="top:19%;left:49%;width:43%;height:6%;"></div>
+        </div>
+        <div class="quiz-q">想再买一次一样的，应该点哪个？<span class="py">Xiǎng zài mǎi yí cì yíyàng de, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="再来一单|zai lai yi dan|order again" data-reveal="再来一单 <span class=&quot;py&quot;>zài lái yì dān · order again</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑯ LEARN 5/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 5/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>会员卡、历史订单、选门店 <span class="py-inline">Huìyuán kǎ, lìshǐ dìngdān, xuǎn méndiàn.</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> members get exclusive pricing, a one-tap repeat-order button, and a map to pick a different store.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-member-card.jpg" alt="Luckin app member card"/></div>
+        <div class="phone-step">会员卡 <span style="color:var(--ink-3);font-weight:400;">huìyuán kǎ · member card</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-my-orders.jpg" alt="Luckin app frequent orders page"/></div>
+        <div class="phone-step">我的常点 <span style="color:var(--ink-3);font-weight:400;">wǒ de chángdiǎn · frequent orders</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-store-map.jpg" alt="Luckin app store selection"/></div>
+        <div class="phone-step">选择门店 <span style="color:var(--ink-3);font-weight:400;">xuǎnzé méndiàn · choose a store</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑰ TEST 5/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 5/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>会员和门店 <span class="py-inline">Huìyuán hé méndiàn.</span></h2>
+    <div class="quiz-score" data-quiz-score data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
           <img src="screens/shot-member-card.jpg" alt="Luckin app member card quiz"/>
           <div class="quiz-callout" style="top:47%;left:5%;width:60%;height:18%;"></div>
         </div>
-        <div class="quiz-q">② 这是给所有人看的，还是只给会员看的价格？<span class="py">Zhè shì gěi shéi kàn de jiàgé?</span></div>
+        <div class="quiz-q">这是给所有人看的，还是只给会员看的价格？<span class="py">Zhè shì gěi shéi kàn de jiàgé?</span></div>
         <div class="quiz-game">
-          <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="会员价|huiyuan jia|members-only price|members only price" data-reveal="会员价 <span class=&quot;py&quot;>huìyuán jià · members-only price</span>"/>
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="会员价|huiyuan jia|members-only price|members only price" data-reveal="会员价 <span class=&quot;py&quot;>huìyuán jià · members-only price</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-my-orders.jpg" alt="Luckin app order-again quiz"/>
+          <div class="quiz-callout" style="top:25%;left:6%;width:30%;height:5%;"></div>
+        </div>
+        <div class="quiz-q">这个按钮可以重复买上次一样的咖啡，是哪几个字？<span class="py">Zhège ànniǔ shì nǎ jǐ gè zì?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="再来一单|zai lai yi dan|order again" data-reveal="再来一单 <span class=&quot;py&quot;>zài lái yì dān · order again</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
           <div class="quiz-feedback"></div>
         </div>
       </div>
@@ -790,9 +1138,12 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
           <img src="screens/shot-store-map.jpg" alt="Luckin app store selection quiz"/>
           <div class="quiz-callout" style="top:9%;left:8%;width:84%;height:6%;"></div>
         </div>
-        <div class="quiz-q">③ 你要换一家店取咖啡，应该点这个页面做什么？<span class="py">Nǐ yào zuò shénme?</span></div>
+        <div class="quiz-q">你要换一家店取咖啡，应该点这个页面做什么？<span class="py">Nǐ yào zuò shénme?</span></div>
         <div class="quiz-game">
-          <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选择门店|xuanze mendian|choose a store|choose store" data-reveal="选择门店（自提 / 送货上门）<span class=&quot;py&quot;>xuǎnzé méndiàn · choose a store</span>"/>
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选择门店|xuanze mendian|choose a store|choose store" data-reveal="选择门店（自提 / 送货上门）<span class=&quot;py&quot;>xuǎnzé méndiàn · choose a store</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
           <div class="quiz-feedback"></div>
         </div>
       </div>
@@ -800,7 +1151,103 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
   </div>
 </div>
 
-<!-- ⑪ REVIEW -->
+<!-- ⑱ FINAL TEST -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">final test</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>综合挑战：你现在看懂界面了吗？ <span class="py-inline">Zōnghé tiǎozhàn: nǐ xiànzài kàndǒng jièmiàn le ma?</span></h2>
+    <div class="quiz-score" data-quiz-score data-total="5">✅ <span class="score-correct">0</span>/<span class="score-total">5</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Final test — no gold circle this time.</strong> Look at the whole screen and say what it's for, in your own words (Chinese, pinyin, or English).</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-login.jpg" alt="Luckin app login final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面要做什么？<span class="py">Zhège huàmiàn yào zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="登录|denglu|log in|sign in" data-reveal="登录 <span class=&quot;py&quot;>dēnglù · log in</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-home-services.jpg" alt="Luckin app services final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面主要可以做什么？<span class="py">Zhège huàmiàn zhǔyào kěyǐ zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选到店取或送货|choose pickup or delivery|pickup or delivery" data-reveal="选到店取或送货 <span class=&quot;py&quot;>xuǎn dàodiàn qǔ huò sònghuò · choose pickup or delivery</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-customize.jpg" alt="Luckin app customize final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面在做什么？<span class="py">Zhège huàmiàn zài zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选规格|xuan guige|choose drink specs|customize" data-reveal="选规格（杯型/温度/咖啡豆）<span class=&quot;py&quot;>xuǎn guīgé · choose drink specs</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-confirm.jpg" alt="Luckin app confirm final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这是哪个步骤？<span class="py">Zhè shì nǎge bùzhòu?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="确认订单|queren dingdan|confirm order|confirm and pay" data-reveal="确认订单并付款 <span class=&quot;py&quot;>quèrèn dìngdān bìng fùkuǎn · confirm and pay</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-store-map.jpg" alt="Luckin app store map final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面可以做什么？<span class="py">Zhège huàmiàn kěyǐ zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选择门店|xuanze mendian|choose a store" data-reveal="选择门店 <span class=&quot;py&quot;>xuǎnzé méndiàn · choose a store</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑲ REVIEW -->
 <div class="slide" style="grid-template-columns:64px 1fr">
   <div class="sidebar dark">
     <div class="sb-icon">
@@ -810,8 +1257,9 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
       <div class="sb-label">review</div>
     </div>
     <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
       <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
-      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
 </div>
   </div>
   <div class="content">
@@ -850,7 +1298,7 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
   </div>
 </div>
 
-<!-- ⑫ CLOSING -->
+<!-- ⑳ CLOSING -->
 <div class="slide slide-close">
   <div class="close-inner">
     <div class="close-zh">谢谢</div>
@@ -867,21 +1315,43 @@ body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink);
 <script>
 (function () {
   document.querySelectorAll('.quiz-input').forEach(function (input) {
-    var feedback = input.parentElement.querySelector('.quiz-feedback');
+    var row = input.closest('.quiz-game');
+    var feedback = row.querySelector('.quiz-feedback');
+    var checkBtn = row.querySelector('.quiz-check-btn');
     var answers = (input.dataset.answer || '').split('|').map(function (a) {
       return a.trim().toLowerCase();
     });
     var reveal = input.dataset.reveal || '';
-    input.addEventListener('keydown', function (e) {
-      if (e.key !== 'Enter' || input.disabled) return;
+    var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+
+    function check() {
+      if (input.disabled) return;
       var val = input.value.trim().toLowerCase();
       if (!val) return;
       var correct = answers.indexOf(val) !== -1;
+
       feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
       feedback.innerHTML = (correct ? '对! Duì! Right!' : '错! Cuò! Wrong!') +
         (reveal ? '<span class="reveal">' + reveal + '</span>' : '');
+
+      input.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+      if (checkBtn) {
+        checkBtn.classList.add(correct ? 'correct' : 'wrong');
+        checkBtn.textContent = correct ? '✓' : '✗';
+        checkBtn.disabled = true;
+      }
       input.disabled = true;
+
+      if (correct && scoreBox) {
+        var counter = scoreBox.querySelector('.score-correct');
+        counter.textContent = String(Number(counter.textContent) + 1);
+      }
+    }
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') check();
     });
+    if (checkBtn) checkBtn.addEventListener('click', check);
   });
 })();
 </script>
