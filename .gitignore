@@ -4,6 +4,7 @@ node_modules/
 .vercel/
 *.env*.local
 .vercel
+.venv/
 
 # Local documents — not part of the codebase
 docs1/
