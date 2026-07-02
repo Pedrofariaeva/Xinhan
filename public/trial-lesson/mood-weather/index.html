@@ -1,0 +1,1352 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>心情和天气 — Mood &amp; Weather · Xinhan Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --jade: #2d6a4f; --jade-mid: #40916c; --jade-light: #74c69d; --jade-pale: #d8f3dc;
+  --gold: #b7791f; --gold-mid: #d69e2e; --gold-pale: #fffff0;
+  --rust: #9b2226; --rust-light: #e76f51; --rust-pale: #fff0ee;
+  --sky: #1d5f8a; --sky-pale: #e8f4fd;
+  --cream: #faf7f2; --cream-dark: #ede8df;
+  --ink: #1a1a1a; --ink-2: #3d3d3d; --ink-3: #7a7a7a;
+  --white: #fff;
+}
+body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink); padding: 2.5rem 1rem 5rem; }
+
+.deck { max-width: 940px; margin: 0 auto; }
+.deck-brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--jade); }
+.brand-sub  { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+.slide { display: grid; background: var(--white); overflow: hidden; margin-bottom: 3px; }
+.slide:first-of-type { border-radius: 14px 14px 0 0; }
+.slide:last-of-type  { border-radius: 0 0 14px 14px; }
+
+.sidebar {
+  display: flex; flex-direction: column;
+  padding: 1.5rem 0.65rem 1.5rem 0.9rem;
+  background: var(--jade);
+  gap: 1.8rem; min-width: 64px;
+  position: relative;
+}
+.sidebar::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+.sb-icon { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.sb-icon svg { width: 28px; height: 28px; }
+.sb-label { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.2; }
+.sb-prog { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: auto; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: #d69e2e; }
+.dot.done   { background: var(--jade-light); }
+.sidebar.rust  { background: var(--rust); }
+.sidebar.sky   { background: var(--sky); }
+.sidebar.gold  { background: #7b5a1a; }
+.sidebar.cream { background: var(--cream-dark); }
+.sidebar.cream::after { display:none; }
+.sidebar.cream .sb-label { color: var(--jade); }
+.sidebar.dark  { background: #1b2e1f; }
+
+.content { padding: 2rem 2.5rem 2rem 2rem; flex: 1; }
+.sec-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--jade-mid); margin-bottom: 0.9rem; }
+.content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.3; }
+.zh-inline { font-family: 'Noto Serif SC', serif; color: var(--jade); }
+.py-inline { font-size: 0.72rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--gold); letter-spacing: 0.07em; }
+
+.scene { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.scene svg { display: block; width: 100%; }
+
+/* COVER */
+.slide-cover { grid-template-columns: 90px 1fr; }
+.cover-content { background: var(--sky); padding: 2.5rem 2.5rem 2rem; position: relative; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover-scene { position: absolute; top: 0; right: 0; left: 0; bottom: 0; opacity: 0.18; }
+.cover-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--jade-light); margin-bottom: 0.7rem; position: relative; }
+.cover-zh { font-family: 'Noto Serif SC', serif; font-size: 5.8rem; font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; position: relative; }
+.cover-py { font-size: 1.25rem; font-weight: 300; color: var(--jade-light); letter-spacing: 0.18em; margin: 0.3rem 0; position: relative; }
+.cover-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.45rem; color: #f6e05e; position: relative; margin-bottom: 1.5rem; }
+.cover-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; position: relative; }
+.tag { padding: 0.22rem 0.8rem; border-radius: 999px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+
+/* GRAMMAR STRIP */
+.grammar-strip { display: flex; align-items: center; gap: 0; background: var(--cream); border-radius: 10px; overflow: hidden; margin-bottom: 1.4rem; }
+.gs-part { padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+.gs-part.colored { background: var(--jade); }
+.gs-part.colored.rust { background: var(--rust); }
+.gs-part.colored.sky  { background: var(--sky); }
+.gs-part.colored.gold { background: #7b5a1a; }
+.gs-zh { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1; }
+.gs-py { font-size: 0.58rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; margin-top: 2px; }
+.gs-sep { font-size: 1.1rem; color: var(--ink-3); padding: 0 0.3rem; }
+.gs-plain-zh { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 500; color: var(--jade); }
+.gs-plain-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+.gs-en { margin-left: auto; padding: 0.75rem 1.25rem; font-size: 0.72rem; color: var(--ink-3); font-style: italic; border-left: 1px solid var(--cream-dark); }
+
+/* EXAMPLES */
+.ex-block { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem; }
+.ex { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid var(--jade-mid); }
+.ex.rust { border-left-color: var(--rust-light); }
+.ex.sky  { border-left-color: #4a9ec7; }
+.ex-zh { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--ink); margin-bottom: 0.15rem; }
+.key  { color: var(--jade); font-weight: 700; }
+.key-r{ color: var(--rust); font-weight: 700; }
+.key-s{ color: var(--sky); font-weight: 700; }
+.key-g{ color: var(--gold); font-weight: 700; }
+.ex-py { font-size: 0.63rem; color: var(--gold); letter-spacing: 0.03em; margin-bottom: 0.1rem; }
+.ex-en { font-size: 0.69rem; color: var(--ink-3); font-style: italic; }
+
+/* CHIPS */
+.chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; background: var(--cream); border: 1.5px solid var(--cream-dark); }
+.chip .ch { font-family: 'Noto Serif SC', serif; font-size: 0.85rem; color: var(--jade); font-weight: 500; }
+.chip .py { font-size: 0.58rem; color: var(--gold); margin-left: 0.25rem; }
+
+/* VOCAB */
+.vocab-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.vc { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 7px; padding: 0.55rem 0.7rem; border-top: 3px solid var(--jade-mid); }
+.vc.cat-mood   { border-top-color: var(--rust-light); }
+.vc.cat-weather{ border-top-color: var(--sky); }
+.vc.cat-act    { border-top-color: var(--gold-mid); }
+.vc.cat-gram   { border-top-color: var(--jade); }
+.vc-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 500; color: var(--jade); }
+.vc-py { font-size: 0.58rem; color: var(--gold); margin: 2px 0 1px; }
+.vc-en { font-size: 0.62rem; color: var(--ink-3); }
+
+.tip { background: var(--jade-pale); border-radius: 7px; padding: 0.65rem 0.95rem; font-size: 0.7rem; color: var(--jade); line-height: 1.55; margin-top: 0.9rem; }
+.tip strong { font-weight: 600; }
+
+/* PRACTICE BOX */
+.practice { background: linear-gradient(135deg, var(--jade-pale), #e8f4fd); border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1rem; border-left: 4px solid var(--jade-mid); }
+.practice-title { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--jade); margin-bottom: 0.5rem; }
+.practice-item { display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 0.45rem; }
+.practice-item:last-child { margin-bottom: 0; }
+.practice-num { min-width: 20px; height: 20px; border-radius: 50%; background: var(--jade); color: white; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.practice-text { font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+.practice-text .zh { font-family: 'Noto Serif SC', serif; color: var(--jade); font-weight: 500; }
+.practice-text .py { font-size: 0.6rem; color: var(--gold); }
+
+/* DIALOGUE */
+.dial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1.25rem; }
+.dial-a, .dial-b { border-radius: 10px; padding: 0.85rem 1rem; }
+.dial-a { background: var(--sky-pale); border-left: 3px solid var(--sky); }
+.dial-b { background: var(--jade-pale); border-left: 3px solid var(--jade-mid); }
+.dial-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.35rem; }
+.dial-a .dial-label { color: var(--sky); }
+.dial-b .dial-label { color: var(--jade); }
+.dial-zh { font-family: 'Noto Serif SC', serif; font-size: 0.92rem; margin-bottom: 0.15rem; }
+.dial-py { font-size: 0.6rem; color: var(--gold); margin-bottom: 0.1rem; }
+.dial-en { font-size: 0.66rem; color: var(--ink-3); font-style: italic; }
+
+/* PHOTO ELEMENTS */
+.photo-row { display:flex; gap:8px; margin-bottom:1rem; }
+.photo-slot { flex:1; border-radius:9px; overflow:hidden; position:relative; min-height:110px; background:linear-gradient(135deg,var(--jade-pale),var(--cream-dark)); }
+.photo-slot img { width:100%; height:100%; object-fit:cover; display:block; transition:opacity .2s; }
+.photo-cap { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,0.58)); color:white; font-size:0.68rem; font-family:'Noto Serif SC',serif; padding:14px 9px 6px; font-weight:700; letter-spacing:0.04em; }
+.photo-cap small { display:block; font-family:'Inter',sans-serif; font-size:0.56rem; color:rgba(255,255,255,0.72); font-weight:400; }
+.photo-wide { border-radius:10px; overflow:hidden; position:relative; margin-bottom:1rem; height:130px; background:linear-gradient(135deg,var(--sky-pale),var(--cream-dark)); }
+.photo-wide img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo-wide .photo-cap { font-size:0.78rem; }
+
+/* CLOSING */
+.slide-close { display: block; background: #1b3a28; border-radius: 0 0 14px 14px; }
+.close-inner { padding: 3rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+.close-zh { font-family: 'Noto Serif SC', serif; font-size: 5rem; font-weight: 700; color: var(--white); }
+.close-detail .py { font-size: 1rem; color: var(--jade-light); letter-spacing: 0.2em; }
+.close-detail .en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: #f6e05e; margin-top: 0.2rem; }
+.close-detail .sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1rem; }
+
+@media print {
+  body { background: white; padding: 0; }
+  .deck { max-width: 100%; }
+  .slide { break-inside: avoid; break-after: page; margin-bottom: 0; }
+  .slide:last-of-type { break-after: auto; }
+  .deck-brand { display: none; }
+}
+@media (max-width: 640px) {
+  .slide { grid-template-columns: 48px 1fr !important; }
+  .sidebar { padding: 1rem 0.4rem; }
+  .content { padding: 1.25rem; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .cover-zh { font-size: 3.5rem; }
+}
+
+/* --- INTERACTIVE QUIZ STYLES --- */
+.phone-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 0.5rem; }
+.phone-block { display: flex; flex-direction: column; gap: 0.55rem; width: 150px; }
+.phone-block.wide { width: 200px; }
+.phone-mock { width: 150px; border-radius: 16px; overflow: hidden; border: 3px solid var(--jade); box-shadow: 0 6px 16px rgba(45,106,79,0.25); position: relative; background: var(--cream); }
+.phone-mock svg { width: 100%; display: block; }
+.phone-step { font-size: 0.62rem; font-weight: 700; color: var(--gold); text-align: center; }
+.quiz-q { background: var(--cream); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.66rem; color: var(--ink); line-height: 1.45; }
+.quiz-q .py { display: block; color: var(--gold); font-size: 0.6rem; margin-top: 1px; }
+.quiz-callout { position: absolute; border: 2px solid #f6e05e; border-radius: 6px; box-shadow: 0 0 0 3px rgba(246,224,94,0.35); pointer-events: none; animation: quiz-pulse 1.6s ease-in-out infinite; }
+@keyframes quiz-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.quiz-game { display: flex; flex-direction: column; gap: 0.3rem; }
+.quiz-row { display: flex; gap: 0.3rem; }
+.quiz-input { flex: 1; width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #d2d2d2; border-radius: 6px; background: var(--white); color: var(--ink); transition: border-color 0.15s, background 0.15s; }
+.quiz-input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.quiz-input:disabled { background: var(--cream); opacity: 0.85; }
+.quiz-input.flash-correct { border-color: #2f7d52; background: #eaf7ef; animation: quiz-pop 0.4s ease; }
+.quiz-input.flash-wrong { border-color: #c0392b; background: #fbeaea; animation: quiz-shake 0.4s ease; }
+.quiz-check-btn { flex-shrink: 0; padding: 6px 10px; font-size: 0.62rem; font-weight: 700; border: none; border-radius: 6px; background: var(--gold); color: var(--jade); cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.quiz-check-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.quiz-check-btn:disabled { cursor: default; }
+.quiz-check-btn.correct { background: #2f7d52; color: white; animation: quiz-pop 0.4s ease; }
+.quiz-check-btn.wrong { background: #c0392b; color: white; animation: quiz-shake 0.4s ease; }
+@keyframes quiz-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes quiz-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.quiz-hint { font-size: 0.56rem; color: var(--ink-3); }
+.quiz-feedback { font-size: 0.68rem; font-weight: 700; min-height: 1.1em; }
+.quiz-feedback.correct { color: #2f7d52; }
+.quiz-feedback.wrong { color: #c0392b; }
+.quiz-feedback .reveal { display: block; font-weight: 500; color: var(--ink); margin-top: 2px; font-size: 0.62rem; }
+.quiz-feedback .reveal .py { color: var(--gold); }
+.quiz-score { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; font-weight: 700; color: var(--jade); background: var(--cream); border-radius: 20px; padding: 0.3rem 0.8rem; margin-bottom: 0.8rem; }
+.quiz-score .stars { color: var(--gold); letter-spacing: 1px; }
+.learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.report-score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.report-score .big { font-size: 2.4rem; font-weight: 800; color: var(--jade); }
+.report-score .pct { font-size: 1rem; font-weight: 700; color: var(--gold); }
+.report-groups { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.report-group-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.66rem; }
+.report-group-name { width: 150px; flex-shrink: 0; color: var(--ink); }
+.report-group-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--cream); overflow: hidden; }
+.report-group-fill { height: 100%; background: var(--jade-mid); border-radius: 5px; }
+.report-group-fill.weak { background: var(--rust-light); }
+.report-group-score { width: 36px; flex-shrink: 0; text-align: right; color: var(--ink-3); }
+.report-missed { background: #fbeaea; border-radius: 8px; padding: 0.8rem 1rem; }
+.report-missed h4 { margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--rust); }
+.report-missed-item { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; font-size: 0.66rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(155,34,38,0.12); }
+.report-missed-item:last-child { border-bottom: none; }
+.report-missed-q { color: var(--ink); flex: 1; min-width: 200px; }
+.report-missed-you { color: #c0392b; text-decoration: line-through; }
+.report-missed-correct { color: #2f7d52; font-weight: 600; }
+.report-perfect { background: var(--jade-pale); border-radius: 8px; padding: 1rem; font-size: 0.72rem; color: var(--jade); font-weight: 600; text-align: center; }
+.sidebar.dark { background: #1a3a2b; }
+
+.vc.cat-weather { border-top-color: #1d5f8a; }
+.vc.cat-mood { border-top-color: #9b2226; }
+.vc.cat-act { border-top-color: #7b5a1a; }
+.vc.cat-gram { border-top-color: #2d6a4f; }
+</style>
+</head>
+<body data-lesson-id="mood-weather">
+
+<div class="deck">
+<div class="deck-brand">
+  <span class="brand-name">新汉 Xīnhàn</span>
+  <span class="brand-sub">HSK 2–3 · Mood &amp; Weather</span>
+</div>
+
+<!-- ① COVER -->
+<div class="slide slide-cover">
+  <div class="sidebar" style="background:#153d5c;justify-content:center;align-items:center;min-height:1123px;">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:38px;height:38px;">
+      <circle cx="16" cy="16" r="5" fill="rgba(255,255,255,0.9)"/>
+      <path d="M16 5v3M16 24v3M5 16h3M24 16h3M8.3 8.3l2.1 2.1M21.6 21.6l2.1 2.1M8.3 23.7l2.1-2.1M21.6 10.4l2.1-2.1" stroke="rgba(255,255,255,0.85)" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M10 26c0-3.3 2.7-6 6-6s6 2.7 6 6" fill="rgba(255,255,255,0.4)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="cover-content" style="min-height:1123px;">
+    <div class="cover-scene">
+      <svg viewBox="0 0 700 1123" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect width="700" height="1123" fill="#1d5f8a"/>
+        <circle cx="600" cy="120" r="70" fill="rgba(255,255,255,0.1)"/>
+        <circle cx="600" cy="120" r="45" fill="rgba(255,255,255,0.15)"/>
+        <ellipse cx="150" cy="180" rx="80" ry="32" fill="rgba(255,255,255,0.08)"/>
+        <ellipse cx="230" cy="220" rx="65" ry="26" fill="rgba(255,255,255,0.06)"/>
+        <ellipse cx="380" cy="150" rx="90" ry="36" fill="rgba(255,255,255,0.08)"/>
+        <ellipse cx="470" cy="190" rx="70" ry="28" fill="rgba(255,255,255,0.06)"/>
+        <ellipse cx="100" cy="350" rx="60" ry="24" fill="rgba(255,255,255,0.06)"/>
+        <ellipse cx="550" cy="380" rx="75" ry="30" fill="rgba(255,255,255,0.06)"/>
+        <ellipse cx="300" cy="480" rx="85" ry="34" fill="rgba(255,255,255,0.05)"/>
+        <path d="M50 650 Q150 600 250 650 T450 650 T650 640" fill="none" stroke="rgba(255,255,255,0.06)" stroke-width="3"/>
+        <path d="M80 820 Q180 780 280 820 T480 815 T680 810" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="3"/>
+        <circle cx="120" cy="750" r="12" fill="rgba(255,255,255,0.1)"/>
+        <circle cx="150" cy="790" r="8" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="90" cy="800" r="7" fill="rgba(255,255,255,0.06)"/>
+        <circle cx="580" cy="760" r="12" fill="rgba(255,255,255,0.1)"/>
+        <circle cx="615" cy="800" r="8" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="555" cy="805" r="7" fill="rgba(255,255,255,0.06)"/>
+        <circle cx="320" cy="920" r="10" fill="rgba(255,255,255,0.08)"/>
+        <circle cx="350" cy="960" r="7" fill="rgba(255,255,255,0.06)"/>
+        <circle cx="290" cy="965" r="6" fill="rgba(255,255,255,0.05)"/>
+      </svg>
+    </div>
+    <div class="cover-eyebrow">Daily life · 日常生活 · Level 2–3</div>
+    <div class="cover-zh">心情和天气</div>
+    <div class="cover-py">xīn qíng hé tiān qì</div>
+    <div class="cover-en">Mood &amp; Weather</div>
+    <div class="cover-tags">
+      <span class="tag">HSK 2–3</span>
+      <span class="tag">22 new words</span>
+      <span class="tag">4 grammar points</span>
+    </div>
+  </div>
+</div>
+
+<!-- ② WARM-UP -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="10" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <circle cx="14" cy="11" r="3" fill="rgba(255,255,255,0.85)"/>
+        <path d="M9 19c0-2.8 2.2-5 5-5s5 2.2 5 5" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      </svg>
+      <div class="sb-label">warm up</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Warm-up · 热身</div>
+    <h2>介绍自己：今天心情怎么样？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Jīntiān xīnqíng zěnme yàng?</span></h2>
+
+    <div class="scene">
+      <svg viewBox="0 0 740 190" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="wuSky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#dff0fb"/><stop offset="100%" stop-color="#f5f9fc"/></linearGradient></defs>
+        <rect width="740" height="190" fill="url(#wuSky)" rx="8"/>
+        <!-- Sunny -->
+        <circle cx="95" cy="65" r="28" fill="#f6e05e"/>
+        <path d="M95 24v10M95 96v10M54 65h-10M136 65h-10M68 38l-8-8M122 38l8-8M68 92l-8 8M122 92l8 8" stroke="#f6d05e" stroke-width="4" stroke-linecap="round"/>
+        <circle cx="95" cy="130" r="18" fill="#74c69d"/>
+        <circle cx="87" cy="125" r="2.5" fill="#1a3d2b"/><circle cx="103" cy="125" r="2.5" fill="#1a3d2b"/>
+        <path d="M90 135q5 4 10 0" fill="none" stroke="#1a3d2b" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="95" y="172" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">晴天 · 心情好 · 开心</text>
+
+        <!-- Rainy -->
+        <ellipse cx="280" cy="68" rx="42" ry="22" fill="#8aaec0"/>
+        <path d="M262 90l-8 18M280 90l-6 20M298 90l-3 16" stroke="#4a9ec7" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="280" cy="132" r="18" fill="#e76f51"/>
+        <circle cx="272" cy="127" r="2.5" fill="#333"/><circle cx="288" cy="127" r="2.5" fill="#333"/>
+        <path d="M275 137q5 -2 10 0" fill="none" stroke="#333" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="280" y="172" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">下雨 · 心情不好</text>
+
+        <!-- Snowy -->
+        <ellipse cx="460" cy="65" rx="40" ry="21" fill="#b8d0e0"/>
+        <circle cx="448" cy="86" r="3" fill="#a0c0d8"/><circle cx="465" cy="93" r="3" fill="#a0c0d8"/><circle cx="478" cy="80" r="3" fill="#a0c0d8"/>
+        <circle cx="460" cy="132" r="18" fill="#9b2226"/>
+        <circle cx="452" cy="127" r="2.5" fill="#fff"/><circle cx="468" cy="127" r="2.5" fill="#fff"/>
+        <path d="M455 137q5 0 10 0" fill="none" stroke="#fff" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="460" y="172" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">下雪 · 心情低落</text>
+
+        <!-- Cloudy warm -->
+        <ellipse cx="640" cy="68" rx="44" ry="22" fill="#d8c8a8"/>
+        <circle cx="640" cy="60" r="18" fill="#f6d77a" opacity="0.7"/>
+        <circle cx="640" cy="132" r="18" fill="#74c69d"/>
+        <circle cx="632" cy="127" r="2.5" fill="#1a3d2b"/><circle cx="648" cy="127" r="2.5" fill="#1a3d2b"/>
+        <path d="M635 137q5 4 10 0" fill="none" stroke="#1a3d2b" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="640" y="172" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">阴天 · 还可以</text>
+      </svg>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;margin-bottom:1rem;">
+      <div style="background:var(--cream);border-radius:9px;padding:0.85rem 1rem;">
+        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--jade);margin-bottom:0.5rem;">Weather 天气</div>
+        <div class="chip-row" style="margin:0;gap:0.35rem;">
+          <div class="chip"><span class="ch">晴</span><span class="py">sunny</span></div>
+          <div class="chip"><span class="ch">阴</span><span class="py">cloudy</span></div>
+          <div class="chip"><span class="ch">下雨</span><span class="py">rainy</span></div>
+          <div class="chip"><span class="ch">下雪</span><span class="py">snowy</span></div>
+          <div class="chip"><span class="ch">暖和</span><span class="py">warm</span></div>
+        </div>
+      </div>
+      <div style="background:var(--cream);border-radius:9px;padding:0.85rem 1rem;">
+        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--jade);margin-bottom:0.5rem;">Mood 心情</div>
+        <div class="chip-row" style="margin:0;gap:0.35rem;">
+          <div class="chip"><span class="ch">开心</span><span class="py">happy</span></div>
+          <div class="chip"><span class="ch">好</span><span class="py">good</span></div>
+          <div class="chip"><span class="ch">不好</span><span class="py">bad</span></div>
+          <div class="chip"><span class="ch">低落</span><span class="py">down</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-row">
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1601297183305-6df142704ea2?auto=format&fit=crop&w=560&q=72" alt="sunny" onerror="this.style.display='none'"/>
+        <div class="photo-cap">晴天 qíng tiān<small>sunshine · blue sky · 心情好</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1515694346937-94d85e41e6f0?auto=format&fit=crop&w=560&q=72" alt="rainy" onerror="this.style.display='none'"/>
+        <div class="photo-cap">下雨 xià yǔ<small>rain · grey clouds · 心情不好</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1491002052546-bf38f186af56?auto=format&fit=crop&w=560&q=72" alt="snowy" onerror="this.style.display='none'"/>
+        <div class="photo-cap">下雪 xià xuě<small>snow · white · 很低落</small></div>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-title">Pair work · 两人一组</div>
+      <div class="practice-item">
+        <div class="practice-num">1</div>
+        <div class="practice-text"><span class="zh">你今天的心情怎么样？</span> <span class="py">Jīntiān nǐ de xīnqíng zěnme yàng?</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">2</div>
+        <div class="practice-text"><span class="zh">你住的地方今天天气怎么样？</span> <span class="py">Nǐ zhù de dìfāng jīntiān tiānqì zěnme yàng?</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">3</div>
+        <div class="practice-text"><span class="zh">什么天气让你的心情好？什么天气让你的心情不好？</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ VOCABULARY -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar" style="background:#245c42">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">vocab</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">New Words · 新词 — 22 words</div>
+    <div class="scene" style="margin-bottom:1rem;">
+      <svg viewBox="0 0 720 56" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="56" fill="#f0ebe1" rx="8"/>
+        <rect x="0" y="0" width="240" height="56" fill="#e8f4fd" rx="8 0 0 8"/>
+        <rect x="240" y="0" width="240" height="56" fill="#fff0ee"/>
+        <rect x="480" y="0" width="240" height="56" fill="#fffff0" rx="0 8 8 0"/>
+        <circle cx="55" cy="22" r="9" fill="#f6e05e"/>
+        <path d="M55 11v4M55 29v4M44 22h-4M70 22h-4" stroke="#d69e2e" stroke-width="1.5" stroke-linecap="round"/>
+        <text x="95" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">Weather 天气</text>
+        <text x="95" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#1d5f8a">晴 · 阴 · 下雨 · 下雪 · 暖和 · 冷 · 热</text>
+        <circle cx="295" cy="22" r="8" fill="#e76f51"/>
+        <circle cx="291" cy="19" r="1.5" fill="#fff"/><circle cx="299" cy="19" r="1.5" fill="#fff"/>
+        <path d="M293 25q4 2 6 0" fill="none" stroke="#fff" stroke-width="1.2" stroke-linecap="round"/>
+        <text x="325" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#9b2226" font-weight="700">Mood 心情</text>
+        <text x="325" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#e76f51">心情 · 开心 · 低落 · 看起来</text>
+        <path d="M520 18h10v8h-10zM535 14h12v12h-12zM552 20h8v6h-8z" fill="#d69e2e" opacity="0.85"/>
+        <text x="575" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#7b5a1a" font-weight="700">Activities 活动</text>
+        <text x="575" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#b7791f">散步 · 游泳 · 买东西 · 唱歌</text>
+      </svg>
+    </div>
+
+    <div class="vocab-grid">
+      <div class="vc cat-weather"><div class="vc-zh">天气</div><div class="vc-py">tiān qì</div><div class="vc-en">weather</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">晴</div><div class="vc-py">qíng</div><div class="vc-en">sunny / clear</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">阴</div><div class="vc-py">yīn</div><div class="vc-en">cloudy / overcast</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">下雨</div><div class="vc-py">xià yǔ</div><div class="vc-en">rain / rainy</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">下雪</div><div class="vc-py">xià xuě</div><div class="vc-en">snow / snowy</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">暖和</div><div class="vc-py">nuǎn huo</div><div class="vc-en">warm</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">热</div><div class="vc-py">rè</div><div class="vc-en">hot</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">冷</div><div class="vc-py">lěng</div><div class="vc-en">cold</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">天空</div><div class="vc-py">tiān kōng</div><div class="vc-en">sky</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">云</div><div class="vc-py">yún</div><div class="vc-en">cloud</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">太阳</div><div class="vc-py">tài yáng</div><div class="vc-en">sun</div></div>
+      <div class="vc cat-weather"><div class="vc-zh">灰色</div><div class="vc-py">huī sè</div><div class="vc-en">grey</div></div>
+      <div class="vc cat-mood"><div class="vc-zh">心情</div><div class="vc-py">xīn qíng</div><div class="vc-en">mood / feeling</div></div>
+      <div class="vc cat-mood"><div class="vc-zh">开心</div><div class="vc-py">kāi xīn</div><div class="vc-en">happy</div></div>
+      <div class="vc cat-mood"><div class="vc-zh">低落</div><div class="vc-py">dī luò</div><div class="vc-en">down / low</div></div>
+      <div class="vc cat-mood"><div class="vc-zh">看起来</div><div class="vc-py">kàn qǐ lái</div><div class="vc-en">look / seem</div></div>
+      <div class="vc cat-act"><div class="vc-zh">散步</div><div class="vc-py">sàn bù</div><div class="vc-en">take a walk</div></div>
+      <div class="vc cat-act"><div class="vc-zh">游泳</div><div class="vc-py">yóu yǒng</div><div class="vc-en">swim</div></div>
+      <div class="vc cat-act"><div class="vc-zh">买东西</div><div class="vc-py">mǎi dōng xi</div><div class="vc-en">shopping</div></div>
+      <div class="vc cat-act"><div class="vc-zh">唱歌</div><div class="vc-py">chàng gē</div><div class="vc-en">sing</div></div>
+      <div class="vc cat-gram"><div class="vc-zh">让</div><div class="vc-py">ràng</div><div class="vc-en">make / let</div></div>
+      <div class="vc cat-gram"><div class="vc-zh">的时候</div><div class="vc-py">de shí hòu</div><div class="vc-en">when…</div></div>
+    </div>
+
+    <div class="ex-block" style="margin-top:1.25rem;">
+      <div class="ex">
+        <div class="ex-zh">今天天气很<span class="key-s">暖和</span>，天空很<span class="key-s">蓝</span>，没有<span class="key-s">云</span>。</div>
+        <div class="ex-py">Jīntiān tiānqì hěn nuǎnhuo, tiānkōng hěn lán, méiyǒu yún.</div>
+        <div class="ex-en">Today the weather is warm, the sky is blue, and there are no clouds.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh">下雨的时候，<span class="key-s">天空</span>是<span class="key-s">灰色</span>的，我的心情很不好。</div>
+        <div class="ex-py">Xià yǔ de shíhòu, tiānkōng shì huīsè de, wǒ de xīnqíng hěn bù hǎo.</div>
+        <div class="ex-en">When it rains, the sky is grey and I feel very bad.</div>
+      </div>
+    </div>
+
+    <div class="photo-wide">
+      <img src="https://images.unsplash.com/photo-1504608524841-42fe6f032b4b?auto=format&fit=crop&w=900&q=72" alt="sky moods" onerror="this.style.display='none'"/>
+      <div class="photo-cap">蓝天 · 阴天 · 太阳 — 天气和心情</div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-title">Make sentences · 造句</div>
+      <div class="practice-item">
+        <div class="practice-num">1</div>
+        <div class="practice-text">Use <span class="zh">天气</span> + <span class="zh">让</span> + <span class="zh">心情</span>: <em>e.g. 晴天让我的心情很好。</em></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">2</div>
+        <div class="practice-text">Use <span class="zh">的时候</span>: <em>e.g. 天气好的时候，我喜欢去公园。</em></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">3</div>
+        <div class="practice-text">Use <span class="zh">又…又…</span>: <em>e.g. 今天天气又阴又冷。</em></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ GRAMMAR 1 — 让 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 16c0-4.4 3.6-8 8-8s8 3.6 8 8" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <path d="M9 16h10M11 20h6M13 24h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">G1 · 让</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 1 · 语法一</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored rust"><div class="gs-zh">A</div><div class="gs-py">weather / thing</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part colored rust"><div class="gs-zh">让</div><div class="gs-py">ràng</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">B</div><div class="gs-plain-py">person</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">心情 + 好/不好</div><div class="gs-plain-py">mood good / bad</div></div>
+      <div class="gs-en">A makes B's mood good/bad</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="200" fill="#fff0ee" rx="8"/>
+        <!-- Sun makes happy -->
+        <circle cx="110" cy="70" r="32" fill="#f6e05e"/>
+        <path d="M110 28v10M110 112v10M68 70h-10M152 70h-10M82 40l-8-8M138 40l8-8M82 100l-8 8M138 100l8 8" stroke="#d69e2e" stroke-width="4" stroke-linecap="round"/>
+        <path d="M85 70 Q110 55 135 70" fill="none" stroke="#d69e2e" stroke-width="2.5" stroke-dasharray="4,3"/>
+        <circle cx="110" cy="150" r="20" fill="#74c69d"/>
+        <circle cx="103" cy="144" r="3" fill="#1a3d2b"/><circle cx="117" cy="144" r="3" fill="#1a3d2b"/>
+        <path d="M106 155q4 5 8 0" fill="none" stroke="#1a3d2b" stroke-width="1.8" stroke-linecap="round"/>
+        <text x="110" y="188" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#9b2226" font-weight="700">晴天让我心情好</text>
+
+        <!-- Rain makes sad -->
+        <ellipse cx="360" cy="68" rx="42" ry="24" fill="#8aaec0"/>
+        <path d="M340 92l-8 20M360 92l-6 22M380 92l-3 18" stroke="#4a9ec7" stroke-width="3.5" stroke-linecap="round"/>
+        <circle cx="360" cy="152" r="20" fill="#e76f51"/>
+        <circle cx="353" cy="146" r="3" fill="#333"/><circle cx="367" cy="146" r="3" fill="#333"/>
+        <path d="M355 157q5 -2 10 0" fill="none" stroke="#333" stroke-width="1.8" stroke-linecap="round"/>
+        <text x="360" y="188" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#9b2226" font-weight="700">下雨让他的心情很不好</text>
+
+        <!-- Snow makes down -->
+        <ellipse cx="610" cy="68" rx="40" ry="22" fill="#b8d0e0"/>
+        <circle cx="595" cy="90" r="3.5" fill="#a0c0d8"/><circle cx="612" cy="98" r="3.5" fill="#a0c0d8"/><circle cx="625" cy="84" r="3.5" fill="#a0c0d8"/>
+        <circle cx="610" cy="152" r="20" fill="#9b2226"/>
+        <circle cx="603" cy="146" r="3" fill="#fff"/><circle cx="617" cy="146" r="3" fill="#fff"/>
+        <path d="M606 157q5 0 10 0" fill="none" stroke="#fff" stroke-width="1.8" stroke-linecap="round"/>
+        <text x="610" y="188" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#9b2226" font-weight="700">下雪让我的心情低落</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex rust">
+        <div class="ex-zh"><span class="key-r">今天的天气</span><span class="key">让</span>我的<span class="key-r">心情好</span>。</div>
+        <div class="ex-py">Jīntiān de tiānqì ràng wǒ de xīnqíng hǎo.</div>
+        <div class="ex-en">Today's weather makes me feel good.</div>
+      </div>
+      <div class="ex rust">
+        <div class="ex-zh"><span class="key-r">下雨的天气</span><span class="key">让</span>他的心情<span class="key-r">很不好</span>。</div>
+        <div class="ex-py">Xià yǔ de tiānqì ràng tā de xīnqíng hěn bù hǎo.</div>
+        <div class="ex-en">Rainy weather makes him feel very bad.</div>
+      </div>
+      <div class="ex rust">
+        <div class="ex-zh"><span class="key-r">下雪的天气</span><span class="key">让</span>你的心情<span class="key-r">怎么样</span>？</div>
+        <div class="ex-py">Xià xuě de tiānqì ràng nǐ de xīnqíng zěnme yàng?</div>
+        <div class="ex-en">How does snowy weather make you feel?</div>
+      </div>
+    </div>
+    <div class="photo-row" style="margin-top:1rem;">
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1465146344425-f00d5f5c8f07?auto=format&fit=crop&w=560&q=72" alt="happy sun" onerror="this.style.display='none'"/>
+        <div class="photo-cap">心情好 xīnqíng hǎo<small>sunny · happy · 开心</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1428908728789-d2de25dbd4e2?auto=format&fit=crop&w=560&q=72" alt="rainy mood" onerror="this.style.display='none'"/>
+        <div class="photo-cap">心情不好 xīnqíng bù hǎo<small>rain · grey · 低落</small></div>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-title">Your turn · 试一试</div>
+      <div class="practice-item">
+        <div class="practice-num">1</div>
+        <div class="practice-text"><span class="zh">什么让你的心情好？</span> <span class="py">Shénme ràng nǐ de xīnqíng hǎo?</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">2</div>
+        <div class="practice-text"><span class="zh">什么让你的心情不好？</span> <span class="py">Shénme ràng nǐ de xīnqíng bù hǎo?</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">3</div>
+        <div class="practice-text"><span class="zh">天气好的时候，什么让你开心？</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ GRAMMAR 2 — 的时候 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar sky">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="10" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <path d="M14 9v5l4 2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">G2 · 的时候</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 2 · 语法二</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored sky"><div class="gs-zh"> situation / time</div><div class="gs-py">situation</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part colored sky"><div class="gs-zh">的时候</div><div class="gs-py">de shí hòu</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">我喜欢 / 我做…</div><div class="gs-plain-py">I like / I do…</div></div>
+      <div class="gs-en">When…, I like / do…</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="g2Sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#e8f4fd"/><stop offset="100%" stop-color="#f5f9fc"/></linearGradient></defs>
+        <rect width="720" height="190" fill="url(#g2Sky)" rx="8"/>
+        <!-- Sunny park scene -->
+        <circle cx="85" cy="60" r="24" fill="#f6e05e"/>
+        <rect x="45" y="120" width="80" height="10" fill="#74c69d" rx="5"/>
+        <circle cx="62" cy="105" r="8" fill="#5a9a5a"/><rect x="60" y="110" width="4" height="14" fill="#7a5c3a"/>
+        <circle cx="108" cy="100" r="10" fill="#5a9a5a"/><rect x="106" y="107" width="4" height="17" fill="#7a5c3a"/>
+        <circle cx="85" cy="145" r="16" fill="#74c69d"/>
+        <circle cx="78" cy="139" r="2.5" fill="#1a3d2b"/><circle cx="92" cy="139" r="2.5" fill="#1a3d2b"/>
+        <path d="M80 149q5 4 10 0" fill="none" stroke="#1a3d2b" stroke-width="1.5"/>
+        <text x="85" y="180" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">天气好的时候，我喜欢去公园散步</text>
+
+        <!-- Home reading scene -->
+        <rect x="215" y="80" width="75" height="60" fill="#e8d5b5" rx="3"/>
+        <polygon points="215,80 252,55 290,80" fill="#c9875a"/>
+        <rect x="240" y="105" width="26" height="35" fill="#a0785c" rx="1"/>
+        <rect x="225" y="92" width="18" height="16" fill="#dff0fb" rx="2"/>
+        <circle cx="252" cy="145" r="12" fill="#e76f51"/>
+        <circle cx="247" cy="141" r="2" fill="#333"/><circle cx="257" cy="141" r="2" fill="#333"/>
+        <path d="M249 149q4 0 6 0" fill="none" stroke="#333" stroke-width="1.2"/>
+        <text x="252" y="180" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">下雨的时候，我喜欢在家里看书</text>
+
+        <!-- Beach swim scene -->
+        <ellipse cx="450" cy="135" rx="65" ry="14" fill="#4a9ec7"/>
+        <path d="M385 128 Q410 116 435 128 T485 128 T515 128" fill="none" stroke="#4a9ec7" stroke-width="3"/>
+        <circle cx="450" cy="80" r="22" fill="#f6e05e"/>
+        <circle cx="450" cy="118" r="12" fill="#74c69d"/>
+        <circle cx="445" cy="114" r="2" fill="#1a3d2b"/><circle cx="455" cy="114" r="2" fill="#1a3d2b"/>
+        <path d="M447 122q4 2 6 0" fill="none" stroke="#1a3d2b" stroke-width="1.2"/>
+        <text x="450" y="180" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">天气热的时候，我喜欢去海边游泳</text>
+
+        <!-- Shopping when sad -->
+        <rect x="565" y="78" width="60" height="55" fill="#d8c8a8" rx="3"/>
+        <rect x="582" y="95" width="26" height="22" fill="#9b2226" rx="2"/>
+        <circle cx="595" cy="88" r="2" fill="#333"/>
+        <circle cx="595" cy="145" r="12" fill="#74c69d"/>
+        <circle cx="590" cy="141" r="2" fill="#1a3d2b"/><circle cx="600" cy="141" r="2" fill="#1a3d2b"/>
+        <path d="M592 149q4 3 6 0" fill="none" stroke="#1a3d2b" stroke-width="1.2"/>
+        <text x="595" y="180" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">心情不好的时候，我买东西</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex sky">
+        <div class="ex-zh"><span class="key-s">天气好的时候</span>，我喜欢去公园散步，去海边游泳。</div>
+        <div class="ex-py">Tiānqì hǎo de shíhòu, wǒ xǐhuan qù gōngyuán sànbù, qù hǎibiān yóuyǒng.</div>
+        <div class="ex-en">When the weather is good, I like walking in the park and swimming at the beach.</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh"><span class="key-s">心情不好的时候</span>，我唱歌。唱歌让我心情好。</div>
+        <div class="ex-py">Xīnqíng bù hǎo de shíhòu, wǒ chànggē. Chànggē ràng wǒ xīnqíng hǎo.</div>
+        <div class="ex-en">When I'm in a bad mood, I sing. Singing makes me feel better.</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh"><span class="key-s">下雨的时候</span>，你喜欢做什么？<span class="key-s">下雨的时候</span>，我喜欢在家里看书。</div>
+        <div class="ex-py">Xià yǔ de shíhòu, nǐ xǐhuan zuò shénme? Xià yǔ de shíhòu, wǒ xǐhuan zài jiā lǐ kànshū.</div>
+        <div class="ex-en">When it rains, what do you like to do? When it rains, I like reading at home.</div>
+      </div>
+    </div>
+    <div class="photo-row" style="margin-top:1rem;">
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1441974231531-c6227db76b6e?auto=format&fit=crop&w=560&q=72" alt="park walk" onerror="this.style.display='none'"/>
+        <div class="photo-cap">公园散步 gōngyuán sànbù<small>when the weather is good</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&w=560&q=72" alt="reading at home" onerror="this.style.display='none'"/>
+        <div class="photo-cap">在家看书 zài jiā kànshū<small>when it rains</small></div>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-title">Your turn · 试一试</div>
+      <div class="practice-item">
+        <div class="practice-num">1</div>
+        <div class="practice-text"><span class="zh">天气冷的时候，你喜欢做什么？</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">2</div>
+        <div class="practice-text"><span class="zh">心情不好的时候，你做什么？</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">3</div>
+        <div class="practice-text"><span class="zh">周末的时候，你喜欢去哪里？</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥ GRAMMAR 3 — 又...又... + 看起来 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14h16M14 6v16" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" stroke-linecap="round"/>
+        <circle cx="14" cy="14" r="5" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+      <div class="sb-label">G3 · 又/看</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 3 · 语法三</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-bottom:1.25rem;">
+      <div class="grammar-strip" style="margin:0;">
+        <div class="gs-part colored gold"><div class="gs-zh">又</div><div class="gs-py">yòu</div></div>
+        <div class="gs-part"><div class="gs-plain-zh">adj</div><div class="gs-plain-py">adj</div></div>
+        <div class="gs-part colored gold"><div class="gs-zh">又</div><div class="gs-py">yòu</div></div>
+        <div class="gs-part"><div class="gs-plain-zh">adj</div><div class="gs-plain-py">adj</div></div>
+        <div class="gs-en">both … and …</div>
+      </div>
+      <div class="grammar-strip" style="margin:0;">
+        <div class="gs-part colored gold"><div class="gs-zh">看起来</div><div class="gs-py">kàn qǐ lái</div></div>
+        <div class="gs-part"><div class="gs-plain-zh">+ adj</div><div class="gs-plain-py">adjective</div></div>
+        <div class="gs-en">looks + adj</div>
+      </div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="190" fill="#fffff0" rx="8"/>
+        <!-- Tall & handsome -->
+        <ellipse cx="95" cy="150" rx="22" ry="10" fill="#b8d0a8"/>
+        <rect x="84" y="75" width="22" height="70" fill="#74c69d" rx="10"/>
+        <circle cx="95" cy="58" r="16" fill="#d4a97a"/>
+        <circle cx="89" cy="54" r="2.5" fill="#333"/><circle cx="101" cy="54" r="2.5" fill="#333"/>
+        <path d="M91 64q4 2 8 0" fill="none" stroke="#333" stroke-width="1.2"/>
+        <text x="95" y="178" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#7b5a1a" font-weight="700">他又高又好看</text>
+
+        <!-- Overcast & cold -->
+        <ellipse cx="280" cy="70" rx="42" ry="22" fill="#8aaec0"/>
+        <path d="M262 94l-8 16M280 94l-6 18M298 94l-3 14" stroke="#4a9ec7" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="280" y="118" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="12" fill="#1d5f8a" font-weight="700">又阴又冷</text>
+        <text x="280" y="178" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#7b5a1a" font-weight="700">今天天气又阴又冷</text>
+
+        <!-- Cheap & tasty -->
+        <ellipse cx="460" cy="150" rx="30" ry="10" fill="#e8d5b5"/>
+        <path d="M445 142 Q460 126 475 142" fill="#f6d77a" stroke="#d69e2e" stroke-width="2"/>
+        <circle cx="453" cy="135" r="4" fill="#e76f51"/><circle cx="467" cy="135" r="4" fill="#e76f51"/>
+        <text x="460" y="178" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#7b5a1a" font-weight="700">这个菜又便宜又好吃</text>
+
+        <!-- Looks unhappy -->
+        <circle cx="610" cy="70" r="24" fill="#8aaec0"/>
+        <circle cx="601" cy="64" r="3" fill="#fff"/><circle cx="619" cy="64" r="3" fill="#fff"/>
+        <path d="M599 80 Q610 72 621 80" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/>
+        <text x="610" y="112" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="12" fill="#1d5f8a" font-weight="700">看起来不开心</text>
+        <text x="610" y="178" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#7b5a1a" font-weight="700">难怪你看起来不开心</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex" style="border-left-color:var(--gold-mid);">
+        <div class="ex-zh">这个菜<span class="key-g">又</span>便宜<span class="key-g">又</span>好吃。</div>
+        <div class="ex-py">Zhè ge cài yòu piányi yòu hǎochī.</div>
+        <div class="ex-en">This dish is both cheap and tasty.</div>
+      </div>
+      <div class="ex" style="border-left-color:var(--gold-mid);">
+        <div class="ex-zh">我这边今天<span class="key-g">又</span>阴<span class="key-g">又</span>冷，天空是灰色的。</div>
+        <div class="ex-py">Wǒ zhèbiān jīntiān tiānqì yòu yīn yòu lěng, tiānkōng shì huīsè de.</div>
+        <div class="ex-en">Here today it's both overcast and cold; the sky is grey.</div>
+      </div>
+      <div class="ex" style="border-left-color:var(--gold-mid);">
+        <div class="ex-zh">她<span class="key-g">看起来</span>很高兴。/ 难怪你<span class="key-g">看起来</span>不开心。</div>
+        <div class="ex-py">Tā kàn qǐlái hěn gāoxìng. / Nánguài nǐ kàn qǐlái bù kāixīn.</div>
+        <div class="ex-en">She looks very happy. / No wonder you look unhappy.</div>
+      </div>
+    </div>
+    <div class="photo-wide">
+      <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?auto=format&fit=crop&w=900&q=72" alt="tasty food" onerror="this.style.display='none'"/>
+      <div class="photo-cap">又便宜又好吃 · 看起来很好吃</div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-title">Your turn · 试一试</div>
+      <div class="practice-item">
+        <div class="practice-num">1</div>
+        <div class="practice-text">Describe the weather today with <span class="zh">又…又…</span></div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">2</div>
+        <div class="practice-text">Describe your teacher / friend with <span class="zh">看起来</span> + adjective.</div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">3</div>
+        <div class="practice-text">Make a sentence: <span class="zh">这个东西看起来怎么样？</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑦ DIALOGUE -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar" style="background:#3a5a40;">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 20h16M6 20v-8c0-3.3 2.7-6 6-6h4c3.3 0 6 2.7 6 6v8" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <circle cx="11" cy="14" r="1.5" fill="rgba(255,255,255,0.85)"/><circle cx="17" cy="14" r="1.5" fill="rgba(255,255,255,0.85)"/>
+      </svg>
+      <div class="sb-label">dialogue</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Dialogue · 对话</div>
+    <h2>你那边今天的天气怎么样？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ nàbiān jīntiān de tiānqì zěnme yàng?</span></h2>
+
+    <div class="photo-wide">
+      <img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=900&q=72" alt="beach and city" onerror="this.style.display='none'"/>
+      <div class="photo-cap">这边 · 那边 · 天气大不同</div>
+    </div>
+
+    <div class="dial-grid">
+      <div class="dial-a">
+        <div class="dial-label">A — 问 Ask</div>
+        <div class="dial-zh">你那边今天的天气怎么样？</div>
+        <div class="dial-py">Nǐ nàbiān jīntiān de tiānqì zěnme yàng?</div>
+        <div class="dial-en">How's the weather over there today?</div>
+      </div>
+      <div class="dial-b">
+        <div class="dial-label">B — 答 Answer</div>
+        <div class="dial-zh">我这边天气很暖和，不太冷也不太热。</div>
+        <div class="dial-py">Wǒ zhèbiān de tiānqì hěn nuǎnhuo, bú tài lěng yě bú tài rè.</div>
+        <div class="dial-en">Here it's warm — not too cold or too hot.</div>
+      </div>
+      <div class="dial-a">
+        <div class="dial-label">A — 问</div>
+        <div class="dial-zh">天气好的时候，你喜欢做什么？</div>
+        <div class="dial-py">Tiānqì hǎo de shíhòu, nǐ xǐhuan zuò shénme?</div>
+        <div class="dial-en">What do you like to do when the weather is good?</div>
+      </div>
+      <div class="dial-b">
+        <div class="dial-label">B — 答</div>
+        <div class="dial-zh">我喜欢去公园散步，去海边游泳，出去看风景。</div>
+        <div class="dial-py">Wǒ xǐhuan qù gōngyuán sànbù, qù hǎibiān yóuyǒng, chūqù kàn fēngjǐng.</div>
+        <div class="dial-en">I like walking in the park, swimming at the beach, and enjoying the scenery.</div>
+      </div>
+      <div class="dial-a">
+        <div class="dial-label">A — 问</div>
+        <div class="dial-zh">你那边的天气呢？</div>
+        <div class="dial-py">Nǐ nàbiān de tiānqì ne?</div>
+        <div class="dial-en">What about the weather over there?</div>
+      </div>
+      <div class="dial-b">
+        <div class="dial-label">B — 答</div>
+        <div class="dial-zh">我这边今天天气非常冷，没有太阳，下了一点雨，又阴又冷。</div>
+        <div class="dial-py">Wǒ zhèbiān jīntiān tiānqì fēicháng lěng, méiyǒu tàiyáng, xià le yìdiǎn yǔ, yòu yīn yòu lěng.</div>
+        <div class="dial-en">Here it's very cold today, no sun, a little rain — both overcast and cold.</div>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.7rem;margin-top:1rem;">
+      <div style="background:var(--cream);border-radius:9px;padding:0.85rem 1rem;">
+        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--jade);margin-bottom:0.5rem;">Useful phrases 常用语</div>
+        <div class="chip-row" style="margin:0;gap:0.35rem;">
+          <div class="chip"><span class="ch">不太冷也不太热</span></div>
+          <div class="chip"><span class="ch">没有太阳</span></div>
+          <div class="chip"><span class="ch">下了一点雨</span></div>
+          <div class="chip"><span class="ch">天空很蓝</span></div>
+        </div>
+      </div>
+      <div style="background:var(--cream);border-radius:9px;padding:0.85rem 1rem;">
+        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--jade);margin-bottom:0.5rem;">Extension 扩展</div>
+        <div class="chip-row" style="margin:0;gap:0.35rem;">
+          <div class="chip"><span class="ch">适合出去玩</span></div>
+          <div class="chip"><span class="ch">出去看风景</span></div>
+          <div class="chip"><span class="ch">在家里看书</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="practice">
+      <div class="practice-title">Role play · 角色扮演</div>
+      <div class="practice-item">
+        <div class="practice-num">A</div>
+        <div class="practice-text">You live in a warm, sunny place. Ask about your partner's weather and share your plans.</div>
+      </div>
+      <div class="practice-item">
+        <div class="practice-num">B</div>
+        <div class="practice-text">You live in a cold, rainy place. Describe it and say how it makes you feel.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧ CLOSING -->
+<div class="slide slide-close">
+  <div class="close-inner" style="min-height:1123px;align-items:center;">
+    <div class="close-zh">再见</div>
+    <div class="close-detail">
+      <div class="py">ZÀI JIÀN</div>
+      <div class="en">See you next class!</div>
+      <div class="sub">HSK 2–3 · Mood &amp; Weather · 心情和天气</div>
+    </div>
+  </div>
+</div>
+
+
+<!-- ⑧ WEATHER TEST -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">test 1/4</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Weather · 天气</div>
+    <h2>天气词 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Tiānqì cí</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-1" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type the Chinese word.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">'sunny / clear' 用中文怎么说？<span class="py">How do you say 'sunny / clear'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="晴..." data-answer="晴|qíng|qing|晴天|qíngtiān" data-reveal="晴 / 晴天 <span class=&quot;py&quot;>qíng / qíngtiān · sunny</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'snow / snowy' 用中文怎么说？<span class="py">How do you say 'snow / snowy'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="下雪..." data-answer="下雪|xià xuě|xia xue|雪|xuě" data-reveal="下雪 <span class=&quot;py&quot;>xià xuě · snow / snowy</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'warm' 用中文怎么说？<span class="py">How do you say 'warm'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="暖和..." data-answer="暖和|nuǎn huo|nuan huo" data-reveal="暖和 <span class=&quot;py&quot;>nuǎn huo · warm</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑨ MOOD TEST -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="9" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <circle cx="11" cy="13" r="1.5" fill="rgba(255,255,255,0.85)"/>
+        <circle cx="17" cy="13" r="1.5" fill="rgba(255,255,255,0.85)"/>
+        <path d="M10 17 Q14 21 18 17" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">test 2/4</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Mood · 心情</div>
+    <h2>心情词 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Xīnqíng cí</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-2" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type the Chinese word.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">'happy' 用中文怎么说？<span class="py">How do you say 'happy'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="开心..." data-answer="开心|kāi xīn|kai xin" data-reveal="开心 <span class=&quot;py&quot;>kāi xīn · happy</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'down / low' 用中文怎么说？<span class="py">How do you say 'down / low'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="低落..." data-answer="低落|dī luò|di luo" data-reveal="低落 <span class=&quot;py&quot;>dī luò · down / low</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'mood / feeling' 用中文怎么说？<span class="py">How do you say 'mood / feeling'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="心情..." data-answer="心情|xīn qíng|xin qing" data-reveal="心情 <span class=&quot;py&quot;>xīn qíng · mood</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ GRAMMAR TEST -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 14 Q14 8 21 14 L19 23 Q14 26 9 23 Z" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <line x1="10" y1="16" x2="18" y2="16" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+      </svg>
+      <div class="sb-label">test 3/4</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Grammar · 语法</div>
+    <h2>让 / 的时候 / 看起来 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">ràng / de shíhòu / kàn qǐlái</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-3" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Fill in the blank.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">晴天____我的心情很好。 <span class="py">Qíngtiān ___ wǒ de xīnqíng hěn hǎo.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="让..." data-answer="让|ràng|rang|使" data-reveal="让 <span class=&quot;py&quot;>ràng · make / let</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">天气好的时候，我喜欢去公园____。 <span class="py">Tiānqì hǎo de shíhòu, wǒ xǐhuan qù gōngyuán ___.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="散步..." data-answer="散步|sàn bù|san bu" data-reveal="散步 <span class=&quot;py&quot;>sàn bù · take a walk</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">你____很开心！ <span class="py">Nǐ ___ hěn kāixīn!</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="看起来..." data-answer="看起来|kàn qǐ lái|kan qi lai" data-reveal="看起来 <span class=&quot;py&quot;>kàn qǐlái · look</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑪ FINAL TEST -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">final test</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Final Challenge · 综合挑战</div>
+    <h2>心情和天气大挑战 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Mood &amp; Weather Challenge</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="final" data-total="4">✅ <span class="score-correct">0</span>/<span class="score-total">4</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Answer in Chinese, pinyin, or English.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">'cloudy' 用中文怎么说？<span class="py">How do you say 'cloudy'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="阴..." data-answer="阴|yīn|yin|阴天|yīntiān" data-reveal="阴 / 阴天 <span class=&quot;py&quot;>yīn / yīntiān · cloudy</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'rain / rainy' 用中文怎么说？<span class="py">How do you say 'rain / rainy'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="下雨..." data-answer="下雨|xià yǔ|xia yu|雨|yǔ" data-reveal="下雨 <span class=&quot;py&quot;>xià yǔ · rain / rainy</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">今天天气____阴____冷。 <span class="py">Jīntiān tiānqì ___ yīn ___ lěng.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="又..." data-answer="又|yòu|you" data-reveal="又…又… <span class=&quot;py&quot;>yòu…yòu… · both…and…</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'when…' 用中文怎么说？<span class="py">How do you say 'when…'?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="的时候..." data-answer="的时候|de shí hòu|de shi hou" data-reveal="的时候 <span class=&quot;py&quot;>de shíhòu · when…</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- LESSON REPORT -->
+<div class="slide" id="lesson-report-slide" style="grid-template-columns:64px 1fr; display:none;">
+  <div class="sidebar dark">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 21 L5 13 M12 21 L12 8 M19 21 L19 16 M23 21 L23 11" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">your report</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Lesson Report · 学习报告</div>
+    <h2>你的学习报告 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ de xuéxí bàogào.</span></h2>
+    <div id="report-score" class="report-score"></div>
+    <div id="report-groups" class="report-groups"></div>
+    <div id="report-missed"></div>
+  </div>
+</div>
+<script>
+(function () {
+  var lessonId = document.body.dataset.lessonId || '';
+  var allInputs = Array.prototype.slice.call(document.querySelectorAll('.quiz-input'));
+  var reportShown = false;
+  var wrongAnswers = [];
+
+  var GROUP_NAMES = {
+    'group-1': 'Weather · 天气',
+    'group-2': 'Mood · 心情',
+    'group-3': 'Grammar · 语法',
+    'final': 'Final Test · 综合挑战'
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function logAttempt(payload) {
+    if (!lessonId) return;
+    fetch('/api/lessons/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(function () {});
+  }
+
+  function logCompletion(score, total, groupList) {
+    if (!lessonId) return;
+    fetch('/api/lessons/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lessonId: lessonId, score: score, total: total, groups: groupList }),
+    }).catch(function () {});
+  }
+
+  function buildReport() {
+    var groups = {};
+    document.querySelectorAll('[data-quiz-score]').forEach(function (box) {
+      var groupId = box.dataset.group || 'default';
+      groups[groupId] = {
+        groupId: groupId,
+        score: Number(box.querySelector('.score-correct').textContent),
+        total: Number(box.dataset.total),
+      };
+    });
+    var groupList = Object.keys(groups).map(function (k) { return groups[k]; });
+    var score = groupList.reduce(function (s, g) { return s + g.score; }, 0);
+    var total = groupList.reduce(function (s, g) { return s + g.total; }, 0);
+    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+
+    var scoreBox = document.getElementById('report-score');
+    if (scoreBox) {
+      scoreBox.innerHTML =
+        '<span class="big">' + score + '/' + total + '</span>' +
+        '<span class="pct">' + pct + '%</span>';
+    }
+
+    var groupsBox = document.getElementById('report-groups');
+    if (groupsBox) {
+      groupsBox.innerHTML = groupList.map(function (g) {
+        var p = g.total > 0 ? (g.score / g.total) * 100 : 0;
+        var weak = p < 100 ? ' weak' : '';
+        return '<div class="report-group-row">' +
+          '<div class="report-group-name">' + (GROUP_NAMES[g.groupId] || g.groupId) + '</div>' +
+          '<div class="report-group-bar"><div class="report-group-fill' + weak + '" style="width:' + p + '%"></div></div>' +
+          '<div class="report-group-score">' + g.score + '/' + g.total + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    var missedBox = document.getElementById('report-missed');
+    if (missedBox) {
+      if (wrongAnswers.length === 0) {
+        missedBox.innerHTML = '<div class="report-perfect">完美！Perfect score — every answer right. 🎉</div>';
+      } else {
+        missedBox.innerHTML = '<div class="report-missed"><h4>Words &amp; phrases to review · 需要复习的词</h4>' +
+          wrongAnswers.map(function (w) {
+            return '<div class="report-missed-item">' +
+              '<span class="report-missed-q">' + escapeHtml(w.questionText) + '</span>' +
+              '<span class="report-missed-you">' + escapeHtml(w.userAnswer || '(blank)') + '</span>' +
+              '<span class="report-missed-correct">' + w.reveal + '</span>' +
+              '</div>';
+          }).join('') +
+          '</div>';
+      }
+    }
+
+    var slide = document.getElementById('lesson-report-slide');
+    if (slide) {
+      slide.style.display = 'grid';
+      slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    logCompletion(score, total, groupList);
+  }
+
+  function maybeShowReport() {
+    if (reportShown) return;
+    var allDone = allInputs.every(function (i) { return i.disabled; });
+    if (!allDone) return;
+    reportShown = true;
+    buildReport();
+  }
+
+  allInputs.forEach(function (input, globalIndex) {
+    var row = input.closest('.quiz-game');
+    var feedback = row.querySelector('.quiz-feedback');
+    var checkBtn = row.querySelector('.quiz-check-btn');
+    var answers = (input.dataset.answer || '').split('|').map(function (a) {
+      return a.trim().toLowerCase();
+    });
+    var reveal = input.dataset.reveal || '';
+    var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+    var questionText = input.closest('.phone-block') ? input.closest('.phone-block').querySelector('.quiz-q').textContent.trim() : '';
+
+    function check() {
+      if (input.disabled) return;
+      var val = input.value.trim().toLowerCase();
+      if (!val) return;
+      var correct = answers.indexOf(val) !== -1;
+
+      feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+      feedback.innerHTML = (correct ? '对! Duì! Right!' : '错! Cuò! Wrong!') +
+        (reveal ? '<span class="reveal">' + reveal + '</span>' : '');
+
+      input.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+      if (checkBtn) {
+        checkBtn.classList.add(correct ? 'correct' : 'wrong');
+        checkBtn.textContent = correct ? '✓' : '✗';
+        checkBtn.disabled = true;
+      }
+      input.disabled = true;
+
+      if (correct && scoreBox) {
+        var counter = scoreBox.querySelector('.score-correct');
+        counter.textContent = String(Number(counter.textContent) + 1);
+      }
+      if (!correct) {
+        wrongAnswers.push({
+          questionText: questionText,
+          userAnswer: input.value.trim(),
+          reveal: reveal,
+        });
+      }
+
+      logAttempt({
+        lessonId: lessonId,
+        groupId: scoreBox ? scoreBox.dataset.group : 'default',
+        questionIndex: globalIndex,
+        questionText: questionText,
+        userAnswer: input.value.trim(),
+        correct: correct,
+      });
+      maybeShowReport();
+    }
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') check();
+    });
+    if (checkBtn) checkBtn.addEventListener('click', check);
+  });
+})();
+</script>
+</body>
+</html>

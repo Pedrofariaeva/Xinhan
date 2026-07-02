@@ -12,7 +12,50 @@ async function getUser() {
   return user
 }
 
-export default async function TrialLessonPage() {
+const LESSONS = [
+  {
+    id: 'banjia',
+    titleZh: '搬家',
+    titlePy: 'Bānjiā',
+    titleEn: 'Moving House',
+    level: 'HSK 2–3',
+    icon: '🏠',
+    color: '#d8f3dc',
+    desc: 'Learn vocabulary and sentences for moving house and describing a new home.',
+  },
+  {
+    id: 'mood-weather',
+    titleZh: '心情和天气',
+    titlePy: 'Xīnqíng hé Tiānqì',
+    titleEn: 'Mood & Weather',
+    level: 'HSK 2–3',
+    icon: '🌤️',
+    color: '#e8f4fd',
+    desc: 'Talk about how weather affects the way you feel.',
+  },
+  {
+    id: 'many-ways',
+    titleZh: '一句话，几种说法？',
+    titlePy: 'Yí Jù Huà, Jǐ Zhǒng Shuōfǎ?',
+    titleEn: 'One Idea, Many Sentences',
+    level: 'HSK 3',
+    icon: '🗣️',
+    color: '#fff5eb',
+    desc: 'Discover how native speakers say the same thing in many different ways.',
+  },
+  {
+    id: 'mood-weather-v2',
+    titleZh: '心情和天气',
+    titlePy: 'Xīnqíng hé Tiānqì v2',
+    titleEn: 'Mood & Weather (new version)',
+    level: 'HSK 2–3',
+    icon: '☀️',
+    color: '#e8f4fd',
+    desc: 'A fresh take on weather and mood with drawings and pictures.',
+  },
+]
+
+export default async function TrialLessonHubPage() {
   const user = await getUser()
 
   return (
@@ -30,22 +73,37 @@ export default async function TrialLessonPage() {
       </div>
 
       <div className="dashboard-body">
-        <div className="dashboard-welcome">点咖啡 · Ordering Coffee 👋 {user.name.split(' ')[0]}</div>
+        <div className="dashboard-welcome">Free Trial Lessons 👋 {user.name.split(' ')[0]}</div>
         <div className="dashboard-sub">
-          A free trial lesson — vocabulary, dialogue, and a real-screenshot interface quiz from the Luckin Coffee app.
+          Pick a topic below. Each lesson ends with a short quiz and saves your score so you can track progress.
         </div>
 
-        <iframe
-          src="/trial-lesson/index.html"
-          title="点咖啡 — Ordering Coffee trial lesson"
-          style={{
-            width: '100%',
-            height: '85vh',
-            border: '1px solid #e5e0d8',
-            borderRadius: '12px',
-            marginTop: '1.5rem',
-          }}
-        />
+        <div className="dashboard-grid">
+          {LESSONS.map((lesson) => (
+            <Link
+              key={lesson.id}
+              href={`/trial-lesson/${lesson.id}`}
+              style={{ textDecoration: 'none', color: 'inherit' }}
+            >
+              <div className="dash-card" style={{ cursor: 'pointer', height: '100%' }}>
+                <div
+                  className="dash-card-icon"
+                  style={{ background: lesson.color }}
+                >
+                  {lesson.icon}
+                </div>
+                <div style={{ fontSize: '12px', color: '#7a7a7a', marginBottom: '6px' }}>
+                  {lesson.level}
+                </div>
+                <h3>{lesson.titleZh}</h3>
+                <p style={{ marginBottom: '4px' }}>{lesson.titleEn}</p>
+                <p style={{ fontSize: '13px', color: '#b7791f' }}>{lesson.titlePy}</p>
+                <p>{lesson.desc}</p>
+                <span className="dash-card-link">Start lesson →</span>
+              </div>
+            </Link>
+          ))}
+        </div>
       </div>
     </div>
   )

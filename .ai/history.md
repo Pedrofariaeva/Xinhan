@@ -79,3 +79,30 @@
 - **Build status:** ✅ Clean build — 0 errors. All 9 routes compile correctly.
 - **Commit:** `fe8608e` on `stage` branch
 - **Handoff to Kimi:** Vercel env vars need `JWT_SECRET` added via dashboard (it's only in `.env.local` locally). Pedro should add it at vercel.com → Xinhan project → Settings → Environment Variables.
+
+
+## 2026-07-02 — Kimi (Maestro) — Trial-Lesson Hub
+
+- **What:** Built an online trial-lesson hub at `/trial-lesson` with a selector page and 4 interactive lesson decks.
+- **Why:** Pedro wants students to preview lesson materials, take quizzes, and have scores saved to MongoDB.
+- **What changed:**
+  - Created `app/trial-lesson/page.tsx` — JWT-gated selector hub showing 4 lesson cards.
+  - Created `app/trial-lesson/[lessonId]/page.tsx` — JWT-gated lesson player that renders each static deck in an iframe.
+  - Created/updated 4 interactive decks under `public/trial-lesson/`:
+    - `banjia/` — HSK 2–3 搬家 Moving House (adapted from `uncoveredDocs/HSKideas/13 banjia/`)
+    - `mood-weather/` — HSK 2–3 心情和天气 Mood & Weather v1 (adapted from `uncoveredDocs/HSKideas/14 Mood and Weather/`)
+    - `many-ways/` — HSK 3 一句话，几种说法？ One Idea, Many Sentences (copied from `uncoveredDocs/HSKideas/15 Many Ways to Say It/`)
+    - `mood-weather-v2/` — HSK 2–3 心情和天气 Mood & Weather v2 (copied from `uncoveredDocs/HSKideas/16 Mood and Weather/`)
+  - Each deck includes:
+    - Cover, warm-up, vocabulary, grammar, dialogue/review slides
+    - Interactive quiz blocks with `data-quiz-score` per group
+    - Universal JS engine that posts every attempt to `/api/lessons/attempt` and final score to `/api/lessons/complete`
+    - Auto-generated lesson report slide showing total score, per-group bars, and missed items
+  - Added `build_trial_decks.py` to transform static source decks into interactive trial-lesson decks.
+- **API integration:**
+  - `POST /api/lessons/attempt` records each answer (userId, lessonId, groupId, question, answer, correct).
+  - `POST /api/lessons/complete` upserts final grade (score, total, percentage, groups) into `lesson_results`.
+- **Validation:**
+  - `npm run build` passes successfully.
+  - `npm run lint` still prompts for ESLint configuration (pre-existing issue; build is unaffected).
+- **Status:** Done. Files saved locally; not yet committed or pushed.
