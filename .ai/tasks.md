@@ -6,7 +6,7 @@
 - Website front page + auth pages built and deployed to stage.xinhan.org (2026-05-24)
 - Awaiting Pedro's review on stage.xinhan.org
 - Teaching materials audited; full catalog in `CONTENT_AUDIT.md`
-- Trial-lesson hub live at `/trial-lesson` with progressive HSK 1–6 cycle + extra trial lessons (2026-07-02)
+- Trial-lesson hub live at `/trial-lesson` with 5 existing lessons arranged as a progressive trial cycle (2026-07-02)
 
 ---
 
@@ -14,7 +14,7 @@
 
 - [ ] Get Pedro's review on front page design at stage.xinhan.org
 - [ ] Get Pedro's review on sign-in / sign-up flow at stage.xinhan.org
-- [ ] Get Pedro's review on trial-lesson hub at `/trial-lesson`
+- [ ] Get Pedro's review on trial-lesson hub at `/trial-lesson` (now shows 5 lessons in progressive order)
 - [ ] Decide whether to fix ESLint setup (`npm run lint` prompts for config) or commit as-is
 - [ ] Set up proper build tooling if needed (ask Pedro first)
 - [ ] Clean up duplicate files across docs1/2/3 (ask Pedro first)
@@ -43,6 +43,8 @@
 - [x] 2026-07-02 — Deployed 4 interactive trial lesson decks under `public/trial-lesson/`: `banjia`, `mood-weather`, `many-ways`, `mood-weather-v2`
 - [x] 2026-07-02 — Restored original Luckin Coffee trial lesson at `/trial-lesson/luckin-coffee`
 - [x] 2026-07-02 — Created progressive HSK 1–6 trial lesson cycle: `hsk-1` to `hsk-6` with level-appropriate vocabulary and grammar
+- [x] 2026-07-02 — Reverted generic HSK 1–6 cycle; hub now uses the 5 existing lessons (`luckin-coffee`, `mood-weather`, `banjia`, `many-ways`, `mood-weather-v2`) in progressive order
+- [x] 2026-07-02 — Added `.venv/` to `.gitignore` and removed virtualenv files from the repo
 - [x] 2026-07-02 — Wired all trial lesson quizzes to `/api/lessons/attempt` and `/api/lessons/complete` for score persistence
 
 ---
@@ -69,4 +71,8 @@
 - [2026-07-02] **Kimi (Maestro)** — Restored Luckin Coffee lesson + built progressive HSK 1–6 cycle
   - Files: `public/trial-lesson/luckin-coffee/index.html`, `public/trial-lesson/hsk-1/index.html` … `public/trial-lesson/hsk-6/index.html`, `build_hsk_cycle.py`, `app/trial-lesson/page.tsx`, `app/trial-lesson/[lessonId]/page.tsx`
   - Features: original Luckin Coffee lesson moved to `/trial-lesson/luckin-coffee`; 6 new progressive HSK decks with level-appropriate vocab/grammar/quizzes; selector split into "Progressive HSK Cycle" and "More Trial Lessons"
-  - Status: done — `npm run build` passes; not yet pushed
+  - Status: superseded — generic HSK 1–6 decks and `build_hsk_cycle.py` were removed after clarifying Pedro wants the 5 existing lessons arranged progressively
+- [2026-07-02] **Kimi (Maestro)** — Finalized trial-lesson hub with 5 existing lessons in progressive order
+  - Files: `app/trial-lesson/page.tsx`, `app/trial-lesson/[lessonId]/page.tsx`, `.gitignore`
+  - Features: hub lists `luckin-coffee` → `mood-weather` → `banjia` → `many-ways` → `mood-weather-v2` as Step 1–5; player recognizes all 5 IDs; `.venv/` ignored
+  - Status: done — `npm run build` passes; pushed to `stage`

@@ -98,33 +98,24 @@
     - Interactive quiz blocks with `data-quiz-score` per group
     - Universal JS engine that posts every attempt to `/api/lessons/attempt` and final score to `/api/lessons/complete`
     - Auto-generated lesson report slide showing total score, per-group bars, and missed items
-  - Added `build_trial_decks.py` to transform static source decks into interactive trial-lesson decks.
-- **API integration:**
-  - `POST /api/lessons/attempt` records each answer (userId, lessonId, groupId, question, answer, correct).
-  - `POST /api/lessons/complete` upserts final grade (score, total, percentage, groups) into `lesson_results`.
-- **Validation:**
-  - `npm run build` passes successfully.
-  - `npm run lint` still prompts for ESLint configuration (pre-existing issue; build is unaffected).
-- **Status:** Done. Files saved locally; not yet committed or pushed.
+- **Build status:** ✅ Clean build — `npm run build` passes. `npm run lint` still prompts for ESLint config (pre-existing).
+- **Commit:** `da635cf` on `stage` branch.
 
+## 2026-07-02 — Kimi (Maestro) — Trial-Lesson Progressive 5-Lesson Cycle
 
-## 2026-07-02 — Kimi (Maestro) — Progressive HSK 1–6 Cycle + Luckin Coffee Restore
-
-- **What:** Restored the original Luckin Coffee trial lesson and created a full progressive HSK 1–6 lesson cycle.
-- **Why:** Pedro wanted the coffee lesson back after the App Router page replaced the static `/trial-lesson/index.html`, and he asked for lessons spanning all 6 HSK levels with vocabulary matched to each level.
+- **What:** Reorganized the trial-lesson hub to present the 5 existing lessons as a progressive cycle instead of generating 6 new generic HSK 1–6 lessons.
+- **Why:** After restoring Luckin Coffee and creating generic HSK 1–6 decks, it became clear Pedro wants the existing real lesson materials arranged by difficulty, not synthetic level decks.
 - **What changed:**
-  - Moved original coffee lesson: `public/trial-lesson/index.html` → `public/trial-lesson/luckin-coffee/index.html` (content unchanged; `data-lesson-id="luckin-coffee-ordering"`).
-  - Created `build_hsk_cycle.py` generator and 6 new interactive decks under `public/trial-lesson/hsk-1/` … `hsk-6/`:
-    - **HSK 1:** 你好！ — Greetings & Self-introduction
-    - **HSK 2:** 我要一杯咖啡 — Ordering Food & Drink
-    - **HSK 3:** 你的爱好是什么？ — Hobbies & Weekend Plans
-    - **HSK 4:** 旅行计划 — Travel Plans
-    - **HSK 5:** 职业与发展 — Career & Development
-    - **HSK 6:** 科技与社会 — Technology & Society
-  - Each HSK deck uses only level-appropriate core vocabulary, 1–2 grammar patterns, example sentences, a practice prompt, 3 quiz blocks (vocab / grammar / final), and an auto-generated report slide.
-  - Updated `app/trial-lesson/page.tsx` to show two sections: "Progressive HSK Cycle" and "More Trial Lessons".
-  - Updated `app/trial-lesson/[lessonId]/page.tsx` to recognize all 11 lesson IDs.
-- **Validation:**
-  - `npm run build` passes successfully.
-  - `npm run lint` still prompts for ESLint configuration (pre-existing).
-- **Status:** Done locally; ready to push to `stage`.
+  - Removed generic HSK 1–6 decks (`public/trial-lesson/hsk-1/` … `hsk-6/`) and generator script `build_hsk_cycle.py`
+  - Updated `app/trial-lesson/page.tsx` to list the 5 existing lessons in progressive order:
+    1. `luckin-coffee` — 点咖啡 / Ordering Coffee
+    2. `mood-weather` — 心情和天气 / Mood & Weather
+    3. `banjia` — 搬家 / Moving House
+    4. `many-ways` — 一句话，几种说法？ / One Idea, Many Sentences
+    5. `mood-weather-v2` — 心情和天气 / Mood & Weather (new version)
+  - Each card now shows "Step N · HSK level"
+  - Updated `app/trial-lesson/[lessonId]/page.tsx` to recognize all 5 IDs
+  - Added `.venv/` to `.gitignore` and removed accidentally-committed virtualenv files from the repo
+- **Build status:** ✅ Clean build — `npm run build` passes. `npm run lint` still prompts for ESLint config (pre-existing).
+- **Commits:** `1c991c0`, `77b6cb0` on `stage` branch; pushed to origin.
+- **Handoff to Pedro:** Ready for review at `stage.xinhan.org/trial-lesson`.
