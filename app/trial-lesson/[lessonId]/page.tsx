@@ -13,17 +13,9 @@ async function getUser() {
 }
 
 const LESSONS: Record<string, { titleZh: string; titleEn: string; level: string }> = {
-  // Progressive HSK cycle
-  'hsk-1': { titleZh: '你好！', titleEn: 'Hello!', level: 'HSK 1' },
-  'hsk-2': { titleZh: '我要一杯咖啡', titleEn: 'I Want a Cup of Coffee', level: 'HSK 2' },
-  'hsk-3': { titleZh: '你的爱好是什么？', titleEn: 'What Are Your Hobbies?', level: 'HSK 3' },
-  'hsk-4': { titleZh: '旅行计划', titleEn: 'Travel Plans', level: 'HSK 4' },
-  'hsk-5': { titleZh: '职业与发展', titleEn: 'Career & Development', level: 'HSK 5' },
-  'hsk-6': { titleZh: '科技与社会', titleEn: 'Technology & Society', level: 'HSK 6' },
-  // Extra trial lessons
   'luckin-coffee': { titleZh: '点咖啡', titleEn: 'Ordering Coffee', level: 'HSK 2–3' },
-  banjia: { titleZh: '搬家', titleEn: 'Moving House', level: 'HSK 2–3' },
   'mood-weather': { titleZh: '心情和天气', titleEn: 'Mood & Weather', level: 'HSK 2–3' },
+  banjia: { titleZh: '搬家', titleEn: 'Moving House', level: 'HSK 2–3' },
   'many-ways': { titleZh: '一句话，几种说法？', titleEn: 'One Idea, Many Sentences', level: 'HSK 3' },
   'mood-weather-v2': { titleZh: '心情和天气', titleEn: 'Mood & Weather (new version)', level: 'HSK 2–3' },
 }

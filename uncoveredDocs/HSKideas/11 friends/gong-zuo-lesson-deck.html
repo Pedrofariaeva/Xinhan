@@ -1,0 +1,755 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>工作 — Work · Xinhan Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --jade: #2d6a4f; --jade-mid: #40916c; --jade-light: #74c69d; --jade-pale: #d8f3dc;
+  --gold: #b7791f; --gold-mid: #d69e2e; --gold-pale: #fffff0;
+  --rust: #9b2226; --rust-light: #e76f51; --rust-pale: #fff0ee;
+  --sky: #1d5f8a; --sky-pale: #e8f4fd;
+  --cream: #faf7f2; --cream-dark: #ede8df;
+  --ink: #1a1a1a; --ink-2: #3d3d3d; --ink-3: #7a7a7a;
+  --white: #fff;
+}
+body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink); padding: 2.5rem 1rem 5rem; }
+
+.deck { max-width: 940px; margin: 0 auto; }
+.deck-brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--jade); }
+.brand-sub  { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+.slide { display: grid; background: var(--white); overflow: hidden; margin-bottom: 3px; }
+.slide:first-of-type { border-radius: 14px 14px 0 0; }
+.slide:last-of-type  { border-radius: 0 0 14px 14px; }
+
+.sidebar {
+  display: flex; flex-direction: column;
+  padding: 1.5rem 0.65rem 1.5rem 0.9rem;
+  background: var(--jade);
+  gap: 1.8rem; min-width: 64px;
+  position: relative;
+}
+.sidebar::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+.sb-icon { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.sb-icon svg { width: 28px; height: 28px; }
+.sb-label { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.2; }
+.sb-prog { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: auto; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: #d69e2e; }
+.dot.done   { background: var(--jade-light); }
+.sidebar.rust  { background: var(--rust); }
+.sidebar.sky   { background: var(--sky); }
+.sidebar.gold  { background: #7b5a1a; }
+.sidebar.cream { background: var(--cream-dark); }
+.sidebar.cream::after { display:none; }
+.sidebar.cream .sb-label { color: var(--jade); }
+.sidebar.dark  { background: #1b2e1f; }
+
+.content { padding: 2rem 2.5rem 2rem 2rem; flex: 1; }
+.sec-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--jade-mid); margin-bottom: 0.9rem; }
+.content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.3; }
+.zh-inline { font-family: 'Noto Serif SC', serif; color: var(--jade); }
+.py-inline { font-size: 0.72rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--gold); letter-spacing: 0.07em; }
+
+.scene { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.scene svg { display: block; width: 100%; }
+
+/* COVER */
+.slide-cover { grid-template-columns: 90px 1fr; }
+.cover-content { background: var(--jade); padding: 2.5rem 2.5rem 2rem; position: relative; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover-scene { position: absolute; top: 0; right: 0; left: 0; bottom: 0; opacity: 0.18; }
+.cover-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--jade-light); margin-bottom: 0.7rem; position: relative; }
+.cover-zh { font-family: 'Noto Serif SC', serif; font-size: 5.8rem; font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; position: relative; }
+.cover-py { font-size: 1.25rem; font-weight: 300; color: var(--jade-light); letter-spacing: 0.18em; margin: 0.3rem 0; position: relative; }
+.cover-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.45rem; color: #f6e05e; position: relative; margin-bottom: 1.5rem; }
+.cover-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; position: relative; }
+.tag { padding: 0.22rem 0.8rem; border-radius: 999px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+
+/* GRAMMAR STRIP */
+.grammar-strip { display: flex; align-items: center; gap: 0; background: var(--cream); border-radius: 10px; overflow: hidden; margin-bottom: 1.4rem; }
+.gs-part { padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+.gs-part.colored { background: var(--jade); }
+.gs-part.colored.rust { background: var(--rust); }
+.gs-part.colored.sky  { background: var(--sky); }
+.gs-part.colored.gold { background: #7b5a1a; }
+.gs-zh { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1; }
+.gs-py { font-size: 0.58rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; margin-top: 2px; }
+.gs-sep { font-size: 1.1rem; color: var(--ink-3); padding: 0 0.3rem; }
+.gs-plain-zh { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 500; color: var(--jade); }
+.gs-plain-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+.gs-en { margin-left: auto; padding: 0.75rem 1.25rem; font-size: 0.72rem; color: var(--ink-3); font-style: italic; border-left: 1px solid var(--cream-dark); }
+
+/* EXAMPLES */
+.ex-block { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem; }
+.ex { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid var(--jade-mid); }
+.ex.rust { border-left-color: var(--rust-light); }
+.ex.sky  { border-left-color: #4a9ec7; }
+.ex-zh { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--ink); margin-bottom: 0.15rem; }
+.key  { color: var(--jade); font-weight: 700; }
+.key-r{ color: var(--rust); font-weight: 700; }
+.key-s{ color: var(--sky); font-weight: 700; }
+.ex-py { font-size: 0.63rem; color: var(--gold); letter-spacing: 0.03em; margin-bottom: 0.1rem; }
+.ex-en { font-size: 0.69rem; color: var(--ink-3); font-style: italic; }
+
+/* CHIPS */
+.chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; background: var(--cream); border: 1.5px solid var(--cream-dark); }
+.chip .ch { font-family: 'Noto Serif SC', serif; font-size: 0.85rem; color: var(--jade); font-weight: 500; }
+.chip .py { font-size: 0.58rem; color: var(--gold); margin-left: 0.25rem; }
+
+/* VOCAB */
+.vocab-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.vc { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 7px; padding: 0.55rem 0.7rem; border-top: 3px solid var(--jade-mid); }
+.vc.cat-place { border-top-color: var(--sky); }
+.vc.cat-job   { border-top-color: var(--jade-mid); }
+.vc.cat-feel  { border-top-color: var(--gold-mid); }
+.vc.cat-action{ border-top-color: var(--rust-light); }
+.vc-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 500; color: var(--jade); }
+.vc-py { font-size: 0.58rem; color: var(--gold); margin: 2px 0 1px; }
+.vc-en { font-size: 0.62rem; color: var(--ink-3); }
+
+/* MATCH */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ml { background: #fff0ee; border-radius: 7px; padding: 0.6rem 0.85rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+.mr { background: #f0f7ff; border-radius: 7px; padding: 0.6rem 0.85rem; display: flex; gap: 0.5rem; align-items: center; }
+.mn { font-weight: 700; color: var(--rust); font-size: 0.9rem; min-width: 16px; }
+.ml-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; }
+.ml-py { font-size: 0.58rem; color: var(--ink-3); }
+.ma { font-weight: 700; color: var(--sky); font-size: 0.9rem; min-width: 16px; }
+.mr-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; }
+.mr-py { font-size: 0.58rem; color: var(--ink-3); }
+
+.tip { background: var(--jade-pale); border-radius: 7px; padding: 0.65rem 0.95rem; font-size: 0.7rem; color: var(--jade); line-height: 1.55; margin-top: 0.9rem; }
+.tip strong { font-weight: 600; }
+
+.activities { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.75rem; }
+.act { background: var(--cream); border-radius: 8px; padding: 0.55rem 0.8rem; text-align: center; flex: 1; min-width: 90px; }
+.act-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; color: var(--jade); font-weight: 500; }
+.act-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+
+/* CLOSING */
+.slide-close { display: block; background: #1b3a28; border-radius: 0 0 14px 14px; }
+.close-inner { padding: 3rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+.close-zh { font-family: 'Noto Serif SC', serif; font-size: 5rem; font-weight: 700; color: var(--white); }
+.close-detail .py { font-size: 1rem; color: var(--jade-light); letter-spacing: 0.2em; }
+.close-detail .en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: #f6e05e; margin-top: 0.2rem; }
+.close-detail .sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1rem; }
+
+/* PHOTO ELEMENTS */
+.photo-row { display:flex; gap:8px; margin-bottom:1rem; }
+.photo-slot { flex:1; border-radius:9px; overflow:hidden; position:relative; min-height:110px; background:linear-gradient(135deg,var(--jade-pale),var(--cream-dark)); }
+.photo-slot img { width:100%; height:100%; object-fit:cover; display:block; transition:opacity .2s; }
+.photo-cap { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,0.58)); color:white; font-size:0.68rem; font-family:'Noto Serif SC',serif; padding:14px 9px 6px; font-weight:700; letter-spacing:0.04em; }
+.photo-cap small { display:block; font-family:'Inter',sans-serif; font-size:0.56rem; color:rgba(255,255,255,0.72); font-weight:400; }
+.photo-wide { border-radius:10px; overflow:hidden; position:relative; margin-bottom:1rem; height:130px; background:linear-gradient(135deg,var(--sky-pale),var(--cream-dark)); }
+.photo-wide img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo-wide .photo-cap { font-size:0.78rem; }
+
+/* WARMUP */
+.warmup-prompt { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; margin-bottom: 0.6rem; border-left: 3px solid var(--jade-mid); }
+.wp-q { font-size: 0.58rem; font-weight: 700; color: var(--jade); letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 0.4rem; }
+.wp-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--ink); margin-bottom: 0.1rem; }
+.wp-py { font-size: 0.62rem; color: var(--gold); }
+
+/* DIALOGUE */
+.dialogue-exchange { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1rem; }
+.bubble { display: flex; gap: 0.75rem; align-items: flex-start; }
+.bubble.bubble-b { flex-direction: row-reverse; }
+.bubble-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif SC', serif; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+.avatar-a { background: var(--jade-pale); color: var(--jade); }
+.avatar-b { background: #fff7e6; color: var(--gold); }
+.bubble-content { max-width: 75%; }
+.bubble-role { font-size: 0.58rem; font-weight: 700; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.bubble-b .bubble-role { text-align: right; }
+.bubble-text { background: var(--cream); border-radius: 0 10px 10px 10px; padding: 0.7rem 0.9rem; }
+.bubble-b .bubble-text { background: var(--jade-pale); border-radius: 10px 0 10px 10px; }
+.bubble-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--ink); }
+.bubble-py { font-size: 0.65rem; color: var(--gold); margin-top: 0.2rem; }
+.bubble-en { font-size: 0.7rem; color: var(--ink-3); font-style: italic; margin-top: 0.15rem; }
+
+@media print {
+  body { background: white; padding: 0; }
+  .deck { max-width: 100%; }
+  .slide { break-inside: avoid; margin-bottom: 0; }
+  .deck-brand { display: none; }
+}
+@media (max-width: 640px) {
+  .slide { grid-template-columns: 48px 1fr !important; }
+  .sidebar { padding: 1rem 0.4rem; }
+  .content { padding: 1.25rem; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .cover-zh { font-size: 3.5rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="deck">
+<div class="deck-brand">
+  <span class="brand-name">新汉 Xīnhàn</span>
+  <span class="brand-sub">HSK 1–2 · Work &amp; Jobs</span>
+</div>
+
+<!-- ① COVER -->
+<div class="slide slide-cover">
+  <div class="sidebar" style="background:#1a3d2b;justify-content:center;align-items:center;min-height:300px;">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:38px;height:38px;">
+      <rect x="6" y="10" width="20" height="14" rx="2" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+      <rect x="10" y="14" width="4" height="4" fill="rgba(255,255,255,0.6)"/>
+      <rect x="18" y="14" width="4" height="4" fill="rgba(255,255,255,0.6)"/>
+      <line x1="6" y1="20" x2="26" y2="20" stroke="rgba(255,255,255,0.4)" stroke-width="1"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-scene">
+      <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect x="40" y="60" width="120" height="180" fill="white" rx="4"/>
+        <rect x="55" y="80" width="90" height="10" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="55" y="100" width="90" height="10" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="55" y="120" width="90" height="10" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="55" y="150" width="40" height="50" fill="rgba(0,0,0,0.08)" rx="2"/>
+        <rect x="105" y="150" width="40" height="50" fill="rgba(0,0,0,0.08)" rx="2"/>
+        <rect x="200" y="40" width="160" height="200" fill="white" rx="4"/>
+        <rect x="215" y="60" width="130" height="12" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="215" y="85" width="130" height="12" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="215" y="110" width="130" height="12" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="215" y="150" width="55" height="70" fill="rgba(0,0,0,0.08)" rx="2"/>
+        <rect x="290" y="150" width="55" height="70" fill="rgba(0,0,0,0.08)" rx="2"/>
+        <circle cx="260" cy="240" r="18" fill="white" opacity="0.5"/>
+        <rect x="420" y="80" width="200" height="160" fill="white" rx="4"/>
+        <polygon points="420,80 520,30 620,80" fill="white"/>
+        <rect x="460" y="120" width="50" height="80" fill="rgba(0,0,0,0.08)" rx="2"/>
+        <rect x="530" y="120" width="50" height="80" fill="rgba(0,0,0,0.08)" rx="2"/>
+        <circle cx="485" cy="235" r="12" fill="white" opacity="0.5"/>
+        <circle cx="555" cy="235" r="12" fill="white" opacity="0.5"/>
+        <circle cx="630" cy="50" r="25" fill="white" opacity="0.2"/>
+        <circle cx="120" cy="40" r="20" fill="white" opacity="0.15"/>
+      </svg>
+    </div>
+    <div class="cover-eyebrow">Work &amp; Jobs · 工作 · HSK 1–2</div>
+    <div class="cover-zh">工作</div>
+    <div class="cover-py">gōng zuò</div>
+    <div class="cover-en">Work &amp; Jobs</div>
+    <div class="cover-tags">
+      <span class="tag">HSK 1–2</span>
+      <span class="tag">19 new words</span>
+      <span class="tag">5 key questions</span>
+    </div>
+  </div>
+</div>
+
+<!-- ② WARM-UP -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="4" width="18" height="12" rx="4" fill="rgba(255,255,255,0.85)"/>
+        <path d="M6 16v4l5-4" fill="rgba(255,255,255,0.85)"/>
+        <rect x="9" y="12" width="17" height="11" rx="4" fill="rgba(255,255,255,0.45)"/>
+        <path d="M22 23v3l-4-3" fill="rgba(255,255,255,0.45)"/>
+      </svg>
+      <div class="sb-label">warm up</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Warm-up · 热身</div>
+    <h2>介绍自己 <span class="py-inline">jièshào zìjǐ</span></h2>
+
+    <div class="scene">
+      <svg viewBox="0 0 740 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="740" height="148" fill="#f0ebe1" rx="8"/>
+        <circle cx="120" cy="74" r="45" fill="#d8f3dc"/>
+        <circle cx="120" cy="62" r="18" fill="#2d6a4f"/>
+        <path d="M90 105 Q120 80 150 105 L150 120 L90 120 Z" fill="#2d6a4f"/>
+        <text x="120" y="138" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">我</text>
+        <line x1="200" y1="74" x2="280" y2="74" stroke="#b7791f" stroke-width="2" stroke-dasharray="5,4"/>
+        <polygon points="275,70 285,74 275,78" fill="#b7791f"/>
+        <rect x="320" y="44" width="360" height="70" fill="white" rx="8"/>
+        <text x="350" y="70" font-family="Noto Serif SC,serif" font-size="13" fill="#1a1a1a">我叫 ______，我是 ______ 人。</text>
+        <text x="350" y="95" font-family="Inter,sans-serif" font-size="10" fill="#7a7a7a">Wǒ jiào ______, wǒ shì ______ rén.</text>
+      </svg>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+      <div class="warmup-prompt">
+        <div class="wp-q">Name</div>
+        <div class="wp-zh">我叫 ______。</div>
+        <div class="wp-py">Wǒ jiào ___.</div>
+      </div>
+      <div class="warmup-prompt">
+        <div class="wp-q">Nationality</div>
+        <div class="wp-zh">我是 ______ 人。</div>
+        <div class="wp-py">Wǒ shì ___ rén.</div>
+      </div>
+      <div class="warmup-prompt">
+        <div class="wp-q">Age</div>
+        <div class="wp-zh">我今年 ______ 岁。</div>
+        <div class="wp-py">Wǒ jīnnián ___ suì.</div>
+      </div>
+      <div class="warmup-prompt">
+        <div class="wp-q">Hobby</div>
+        <div class="wp-zh">我的爱好是 ______。</div>
+        <div class="wp-py">Wǒ de àihào shì ___.</div>
+      </div>
+    </div>
+
+    <div class="tip"><strong>Practice:</strong> Greet your partner and answer all four questions in Chinese before we start.</div>
+
+    <div class="photo-row" style="margin-top:0.9rem;">
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1529156069898-49953e39b3ac?auto=format&fit=crop&w=560&q=72" alt="friends talking" onerror="this.style.display='none'"/>
+        <div class="photo-cap">介绍自己<small>jièshào zìjǐ · introduce yourself</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1517486808906-6ca8b3f04846?auto=format&fit=crop&w=560&q=72" alt="students" onerror="this.style.display='none'"/>
+        <div class="photo-cap">互相认识<small>hùxiāng rènshi · get to know each other</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ VOCABULARY -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar" style="background:#245c42">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">vocab</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">New Words · 新词 — 19 words</div>
+    <div class="scene" style="margin-bottom:1rem;">
+      <svg viewBox="0 0 720 56" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="56" fill="#f0ebe1" rx="8"/>
+        <rect x="0" y="0" width="180" height="56" fill="#d8f3dc" rx="8 0 0 8"/>
+        <rect x="180" y="0" width="180" height="56" fill="#fff0ee"/>
+        <rect x="360" y="0" width="180" height="56" fill="#fffff0"/>
+        <rect x="540" y="0" width="180" height="56" fill="#e8f4fd" rx="0 8 8 0"/>
+        <circle cx="54" cy="22" r="8" fill="#2d6a4f" opacity="0.7"/><circle cx="54" cy="22" r="3" fill="white"/>
+        <line x1="54" y1="30" x2="54" y2="36" stroke="#2d6a4f" stroke-width="1.5" opacity="0.7"/>
+        <text x="90" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#2d6a4f" font-weight="700">Work &amp; Time</text>
+        <text x="90" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#40916c">工作 · 小时 · 周末</text>
+        <rect x="220" y="14" width="16" height="14" fill="#e76f51" rx="2" opacity="0.85"/>
+        <rect x="239" y="18" width="12" height="10" fill="#e76f51" rx="2" opacity="0.65"/>
+        <line x1="220" y1="21" x2="236" y2="21" stroke="white" stroke-width="1"/>
+        <text x="270" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#9b2226" font-weight="700">Places</text>
+        <text x="270" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#e76f51">北方 · 南方 · 东部 · 西部</text>
+        <line x1="405" y1="14" x2="405" y2="36" stroke="#b7791f" stroke-width="1.5"/>
+        <line x1="394" y1="20" x2="416" y2="20" stroke="#b7791f" stroke-width="1.2"/>
+        <circle cx="394" cy="27" r="5" fill="#f6e05e" opacity="0.8"/><circle cx="416" cy="16" r="5" fill="#f6e05e" opacity="0.8"/>
+        <text x="450" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#7b5a1a" font-weight="700">Feelings</text>
+        <text x="450" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#b7791f">忙 · 累</text>
+        <path d="M575 20 L590 28 L585 22 L605 22 L600 28 L615 20" fill="none" stroke="#1d5f8a" stroke-width="1.5" stroke-linejoin="round"/>
+        <text x="630" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">Jobs</text>
+        <text x="630" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#1d5f8a">老师 · 医生 · 服务员</text>
+      </svg>
+    </div>
+
+    <div class="vocab-grid">
+      <div class="vc cat-job"><div class="vc-zh">工作</div><div class="vc-py">gōng zuò</div><div class="vc-en">work / job</div></div>
+      <div class="vc cat-place"><div class="vc-zh">北方</div><div class="vc-py">běi fāng</div><div class="vc-en">north</div></div>
+      <div class="vc cat-place"><div class="vc-zh">南方</div><div class="vc-py">nán fāng</div><div class="vc-en">south</div></div>
+      <div class="vc cat-place"><div class="vc-zh">东部</div><div class="vc-py">dōng bù</div><div class="vc-en">east</div></div>
+      <div class="vc cat-place"><div class="vc-zh">西部</div><div class="vc-py">xī bù</div><div class="vc-en">west</div></div>
+      <div class="vc cat-feel"><div class="vc-zh">忙</div><div class="vc-py">máng</div><div class="vc-en">busy</div></div>
+      <div class="vc cat-feel"><div class="vc-zh">累</div><div class="vc-py">lèi</div><div class="vc-en">tired</div></div>
+      <div class="vc cat-job"><div class="vc-zh">小时</div><div class="vc-py">xiǎo shí</div><div class="vc-en">hour</div></div>
+      <div class="vc cat-job"><div class="vc-zh">周末</div><div class="vc-py">zhōu mò</div><div class="vc-en">weekend</div></div>
+      <div class="vc cat-action"><div class="vc-zh">教</div><div class="vc-py">jiāo</div><div class="vc-en">to teach</div></div>
+      <div class="vc cat-action"><div class="vc-zh">换</div><div class="vc-py">huàn</div><div class="vc-en">to change</div></div>
+      <div class="vc cat-job"><div class="vc-zh">老师</div><div class="vc-py">lǎo shī</div><div class="vc-en">teacher</div></div>
+      <div class="vc cat-job"><div class="vc-zh">学生</div><div class="vc-py">xué shēng</div><div class="vc-en">student</div></div>
+      <div class="vc cat-job"><div class="vc-zh">服务员</div><div class="vc-py">fú wù yuán</div><div class="vc-en">waiter</div></div>
+      <div class="vc cat-job"><div class="vc-zh">老板</div><div class="vc-py">lǎo bǎn</div><div class="vc-en">boss</div></div>
+      <div class="vc cat-job"><div class="vc-zh">公司员工</div><div class="vc-py">gōngsī yuángōng</div><div class="vc-en">company staff</div></div>
+      <div class="vc cat-job"><div class="vc-zh">建筑师</div><div class="vc-py">jiàn zhù shī</div><div class="vc-en">architect</div></div>
+      <div class="vc cat-job"><div class="vc-zh">医生</div><div class="vc-py">yī shēng</div><div class="vc-en">doctor</div></div>
+      <div class="vc cat-job"><div class="vc-zh">护士</div><div class="vc-py">hù shi</div><div class="vc-en">nurse</div></div>
+      <div class="vc cat-job"><div class="vc-zh">厨师</div><div class="vc-py">chú shī</div><div class="vc-en">chef</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ GRAMMAR 1 — 有没有工作 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="9" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <circle cx="14" cy="10" r="3" fill="rgba(255,255,255,0.7)"/>
+        <path d="M8 21c0-3 2.5-5 6-5s6 2 6 5" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" fill="none"/>
+      </svg>
+      <div class="sb-label">G1 · 有没有</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 1 · 语法一</div>
+    <div class="grammar-strip">
+      <div class="gs-part"><div class="gs-plain-zh">你</div><div class="gs-plain-py">nǐ</div></div>
+      <div class="gs-part colored"><div class="gs-zh">有没有</div><div class="gs-py">yǒu méiyǒu</div></div>
+      <div class="gs-part"><div class="gs-plain-zh">工作？</div><div class="gs-plain-py">gōngzuò?</div></div>
+      <div class="gs-en">Do you have a job?</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 138" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="138" fill="#faf7f2" rx="8"/>
+        <!-- Person with briefcase -->
+        <circle cx="120" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="105" y="72" width="30" height="38" fill="#4a6a8a" rx="4"/>
+        <rect x="100" y="95" width="14" height="10" fill="#7a6040" rx="2"/>
+        <rect x="126" y="95" width="14" height="10" fill="#7a6040" rx="2"/>
+        <text x="120" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#2d6a4f" font-weight="700">有工作</text>
+        <text x="120" y="120" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">yǒu gōngzuò</text>
+        <!-- vs -->
+        <text x="260" y="75" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="18" fill="#b7791f" font-weight="700">还是</text>
+        <!-- Person without briefcase -->
+        <circle cx="400" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="385" y="72" width="30" height="38" fill="#8a9a8a" rx="4"/>
+        <rect x="380" y="95" width="14" height="10" fill="#7a6040" rx="2"/>
+        <rect x="406" y="95" width="14" height="10" fill="#7a6040" rx="2"/>
+        <text x="400" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#9b2226" font-weight="700">没有工作</text>
+        <text x="400" y="120" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">méiyǒu gōngzuò</text>
+        <!-- arrow to answer -->
+        <line x1="480" y1="69" x2="560" y2="69" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round"/>
+        <polygon points="555,65 565,69 555,73" fill="#2d6a4f"/>
+        <rect x="575" y="48" width="120" height="44" fill="white" rx="6" stroke="#d8f3dc" stroke-width="2"/>
+        <text x="635" y="68" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">有 / 没有</text>
+        <text x="635" y="83" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">answer with 有 or 没有</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex">
+        <div class="ex-zh"><span class="key">你有没有</span>工作？</div>
+        <div class="ex-py">Nǐ yǒu méiyǒu gōngzuò?</div>
+        <div class="ex-en">Do you have a job?</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><span class="key">有</span>，我有工作。/ <span class="key">没有</span>，我没有工作。</div>
+        <div class="ex-py">Yǒu, wǒ yǒu gōngzuò. / Méiyǒu, wǒ méiyǒu gōngzuò.</div>
+        <div class="ex-en">Yes, I have a job. / No, I don't have a job.</div>
+      </div>
+    </div>
+
+    <div class="photo-row">
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1521791136064-7986c2920216?auto=format&fit=crop&w=560&q=72" alt="office worker" onerror="this.style.display='none'"/>
+        <div class="photo-cap">有工作<small>yǒu gōngzuò · has a job</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1523240795612-9a054b0db644?auto=format&fit=crop&w=560&q=72" alt="student" onerror="this.style.display='none'"/>
+        <div class="photo-cap">没有工作<small>méiyǒu gōngzuò · doesn't have a job</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ GRAMMAR 2 — 做什么工作 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 22 L14 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M8 13 L14 7 L20 13" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="14" cy="7" r="4" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+      <div class="sb-label">G2 · 做什么</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 2 · 语法二</div>
+    <div class="grammar-strip">
+      <div class="gs-part"><div class="gs-plain-zh">你</div><div class="gs-plain-py">nǐ</div></div>
+      <div class="gs-part colored rust"><div class="gs-zh">做什么</div><div class="gs-py">zuò shénme</div></div>
+      <div class="gs-part"><div class="gs-plain-zh">工作？</div><div class="gs-plain-py">gōngzuò?</div></div>
+      <div class="gs-en">What do you do?</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="148" fill="#faf7f2" rx="8"/>
+        <!-- Teacher -->
+        <circle cx="90" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="75" y="72" width="30" height="38" fill="#2d6a4f" rx="4"/>
+        <rect x="70" y="80" width="10" height="24" fill="#e8c8a0" rx="2"/>
+        <rect x="100" y="80" width="10" height="24" fill="#e8c8a0" rx="2"/>
+        <rect x="80" y="50" width="20" height="8" fill="#333" rx="2" opacity="0.3"/>
+        <text x="90" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#2d6a4f" font-weight="700">老师</text>
+        <text x="90" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">lǎoshī</text>
+        <!-- Doctor -->
+        <circle cx="230" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="215" y="72" width="30" height="38" fill="white" rx="4" stroke="#9b2226" stroke-width="1.5"/>
+        <rect x="225" y="78" width="10" height="10" fill="#9b2226" rx="1"/>
+        <rect x="70" y="95" width="0" height="0"/>
+        <text x="230" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#9b2226" font-weight="700">医生</text>
+        <text x="230" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">yīshēng</text>
+        <!-- Waiter -->
+        <circle cx="370" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="355" y="72" width="30" height="38" fill="#1d5f8a" rx="4"/>
+        <rect x="350" y="80" width="10" height="24" fill="#e8c8a0" rx="2"/>
+        <rect x="380" y="80" width="10" height="24" fill="#e8c8a0" rx="2"/>
+        <rect x="360" y="88" width="20" height="2" fill="white" opacity="0.6"/>
+        <text x="370" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#1d5f8a" font-weight="700">服务员</text>
+        <text x="370" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">fúwùyuán</text>
+        <!-- Chef -->
+        <circle cx="510" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="495" y="72" width="30" height="38" fill="#7b5a1a" rx="4"/>
+        <polygon points="495,72 510,58 525,72" fill="white" opacity="0.8"/>
+        <text x="510" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#7b5a1a" font-weight="700">厨师</text>
+        <text x="510" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">chúshī</text>
+        <!-- Student -->
+        <circle cx="650" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="635" y="72" width="30" height="38" fill="#a1887f" rx="4"/>
+        <rect x="630" y="80" width="10" height="24" fill="#e8c8a0" rx="2"/>
+        <rect x="660" y="80" width="10" height="24" fill="#e8c8a0" rx="2"/>
+        <text x="650" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#553c9a" font-weight="700">学生</text>
+        <text x="650" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">xuéshēng</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex rust">
+        <div class="ex-zh">你<span class="key-r">做什么</span>工作？</div>
+        <div class="ex-py">Nǐ zuò shénme gōngzuò?</div>
+        <div class="ex-en">What do you do?</div>
+      </div>
+      <div class="ex rust">
+        <div class="ex-zh">我是<span class="key-r">老师</span>。</div>
+        <div class="ex-py">Wǒ shì lǎoshī.</div>
+        <div class="ex-en">I'm a teacher.</div>
+      </div>
+    </div>
+    <div class="chip-row">
+      <div class="chip"><span class="ch">医生</span><span class="py">yīshēng</span></div>
+      <div class="chip"><span class="ch">护士</span><span class="py">hùshi</span></div>
+      <div class="chip"><span class="ch">建筑师</span><span class="py">jiànzhùshī</span></div>
+      <div class="chip"><span class="ch">公司员工</span><span class="py">gōngsī yuángōng</span></div>
+      <div class="chip"><span class="ch">老板</span><span class="py">lǎobǎn</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥ GRAMMAR 3 — 忙不忙 / 累不累 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar sky">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="8" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="14" y1="10" x2="14" y2="14" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="14" x2="17" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">G3 · 忙累</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 3 · 语法三</div>
+    <div class="grammar-strip">
+      <div class="gs-part"><div class="gs-plain-zh">你的工作</div><div class="gs-plain-py">nǐ de gōngzuò</div></div>
+      <div class="gs-part colored sky"><div class="gs-zh">忙不忙？</div><div class="gs-py">máng bu máng?</div></div>
+      <div class="gs-en">Is your job busy?</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="148" fill="#faf7f2" rx="8"/>
+        <!-- Busy clock -->
+        <circle cx="160" cy="74" r="40" fill="#e8f4fd" stroke="#1d5f8a" stroke-width="3"/>
+        <line x1="160" y1="74" x2="160" y2="48" stroke="#1d5f8a" stroke-width="3" stroke-linecap="round"/>
+        <line x1="160" y1="74" x2="182" y2="74" stroke="#1d5f8a" stroke-width="3" stroke-linecap="round"/>
+        <circle cx="160" cy="74" r="3" fill="#1d5f8a"/>
+        <text x="160" y="135" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#1d5f8a" font-weight="700">忙 máng</text>
+        <text x="160" y="145" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">busy</text>
+        <!-- Tired person -->
+        <circle cx="400" cy="55" r="16" fill="#e8c8a0"/>
+        <rect x="385" y="72" width="30" height="38" fill="#8a9a8a" rx="4"/>
+        <circle cx="394" cy="52" r="2" fill="#333"/><circle cx="406" cy="52" r="2" fill="#333"/>
+        <path d="M394 62 Q400 58 406 62" stroke="#333" stroke-width="1.5" fill="none"/>
+        <text x="400" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#9b2226" font-weight="700">累 lèi</text>
+        <text x="400" y="140" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">tired</text>
+        <!-- VS label -->
+        <text x="560" y="75" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="16" fill="#b7791f" font-weight="700">忙不忙？</text>
+        <text x="560" y="92" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="14" fill="#9b2226" font-weight="700">累不累？</text>
+        <text x="560" y="110" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">answer: 很忙 / 不累</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex sky">
+        <div class="ex-zh">你的工作<span class="key-s">忙不忙</span>？</div>
+        <div class="ex-py">Nǐ de gōngzuò máng bu máng?</div>
+        <div class="ex-en">Is your job busy?</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh">你的工作<span class="key-s">累吗</span>？</div>
+        <div class="ex-py">Nǐ de gōngzuò lèi ma?</div>
+        <div class="ex-en">Is your job tiring?</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh">很忙，我的工作很忙。/ 不累，我的工作不累。</div>
+        <div class="ex-py">Hěn máng, wǒ de gōngzuò hěn máng. / Bù lèi, wǒ de gōngzuò bù lèi.</div>
+        <div class="ex-en">Very busy. / Not tiring.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑦ DIALOGUE — Where / hours -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="20" height="16" rx="2" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="4" y1="11" x2="24" y2="11" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+        <line x1="9" y1="16" x2="9" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="14" y1="16" x2="14" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="16" x2="19" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">dialogue</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Dialogue · 对话</div>
+    <h2>Talking about work <span class="py-inline">gōngzuò duìhuà</span></h2>
+
+    <div class="dialogue-exchange">
+      <div class="bubble bubble-a">
+        <div class="bubble-avatar avatar-a">友</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Friend · 朋友</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">你在哪里工作？</div>
+            <div class="bubble-py">Nǐ zài nǎlǐ gōngzuò?</div>
+            <div class="bubble-en">Where do you work?</div>
+          </div>
+        </div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-avatar avatar-b">我</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Me · 我</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">我在中国南方工作。</div>
+            <div class="bubble-py">Wǒ zài Zhōngguó nánfāng gōngzuò.</div>
+            <div class="bubble-en">I work in southern China.</div>
+          </div>
+        </div>
+      </div>
+      <div class="bubble bubble-a">
+        <div class="bubble-avatar avatar-a">友</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Friend · 朋友</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">你每天工作多少个小时？</div>
+            <div class="bubble-py">Nǐ měitiān gōngzuò duōshao gè xiǎoshí?</div>
+            <div class="bubble-en">How many hours do you work every day?</div>
+          </div>
+        </div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-avatar avatar-b">我</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Me · 我</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">我每天工作六个小时。</div>
+            <div class="bubble-py">Wǒ měitiān gōngzuò liù gè xiǎoshí.</div>
+            <div class="bubble-en">I work six hours every day.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-wide">
+      <img src="https://images.unsplash.com/photo-1497366216548-37526070297c?auto=format&fit=crop&w=900&q=72" alt="office" onerror="this.style.display='none'"/>
+      <div class="photo-cap">办公室 bàngōngshì<small>where many people work</small></div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧ REVIEW -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar dark">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="14,4 17,11 24,11 18,16 20,23 14,19 8,23 10,16 4,11 11,11" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">review</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Review · 复习</div>
+    <h2>Key questions <span class="py-inline">guānjiàn wèntí</span></h2>
+    <div class="match-grid">
+      <div class="ml"><span class="mn">1</span><div><div class="ml-zh">你有没有工作？</div><div class="ml-py">Nǐ yǒu méiyǒu gōngzuò?</div></div></div>
+      <div class="mr"><span class="ma">A</span><div><div class="mr-zh">Do you have a job?</div></div></div>
+      <div class="ml"><span class="mn">2</span><div><div class="ml-zh">你做什么工作？</div><div class="ml-py">Nǐ zuò shénme gōngzuò?</div></div></div>
+      <div class="mr"><span class="ma">B</span><div><div class="mr-zh">What do you do?</div></div></div>
+      <div class="ml"><span class="mn">3</span><div><div class="ml-zh">你的工作忙不忙？</div><div class="ml-py">Nǐ de gōngzuò máng bu máng?</div></div></div>
+      <div class="mr"><span class="ma">C</span><div><div class="mr-zh">Is your job busy?</div></div></div>
+      <div class="ml"><span class="mn">4</span><div><div class="ml-zh">你在哪里工作？</div><div class="ml-py">Nǐ zài nǎlǐ gōngzuò?</div></div></div>
+      <div class="mr"><span class="ma">D</span><div><div class="mr-zh">Where do you work?</div></div></div>
+      <div class="ml"><span class="mn">5</span><div><div class="ml-zh">你每天工作多少个小时？</div><div class="ml-py">Nǐ měitiān gōngzuò duōshao gè xiǎoshí?</div></div></div>
+      <div class="mr"><span class="ma">E</span><div><div class="mr-zh">How many hours do you work?</div></div></div>
+    </div>
+    <div class="tip"><strong>Model answer:</strong> 我是老师，我在中国南方工作。我每天工作六个小时。我的工作不太忙，也不太累。</div>
+  </div>
+</div>
+
+<!-- ⑨ CLOSING -->
+<div class="slide slide-close">
+  <div class="close-inner">
+    <div class="close-zh">谢谢</div>
+    <div class="close-detail">
+      <div class="py">Xièxie</div>
+      <div class="en">Thanks for learning with Xinhan Chinese</div>
+      <div class="sub">HSK 1–2 · Work &amp; Jobs</div>
+    </div>
+  </div>
+</div>
+
+</div>
+</body>
+</html>

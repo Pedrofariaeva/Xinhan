@@ -1,0 +1,1454 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>点菜 — Ordering Food · Xinhan Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+  /* ── Reset ─────────────────────────────────── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  /* ── Tokens ─────────────────────────────────── */
+  :root {
+    --jade:       #2d6a4f;
+    --jade-mid:   #40916c;
+    --jade-light: #74c69d;
+    --jade-pale:  #d8f3dc;
+    --gold:       #b7791f;
+    --gold-mid:   #d69e2e;
+    --gold-light: #f6e05e;
+    --gold-pale:  #fffff0;
+    --cream:      #faf7f2;
+    --cream-dark: #f0ebe1;
+    --ink:        #1a1a1a;
+    --ink-2:      #3d3d3d;
+    --ink-3:      #6b6b6b;
+    --white:      #ffffff;
+    --red:        #c53030;
+    --red-pale:   #fff5f5;
+    --blue:       #2b6cb0;
+    --blue-pale:  #ebf8ff;
+    --purple:     #553c9a;
+    --purple-pale:#f0e6ff;
+    --slide-w:    900px;
+  }
+
+  /* ── Base ─────────────────────────────────── */
+  body {
+    font-family: 'Inter', sans-serif;
+    background: #e8e0d5;
+    color: var(--ink);
+    min-height: 100vh;
+    padding: 2rem 1rem 4rem;
+  }
+
+  /* ── Deck wrapper ─────────────────────────── */
+  .deck {
+    max-width: var(--slide-w);
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  /* ── Slide nav header ─────────────────────── */
+  .deck-header {
+    max-width: var(--slide-w);
+    margin: 0 auto 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+  .brand {
+    font-family: 'Playfair Display', serif;
+    font-size: 1rem;
+    color: var(--jade);
+    letter-spacing: 0.05em;
+  }
+  .lesson-meta {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+  }
+
+  /* ── Slide base ───────────────────────────── */
+  .slide {
+    background: var(--white);
+    border-radius: 0;
+    overflow: hidden;
+    page-break-after: always;
+    position: relative;
+  }
+  .slide:first-of-type { border-radius: 12px 12px 0 0; }
+  .slide:last-of-type  { border-radius: 0 0 12px 12px; }
+
+  .slide-inner {
+    padding: 3rem 3.5rem;
+    position: relative;
+  }
+
+  /* slide number badge */
+  .slide-num {
+    position: absolute;
+    top: 1.25rem;
+    right: 1.5rem;
+    font-size: 0.7rem;
+    font-weight: 600;
+    color: var(--ink-3);
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+
+  /* ── Cover slide ──────────────────────────── */
+  .slide-cover {
+    background: var(--jade);
+    min-height: 340px;
+  }
+  .slide-cover .slide-inner {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 340px;
+    padding: 3rem 3.5rem;
+  }
+  .cover-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--jade-light);
+    margin-bottom: 1rem;
+  }
+  .cover-chinese {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1;
+    letter-spacing: -0.02em;
+    margin-bottom: 0.5rem;
+  }
+  .cover-pinyin {
+    font-size: 1.4rem;
+    font-weight: 300;
+    color: var(--jade-light);
+    letter-spacing: 0.15em;
+    margin-bottom: 0.5rem;
+  }
+  .cover-english {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1.5rem;
+    color: var(--gold-light);
+    margin-bottom: 2rem;
+  }
+  .cover-tags {
+    display: flex;
+    gap: 0.5rem;
+    flex-wrap: wrap;
+  }
+  .tag {
+    display: inline-block;
+    padding: 0.25rem 0.75rem;
+    border-radius: 999px;
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+  }
+  .tag-jade { background: rgba(255,255,255,0.15); color: var(--jade-light); }
+  .tag-gold { background: rgba(246,224,94,0.2); color: var(--gold-light); }
+  .cover-deco {
+    position: absolute;
+    right: 3rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-family: 'Noto Serif SC', serif;
+    font-size: 10rem;
+    font-weight: 700;
+    color: rgba(255,255,255,0.06);
+    user-select: none;
+    pointer-events: none;
+  }
+
+  /* ── Section label ────────────────────────── */
+  .section-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--jade-mid);
+    margin-bottom: 1.5rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+  }
+  .section-label::after {
+    content: '';
+    flex: 1;
+    height: 1px;
+    background: var(--jade-pale);
+  }
+
+  /* ── Vocabulary slide ─────────────────────── */
+  .slide-vocab { background: var(--cream); }
+
+  .vocab-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+  }
+
+  .vocab-card {
+    background: var(--white);
+    border: 1px solid #e8e0d5;
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+  .vocab-num {
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--jade-light);
+    min-width: 18px;
+  }
+  .vocab-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.2rem;
+    font-weight: 500;
+    color: var(--jade);
+    line-height: 1;
+    min-width: 52px;
+  }
+  .vocab-detail { flex: 1; }
+  .vocab-pinyin {
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.05em;
+    margin-bottom: 1px;
+  }
+  .vocab-en {
+    font-size: 0.7rem;
+    color: var(--ink-3);
+  }
+
+  /* category accent line */
+  .vocab-card.cat-restaurant { border-left: 3px solid var(--jade-mid); }
+  .vocab-card.cat-food       { border-left: 3px solid #e07b39; }
+  .vocab-card.cat-drink      { border-left: 3px solid var(--blue); }
+  .vocab-card.cat-size       { border-left: 3px solid var(--purple); }
+  .vocab-card.cat-payment    { border-left: 3px solid var(--gold); }
+  .vocab-card.cat-basic      { border-left: 3px solid var(--ink-3); }
+
+  /* ── Dialogue slide ───────────────────────── */
+  .dialogue-title {
+    display: flex;
+    align-items: baseline;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+  .dialogue-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 2rem;
+    font-weight: 500;
+    color: var(--jade);
+  }
+  .dialogue-pinyin-title {
+    font-size: 0.9rem;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+  .dialogue-en-title {
+    font-size: 0.85rem;
+    color: var(--ink-3);
+    font-style: italic;
+    margin-left: auto;
+  }
+
+  .dialogue-exchange {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    margin-bottom: 2rem;
+  }
+
+  .bubble {
+    display: flex;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  .bubble.bubble-b { flex-direction: row-reverse; }
+
+  .bubble-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.7rem;
+    font-weight: 700;
+    flex-shrink: 0;
+  }
+  .avatar-a { background: var(--jade-pale); color: var(--jade); }
+  .avatar-b { background: #fff7e6; color: var(--gold); }
+
+  .bubble-content {
+    max-width: 75%;
+  }
+  .bubble-role {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.25rem;
+  }
+  .bubble-b .bubble-role { text-align: right; }
+
+  .bubble-text {
+    background: var(--cream);
+    border-radius: 0 12px 12px 12px;
+    padding: 0.75rem 1rem;
+  }
+  .bubble-b .bubble-text {
+    background: var(--jade-pale);
+    border-radius: 12px 0 12px 12px;
+  }
+
+  .bubble-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.05rem;
+    font-weight: 400;
+    color: var(--ink);
+    line-height: 1.5;
+  }
+  .bubble-pinyin {
+    font-size: 0.7rem;
+    color: var(--gold-mid);
+    margin-top: 0.25rem;
+    letter-spacing: 0.03em;
+  }
+  .bubble-en {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    margin-top: 0.2rem;
+    font-style: italic;
+  }
+
+  /* ── Options strip ────────────────────────── */
+  .options-label {
+    font-size: 0.65rem;
+    font-weight: 700;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    margin-bottom: 0.75rem;
+  }
+
+  .options {
+    display: grid;
+    gap: 10px;
+  }
+  .options.cols-3 { grid-template-columns: repeat(3, 1fr); }
+  .options.cols-2 { grid-template-columns: repeat(2, 1fr); }
+
+  .option-card {
+    border: 1.5px solid var(--jade-pale);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    background: var(--white);
+    position: relative;
+  }
+  .option-letter {
+    position: absolute;
+    top: 0.6rem;
+    right: 0.75rem;
+    font-size: 0.6rem;
+    font-weight: 700;
+    color: var(--jade-light);
+    letter-spacing: 0.1em;
+  }
+  .option-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: var(--jade);
+    margin-bottom: 0.2rem;
+  }
+  .option-pinyin {
+    font-size: 0.65rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.15rem;
+  }
+  .option-en {
+    font-size: 0.7rem;
+    color: var(--ink-3);
+  }
+
+  /* ── Warm-up slide ────────────────────────── */
+  .slide-warmup { background: var(--white); }
+
+  .warmup-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 1.5rem;
+  }
+  .warmup-card {
+    background: var(--cream);
+    border-radius: 10px;
+    padding: 1.25rem 1.5rem;
+  }
+  .warmup-q {
+    font-size: 0.65rem;
+    font-weight: 700;
+    color: var(--jade);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    margin-bottom: 0.75rem;
+  }
+  .warmup-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.1rem;
+    color: var(--ink);
+    margin-bottom: 0.2rem;
+  }
+  .warmup-pinyin {
+    font-size: 0.7rem;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    margin-bottom: 0.15rem;
+  }
+  .warmup-en {
+    font-size: 0.75rem;
+    color: var(--ink-3);
+    font-style: italic;
+  }
+  .blank-field {
+    display: inline-block;
+    width: 120px;
+    height: 1px;
+    background: var(--jade-mid);
+    vertical-align: middle;
+    margin: 0 4px;
+  }
+
+  /* ── Payment slide ────────────────────────── */
+  .payment-icons {
+    display: flex;
+    gap: 1.5rem;
+    margin-top: 1rem;
+    flex-wrap: wrap;
+  }
+  .payment-icon {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.4rem;
+  }
+  .payment-icon-circle {
+    width: 56px;
+    height: 56px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: 'Noto Serif SC', serif;
+    font-size: 0.9rem;
+    font-weight: 700;
+  }
+  .icon-cash    { background: #f0fff4; color: #276749; border: 1.5px solid #9ae6b4; }
+  .icon-alipay  { background: #ebf8ff; color: #2b6cb0; border: 1.5px solid #90cdf4; }
+  .icon-wechat  { background: #f0fff4; color: #276749; border: 1.5px solid #68d391; }
+  .payment-label {
+    font-size: 0.65rem;
+    color: var(--ink-3);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  /* ── Closing slide ────────────────────────── */
+  .slide-close {
+    background: linear-gradient(135deg, var(--jade) 0%, #1b4332 100%);
+    min-height: 260px;
+  }
+  .slide-close .slide-inner {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 260px;
+    text-align: center;
+  }
+  .close-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 5rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.5rem;
+  }
+  .close-pinyin {
+    font-size: 1.2rem;
+    color: var(--jade-light);
+    letter-spacing: 0.2em;
+    margin-bottom: 0.25rem;
+  }
+  .close-en {
+    font-family: 'Playfair Display', serif;
+    font-style: italic;
+    font-size: 1rem;
+    color: var(--gold-light);
+    margin-bottom: 1.5rem;
+  }
+  .close-sub {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+  }
+
+  /* ── Review slide ─────────────────────────── */
+  .slide-review { background: var(--cream); }
+  .review-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 1rem;
+  }
+  .review-card {
+    background: var(--white);
+    border-radius: 10px;
+    padding: 1rem 1.25rem;
+    border-left: 3px solid var(--jade-mid);
+  }
+  .review-situation {
+    font-size: 0.6rem;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--jade-mid);
+    margin-bottom: 0.5rem;
+  }
+  .review-zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1rem;
+    color: var(--ink);
+    margin-bottom: 0.15rem;
+  }
+  .review-en {
+    font-size: 0.72rem;
+    color: var(--ink-3);
+    font-style: italic;
+  }
+
+  /* ── Divider ──────────────────────────────── */
+  .slide-divider {
+    height: 2px;
+    background: var(--cream-dark);
+    position: relative;
+  }
+  .slide-divider::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 3.5rem;
+    width: 40px;
+    height: 2px;
+    background: var(--jade-mid);
+  }
+
+  /* ── Slide heading ─────────────────────────── */
+  .slide-heading {
+    margin-bottom: 1.75rem;
+  }
+  .slide-heading h2 {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: var(--ink);
+    display: flex;
+    align-items: baseline;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+  }
+  .slide-heading h2 .zh {
+    font-family: 'Noto Serif SC', serif;
+    font-size: 1.4rem;
+    font-weight: 500;
+    color: var(--jade);
+  }
+  .slide-heading h2 .pinyin {
+    font-size: 0.8rem;
+    font-family: 'Inter', sans-serif;
+    font-weight: 400;
+    color: var(--gold);
+    letter-spacing: 0.08em;
+  }
+
+  /* ── Practice tip ─────────────────────────── */
+  .tip-box {
+    background: var(--jade-pale);
+    border-radius: 8px;
+    padding: 0.75rem 1rem;
+    margin-top: 1.5rem;
+    display: flex;
+    align-items: flex-start;
+    gap: 0.6rem;
+  }
+  .tip-icon {
+    font-size: 0.9rem;
+    margin-top: 1px;
+  }
+  .tip-text {
+    font-size: 0.75rem;
+    color: var(--jade);
+    line-height: 1.5;
+  }
+  .tip-text strong {
+    font-weight: 600;
+  }
+
+  /* ── Print ────────────────────────────────── */
+  @media print {
+    body { background: white; padding: 0; }
+    .deck { max-width: 100%; gap: 0; }
+    .deck-header { display: none; }
+    .slide { border-radius: 0 !important; page-break-inside: avoid; }
+    .slide-divider { display: none; }
+  }
+
+  @media (max-width: 640px) {
+    .slide-inner { padding: 2rem 1.5rem; }
+    .vocab-grid { grid-template-columns: repeat(2, 1fr); }
+    .options.cols-3 { grid-template-columns: 1fr; }
+    .warmup-grid { grid-template-columns: 1fr; }
+    .review-grid { grid-template-columns: 1fr; }
+    .cover-chinese { font-size: 3.5rem; }
+    .cover-deco { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<div class="deck-header">
+  <span class="brand">新汉 Xīnhàn</span>
+  <span class="lesson-meta">HSK Level 2–3 · Lesson 10</span>
+</div>
+
+<div class="deck">
+
+  <!-- ① COVER ──────────────────────────────────────── -->
+  <div class="slide slide-cover">
+    <div class="slide-inner">
+      <div class="cover-eyebrow">Lesson 10 · Restaurant Chinese</div>
+      <div class="cover-chinese">点菜</div>
+      <div class="cover-pinyin">diǎn cài</div>
+      <div class="cover-english">Ordering Food</div>
+      <div class="cover-tags">
+        <span class="tag tag-jade">HSK 2–3</span>
+        <span class="tag tag-gold">29 new words</span>
+        <span class="tag tag-jade">5 dialogues</span>
+      </div>
+      <div class="cover-deco">菜</div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ② WARM-UP ────────────────────────────────────── -->
+  <div class="slide slide-warmup">
+    <div class="slide-inner">
+      <span class="slide-num">01 / 09</span>
+      <div class="section-label">Warm-up · 热身</div>
+
+      <div class="slide-heading">
+        <h2>Introduce yourself</h2>
+      </div>
+
+      <div class="warmup-grid">
+        <div class="warmup-card">
+          <div class="warmup-q">What's your name?</div>
+          <div class="warmup-zh">我叫 <span class="blank-field"></span>。</div>
+          <div class="warmup-pinyin">Wǒ jiào ___.</div>
+          <div class="warmup-en">My name is ___.</div>
+        </div>
+        <div class="warmup-card">
+          <div class="warmup-q">Where are you from?</div>
+          <div class="warmup-zh">我是 <span class="blank-field"></span> 人。</div>
+          <div class="warmup-pinyin">Wǒ shì ___ rén.</div>
+          <div class="warmup-en">I am from ___.</div>
+        </div>
+        <div class="warmup-card">
+          <div class="warmup-q">What do you do?</div>
+          <div class="warmup-zh">我是 <span class="blank-field"></span>。</div>
+          <div class="warmup-pinyin">Wǒ shì ___.</div>
+          <div class="warmup-en">I am a ___.</div>
+        </div>
+        <div class="warmup-card">
+          <div class="warmup-q">How are you?</div>
+          <div class="warmup-zh">你好！我很好，谢谢。</div>
+          <div class="warmup-pinyin">Nǐ hǎo! Wǒ hěn hǎo, xiè xiè.</div>
+          <div class="warmup-en">Hello! I'm very well, thank you.</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">💬</span>
+        <div class="tip-text"><strong>Practice:</strong> Greet your partner and answer all four questions in Chinese before we start today's lesson.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ③ VOCABULARY ──────────────────────────────────── -->
+  <div class="slide slide-vocab">
+    <div class="slide-inner">
+      <span class="slide-num">02 / 09</span>
+      <div class="section-label">New Words · 新词</div>
+
+      <div class="slide-heading">
+        <h2>Today's vocabulary <span class="zh">点菜</span> <span class="pinyin">29 words</span></h2>
+      </div>
+
+      <div class="vocab-grid">
+        <!-- Restaurant -->
+        <div class="vocab-card cat-restaurant">
+          <div class="vocab-num">01</div>
+          <div class="vocab-zh">餐厅</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">cān tīng</div>
+            <div class="vocab-en">restaurant</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-restaurant">
+          <div class="vocab-num">02</div>
+          <div class="vocab-zh">菜单</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">cài dān</div>
+            <div class="vocab-en">menu</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-restaurant">
+          <div class="vocab-num">03</div>
+          <div class="vocab-zh">服务员</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">fú wù yuán</div>
+            <div class="vocab-en">waiter / server</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-restaurant">
+          <div class="vocab-num">04</div>
+          <div class="vocab-zh">点菜</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">diǎn cài</div>
+            <div class="vocab-en">to order food</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-restaurant">
+          <div class="vocab-num">05</div>
+          <div class="vocab-zh">座位</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">zuò wèi</div>
+            <div class="vocab-en">seat / table</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-restaurant">
+          <div class="vocab-num">06</div>
+          <div class="vocab-zh">筷子</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">kuài zi</div>
+            <div class="vocab-en">chopsticks</div>
+          </div>
+        </div>
+
+        <!-- Food -->
+        <div class="vocab-card cat-food">
+          <div class="vocab-num">07</div>
+          <div class="vocab-zh">牛肉</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">niú ròu</div>
+            <div class="vocab-en">beef</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-food">
+          <div class="vocab-num">08</div>
+          <div class="vocab-zh">炒面</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">chǎo miàn</div>
+            <div class="vocab-en">fried noodles</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-food">
+          <div class="vocab-num">09</div>
+          <div class="vocab-zh">汤面</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">tāng miàn</div>
+            <div class="vocab-en">noodle soup</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-food">
+          <div class="vocab-num">10</div>
+          <div class="vocab-zh">炒饭</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">chǎo fàn</div>
+            <div class="vocab-en">fried rice</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-food">
+          <div class="vocab-num">11</div>
+          <div class="vocab-zh">份</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">fèn</div>
+            <div class="vocab-en">portion / serving</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-food">
+          <div class="vocab-num">12</div>
+          <div class="vocab-zh">碗</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">wǎn</div>
+            <div class="vocab-en">bowl</div>
+          </div>
+        </div>
+
+        <!-- Drinks -->
+        <div class="vocab-card cat-drink">
+          <div class="vocab-num">13</div>
+          <div class="vocab-zh">咖啡</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">kā fēi</div>
+            <div class="vocab-en">coffee</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-drink">
+          <div class="vocab-num">14</div>
+          <div class="vocab-zh">杯子</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">bēi zi</div>
+            <div class="vocab-en">cup / glass</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-drink">
+          <div class="vocab-num">15</div>
+          <div class="vocab-zh">热</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">rè</div>
+            <div class="vocab-en">hot</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-drink">
+          <div class="vocab-num">16</div>
+          <div class="vocab-zh">冰</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">bīng</div>
+            <div class="vocab-en">iced / cold</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-drink">
+          <div class="vocab-num">17</div>
+          <div class="vocab-zh">常温</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">cháng wēn</div>
+            <div class="vocab-en">room temperature</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-drink">
+          <div class="vocab-num">18</div>
+          <div class="vocab-zh">还是</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">hái shì</div>
+            <div class="vocab-en">or (questions)</div>
+          </div>
+        </div>
+
+        <!-- Sizes -->
+        <div class="vocab-card cat-size">
+          <div class="vocab-num">19</div>
+          <div class="vocab-zh">大</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">dà</div>
+            <div class="vocab-en">large</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-size">
+          <div class="vocab-num">20</div>
+          <div class="vocab-zh">中</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">zhōng</div>
+            <div class="vocab-en">medium</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-size">
+          <div class="vocab-num">21</div>
+          <div class="vocab-zh">小</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">xiǎo</div>
+            <div class="vocab-en">small</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-size">
+          <div class="vocab-num">22</div>
+          <div class="vocab-zh">超大</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">chāo dà</div>
+            <div class="vocab-en">super large / jumbo</div>
+          </div>
+        </div>
+
+        <!-- Payment -->
+        <div class="vocab-card cat-payment">
+          <div class="vocab-num">23</div>
+          <div class="vocab-zh">买单</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">mǎi dān</div>
+            <div class="vocab-en">to pay the bill</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-payment">
+          <div class="vocab-num">24</div>
+          <div class="vocab-zh">现金</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">xiàn jīn</div>
+            <div class="vocab-en">cash</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-payment">
+          <div class="vocab-num">25</div>
+          <div class="vocab-zh">支付宝</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">zhī fù bǎo</div>
+            <div class="vocab-en">Alipay</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-payment">
+          <div class="vocab-num">26</div>
+          <div class="vocab-zh">微信</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">wēi xìn</div>
+            <div class="vocab-en">WeChat Pay</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-payment">
+          <div class="vocab-num">27</div>
+          <div class="vocab-zh">多少钱</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">duō shǎo qián</div>
+            <div class="vocab-en">how much (is it)?</div>
+          </div>
+        </div>
+
+        <!-- Basic -->
+        <div class="vocab-card cat-basic">
+          <div class="vocab-num">28</div>
+          <div class="vocab-zh">要</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">yào</div>
+            <div class="vocab-en">to want / would like</div>
+          </div>
+        </div>
+        <div class="vocab-card cat-basic">
+          <div class="vocab-num">29</div>
+          <div class="vocab-zh">好的</div>
+          <div class="vocab-detail">
+            <div class="vocab-pinyin">hǎo de</div>
+            <div class="vocab-en">okay / alright</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;gap:1rem;margin-top:1rem;flex-wrap:wrap;">
+        <span style="font-size:0.65rem;color:var(--ink-3);display:flex;align-items:center;gap:0.35rem;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--jade-mid);flex-shrink:0;"></span>Restaurant
+        </span>
+        <span style="font-size:0.65rem;color:var(--ink-3);display:flex;align-items:center;gap:0.35rem;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#e07b39;flex-shrink:0;"></span>Food
+        </span>
+        <span style="font-size:0.65rem;color:var(--ink-3);display:flex;align-items:center;gap:0.35rem;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--blue);flex-shrink:0;"></span>Drinks
+        </span>
+        <span style="font-size:0.65rem;color:var(--ink-3);display:flex;align-items:center;gap:0.35rem;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--purple);flex-shrink:0;"></span>Sizes
+        </span>
+        <span style="font-size:0.65rem;color:var(--ink-3);display:flex;align-items:center;gap:0.35rem;">
+          <span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:var(--gold);flex-shrink:0;"></span>Payment
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ④ DIALOGUE 1 — What to order ─────────────────── -->
+  <div class="slide">
+    <div class="slide-inner">
+      <span class="slide-num">03 / 09</span>
+      <div class="section-label">Dialogue 1 · 对话一</div>
+
+      <div class="dialogue-title">
+        <div>
+          <div class="dialogue-zh">你要点什么？</div>
+          <div class="dialogue-pinyin-title">Nǐ yào diǎn shén me?</div>
+        </div>
+        <div class="dialogue-en-title">What would you like to order?</div>
+      </div>
+
+      <div class="dialogue-exchange">
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">你好！请问，你要点什么？</div>
+              <div class="bubble-pinyin">Nǐ hǎo! Qǐng wèn, nǐ yào diǎn shén me?</div>
+              <div class="bubble-en">Hello! May I ask, what would you like to order?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-b">
+          <div class="bubble-avatar avatar-b">我</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Me · 我</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">我要一碗牛肉炒面。</div>
+              <div class="bubble-pinyin">Wǒ yào yī wǎn niú ròu chǎo miàn.</div>
+              <div class="bubble-en">I'd like one bowl of beef fried noodles.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">好的，稍等！</div>
+              <div class="bubble-pinyin">Hǎo de, shāo děng!</div>
+              <div class="bubble-en">Alright, just a moment!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-label">Choose your dish · 选一个</div>
+      <div class="options cols-3">
+        <div class="option-card">
+          <div class="option-letter">A</div>
+          <div class="option-zh">牛肉炒面</div>
+          <div class="option-pinyin">niú ròu chǎo miàn</div>
+          <div class="option-en">beef fried noodles</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">B</div>
+          <div class="option-zh">牛肉汤面</div>
+          <div class="option-pinyin">niú ròu tāng miàn</div>
+          <div class="option-en">beef noodle soup</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">C</div>
+          <div class="option-zh">牛肉炒饭</div>
+          <div class="option-pinyin">niú ròu chǎo fàn</div>
+          <div class="option-en">beef fried rice</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">📝</span>
+        <div class="tip-text"><strong>Pattern:</strong> 我要 + [number] + [measure word] + [dish]. &nbsp; Try saying your choice aloud using 我要一碗…</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ⑤ DIALOGUE 2 — Coffee temperature ───────────────── -->
+  <div class="slide">
+    <div class="slide-inner">
+      <span class="slide-num">04 / 09</span>
+      <div class="section-label">Dialogue 2 · 对话二</div>
+
+      <div class="dialogue-title">
+        <div>
+          <div class="dialogue-zh">热的还是冰的？</div>
+          <div class="dialogue-pinyin-title">Rè de háishì bīng de?</div>
+        </div>
+        <div class="dialogue-en-title">Hot or iced?</div>
+      </div>
+
+      <div class="dialogue-exchange">
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">您要热的、冰的，还是常温的？</div>
+              <div class="bubble-pinyin">Nín yào rè de, bīng de, háishì cháng wēn de?</div>
+              <div class="bubble-en">Would you like it hot, iced, or at room temperature?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-b">
+          <div class="bubble-avatar avatar-b">我</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Me · 我</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">我要冰的咖啡，谢谢。</div>
+              <div class="bubble-pinyin">Wǒ yào bīng de kā fēi, xiè xiè.</div>
+              <div class="bubble-en">I'd like an iced coffee, thank you.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-label">Choose your temperature · 选一个</div>
+      <div class="options cols-3">
+        <div class="option-card">
+          <div class="option-letter">A</div>
+          <div class="option-zh">热的</div>
+          <div class="option-pinyin">rè de</div>
+          <div class="option-en">hot</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">B</div>
+          <div class="option-zh">冰的</div>
+          <div class="option-pinyin">bīng de</div>
+          <div class="option-en">iced / cold</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">C</div>
+          <div class="option-zh">常温的</div>
+          <div class="option-pinyin">cháng wēn de</div>
+          <div class="option-en">room temperature</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">📝</span>
+        <div class="tip-text"><strong>Pattern:</strong> 我要 + [temperature] + 的 + [drink]. &nbsp; The particle 的 links the adjective to the noun.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ⑥ DIALOGUE 3 — Portion size ─────────────────────── -->
+  <div class="slide">
+    <div class="slide-inner">
+      <span class="slide-num">05 / 09</span>
+      <div class="section-label">Dialogue 3 · 对话三</div>
+
+      <div class="dialogue-title">
+        <div>
+          <div class="dialogue-zh">大份还是小份？</div>
+          <div class="dialogue-pinyin-title">Dà fèn háishì xiǎo fèn?</div>
+        </div>
+        <div class="dialogue-en-title">Large or small portion?</div>
+      </div>
+
+      <div class="dialogue-exchange">
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">您要大份、中份，还是小份？</div>
+              <div class="bubble-pinyin">Nín yào dà fèn, zhōng fèn, háishì xiǎo fèn?</div>
+              <div class="bubble-en">Would you like a large, medium, or small portion?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-b">
+          <div class="bubble-avatar avatar-b">我</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Me · 我</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">我要大份。</div>
+              <div class="bubble-pinyin">Wǒ yào dà fèn.</div>
+              <div class="bubble-en">I'd like a large portion.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">好的，大份一份。</div>
+              <div class="bubble-pinyin">Hǎo de, dà fèn yī fèn.</div>
+              <div class="bubble-en">Sure, one large portion.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-label">Choose your size · 选一个</div>
+      <div class="options cols-3">
+        <div class="option-card">
+          <div class="option-letter">A</div>
+          <div class="option-zh">大份</div>
+          <div class="option-pinyin">dà fèn</div>
+          <div class="option-en">large portion</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">B</div>
+          <div class="option-zh">中份</div>
+          <div class="option-pinyin">zhōng fèn</div>
+          <div class="option-en">medium portion</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">C</div>
+          <div class="option-zh">小份</div>
+          <div class="option-pinyin">xiǎo fèn</div>
+          <div class="option-en">small portion</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">📝</span>
+        <div class="tip-text"><strong>Key word:</strong> 份 (fèn) is the measure word for portions/servings. 一份 = one serving.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ⑦ DIALOGUE 4 — Cup size ─────────────────────────── -->
+  <div class="slide">
+    <div class="slide-inner">
+      <span class="slide-num">06 / 09</span>
+      <div class="section-label">Dialogue 4 · 对话四</div>
+
+      <div class="dialogue-title">
+        <div>
+          <div class="dialogue-zh">什么杯子？</div>
+          <div class="dialogue-pinyin-title">Shén me bēi zi?</div>
+        </div>
+        <div class="dialogue-en-title">What size cup?</div>
+      </div>
+
+      <div class="dialogue-exchange">
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">您要什么杯子？中杯、小杯，还是超大杯？</div>
+              <div class="bubble-pinyin">Nín yào shén me bēi zi? Zhōng bēi, xiǎo bēi, háishì chāo dà bēi?</div>
+              <div class="bubble-en">What size cup? Medium, small, or jumbo?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-b">
+          <div class="bubble-avatar avatar-b">我</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Me · 我</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">超大杯，谢谢！</div>
+              <div class="bubble-pinyin">Chāo dà bēi, xiè xiè!</div>
+              <div class="bubble-en">Jumbo size, please!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-label">Choose your cup size · 选一个</div>
+      <div class="options cols-3">
+        <div class="option-card">
+          <div class="option-letter">A</div>
+          <div class="option-zh">中杯</div>
+          <div class="option-pinyin">zhōng bēi</div>
+          <div class="option-en">medium cup</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">B</div>
+          <div class="option-zh">小杯</div>
+          <div class="option-pinyin">xiǎo bēi</div>
+          <div class="option-en">small cup</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">C</div>
+          <div class="option-zh">超大杯</div>
+          <div class="option-pinyin">chāo dà bēi</div>
+          <div class="option-en">jumbo cup</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">📝</span>
+        <div class="tip-text"><strong>Key word:</strong> 杯 (bēi) = cup as a measure word. 杯子 (bēi zi) = the object "cup". 一杯咖啡 = one cup of coffee.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ⑧ DIALOGUE 5 — Paying ───────────────────────────── -->
+  <div class="slide">
+    <div class="slide-inner">
+      <span class="slide-num">07 / 09</span>
+      <div class="section-label">Dialogue 5 · 对话五</div>
+
+      <div class="dialogue-title">
+        <div>
+          <div class="dialogue-zh">买单！</div>
+          <div class="dialogue-pinyin-title">Mǎi dān!</div>
+        </div>
+        <div class="dialogue-en-title">Check, please!</div>
+      </div>
+
+      <div class="dialogue-exchange">
+        <div class="bubble bubble-b">
+          <div class="bubble-avatar avatar-b">我</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Me · 我</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">服务员，买单！</div>
+              <div class="bubble-pinyin">Fú wù yuán, mǎi dān!</div>
+              <div class="bubble-en">Excuse me, check please!</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-a">
+          <div class="bubble-avatar avatar-a">服</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Waiter · 服务员</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">您用现金、支付宝，还是微信支付？</div>
+              <div class="bubble-pinyin">Nín yòng xiàn jīn, zhī fù bǎo, háishì wēi xìn zhī fù?</div>
+              <div class="bubble-en">Will you pay with cash, Alipay, or WeChat Pay?</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="bubble bubble-b">
+          <div class="bubble-avatar avatar-b">我</div>
+          <div class="bubble-content">
+            <div class="bubble-role">Me · 我</div>
+            <div class="bubble-text">
+              <div class="bubble-zh">我用支付宝，谢谢！</div>
+              <div class="bubble-pinyin">Wǒ yòng zhī fù bǎo, xiè xiè!</div>
+              <div class="bubble-en">I'll pay with Alipay, thank you!</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="options-label">How do you pay? · 选一个</div>
+      <div class="options cols-3">
+        <div class="option-card">
+          <div class="option-letter">A</div>
+          <div class="option-zh">现金</div>
+          <div class="option-pinyin">xiàn jīn</div>
+          <div class="option-en">cash</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">B</div>
+          <div class="option-zh">支付宝</div>
+          <div class="option-pinyin">zhī fù bǎo</div>
+          <div class="option-en">Alipay</div>
+        </div>
+        <div class="option-card">
+          <div class="option-letter">C</div>
+          <div class="option-zh">微信支付</div>
+          <div class="option-pinyin">wēi xìn zhī fù</div>
+          <div class="option-en">WeChat Pay</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">📝</span>
+        <div class="tip-text"><strong>Key word:</strong> 用 (yòng) = to use. 我用 + [payment method] = "I'll pay with…"</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ⑨ REVIEW ────────────────────────────────────────── -->
+  <div class="slide slide-review">
+    <div class="slide-inner">
+      <span class="slide-num">08 / 09</span>
+      <div class="section-label">Review · 复习</div>
+
+      <div class="slide-heading">
+        <h2>Key phrases</h2>
+      </div>
+
+      <div class="review-grid">
+        <div class="review-card">
+          <div class="review-situation">Ordering</div>
+          <div class="review-zh">我要一碗牛肉炒面。</div>
+          <div class="review-en">I'd like one bowl of beef fried noodles.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Temperature</div>
+          <div class="review-zh">我要冰的咖啡。</div>
+          <div class="review-en">I'd like an iced coffee.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Portion size</div>
+          <div class="review-zh">我要大份。</div>
+          <div class="review-en">I'd like a large portion.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Cup size</div>
+          <div class="review-zh">我要超大杯。</div>
+          <div class="review-en">I'd like a jumbo size.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Ask for the bill</div>
+          <div class="review-zh">服务员，买单！</div>
+          <div class="review-en">Waiter, check please!</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Payment</div>
+          <div class="review-zh">我用支付宝。</div>
+          <div class="review-en">I'll pay with Alipay.</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Asking the price</div>
+          <div class="review-zh">这个多少钱？</div>
+          <div class="review-en">How much is this?</div>
+        </div>
+        <div class="review-card">
+          <div class="review-situation">Saying thank you</div>
+          <div class="review-zh">谢谢，不客气！</div>
+          <div class="review-en">Thank you — You're welcome!</div>
+        </div>
+      </div>
+
+      <div class="tip-box">
+        <span class="tip-icon">🎯</span>
+        <div class="tip-text"><strong>Role-play challenge:</strong> One student is the waiter, the other is the customer. Order a full meal — food, drinks, size — then pay the bill. Switch roles!</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="slide-divider"></div>
+
+  <!-- ⑩ CLOSING ───────────────────────────────────────── -->
+  <div class="slide slide-close">
+    <div class="slide-inner">
+      <div class="close-zh">谢谢！</div>
+      <div class="close-pinyin">xiè xiè</div>
+      <div class="close-en">Thank you</div>
+      <div class="close-sub">Xinhan Chinese · Lesson 10 · 点菜</div>
+    </div>
+  </div>
+
+</div>
+
+</body>
+</html>

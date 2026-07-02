@@ -1,0 +1,1532 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>点咖啡 — Ordering Coffee · Xinhan Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --jade: #2d6a4f; --jade-mid: #40916c; --jade-light: #74c69d; --jade-pale: #d8f3dc;
+  --gold: #b7791f; --gold-mid: #d69e2e; --gold-pale: #fffff0;
+  --rust: #9b2226; --rust-light: #e76f51; --rust-pale: #fff0ee;
+  --sky: #1d5f8a; --sky-pale: #e8f4fd;
+  --coffee: #4a3b32; --coffee-mid: #6f5b4d; --coffee-light: #a1887f;
+  --cream: #faf7f2; --cream-dark: #ede8df;
+  --ink: #1a1a1a; --ink-2: #3d3d3d; --ink-3: #7a7a7a;
+  --white: #fff;
+}
+body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink); padding: 2.5rem 1rem 5rem; }
+
+.deck { max-width: 940px; margin: 0 auto; }
+.deck-brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--coffee); }
+.brand-sub  { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+.slide { display: grid; background: var(--white); overflow: hidden; margin-bottom: 3px; }
+.slide:first-of-type { border-radius: 14px 14px 0 0; }
+.slide:last-of-type  { border-radius: 0 0 14px 14px; }
+
+.sidebar {
+  display: flex; flex-direction: column;
+  padding: 1.5rem 0.65rem 1.5rem 0.9rem;
+  background: var(--coffee);
+  gap: 1.8rem; min-width: 64px;
+  position: relative;
+}
+.sidebar::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+.sb-icon { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.sb-icon svg { width: 28px; height: 28px; }
+.sb-label { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.2; }
+.sb-prog { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: auto; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: #d69e2e; }
+.dot.done   { background: var(--coffee-light); }
+.sidebar.rust  { background: var(--rust); }
+.sidebar.sky   { background: var(--sky); }
+.sidebar.gold  { background: #7b5a1a; }
+.sidebar.cream { background: var(--cream-dark); }
+.sidebar.cream::after { display:none; }
+.sidebar.cream .sb-label { color: var(--coffee); }
+.sidebar.dark  { background: #2d241f; }
+
+.content { padding: 2rem 2.5rem 2rem 2rem; flex: 1; }
+.sec-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--coffee-mid); margin-bottom: 0.9rem; }
+.content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.3; }
+.zh-inline { font-family: 'Noto Serif SC', serif; color: var(--coffee); }
+.py-inline { font-size: 0.72rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--gold); letter-spacing: 0.07em; }
+
+.scene { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.scene svg { display: block; width: 100%; }
+
+.slide-cover { grid-template-columns: 90px 1fr; }
+.cover-content { background: var(--coffee); padding: 2.5rem 2.5rem 2rem; position: relative; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover-scene { position: absolute; top: 0; right: 0; left: 0; bottom: 0; opacity: 0.15; }
+.cover-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--coffee-light); margin-bottom: 0.7rem; position: relative; }
+.cover-zh { font-family: 'Noto Serif SC', serif; font-size: 5.8rem; font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; position: relative; }
+.cover-py { font-size: 1.25rem; font-weight: 300; color: var(--coffee-light); letter-spacing: 0.18em; margin: 0.3rem 0; position: relative; }
+.cover-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.45rem; color: #f6e05e; position: relative; margin-bottom: 1.5rem; }
+.cover-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; position: relative; }
+.tag { padding: 0.22rem 0.8rem; border-radius: 999px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+
+.grammar-strip { display: flex; align-items: center; gap: 0; background: var(--cream); border-radius: 10px; overflow: hidden; margin-bottom: 1.4rem; }
+.gs-part { padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+.gs-part.colored { background: var(--coffee); }
+.gs-part.colored.rust { background: var(--rust); }
+.gs-part.colored.sky  { background: var(--sky); }
+.gs-part.colored.gold { background: #7b5a1a; }
+.gs-zh { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1; }
+.gs-py { font-size: 0.58rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; margin-top: 2px; }
+.gs-sep { font-size: 1.1rem; color: var(--ink-3); padding: 0 0.3rem; }
+.gs-plain-zh { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 500; color: var(--coffee); }
+.gs-plain-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+.gs-en { margin-left: auto; padding: 0.75rem 1.25rem; font-size: 0.72rem; color: var(--ink-3); font-style: italic; border-left: 1px solid var(--cream-dark); }
+
+.ex-block { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem; }
+.ex { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid var(--coffee-mid); }
+.ex.rust { border-left-color: var(--rust-light); }
+.ex.sky  { border-left-color: #4a9ec7; }
+.ex-zh { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--ink); margin-bottom: 0.15rem; }
+.key  { color: var(--coffee); font-weight: 700; }
+.key-r{ color: var(--rust); font-weight: 700; }
+.key-s{ color: var(--sky); font-weight: 700; }
+.ex-py { font-size: 0.63rem; color: var(--gold); letter-spacing: 0.03em; margin-bottom: 0.1rem; }
+.ex-en { font-size: 0.69rem; color: var(--ink-3); font-style: italic; }
+
+.chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; background: var(--cream); border: 1.5px solid var(--cream-dark); }
+.chip .ch { font-family: 'Noto Serif SC', serif; font-size: 0.85rem; color: var(--coffee); font-weight: 500; }
+.chip .py { font-size: 0.58rem; color: var(--gold); margin-left: 0.25rem; }
+
+.vocab-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.vc { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 7px; padding: 0.55rem 0.7rem; border-top: 3px solid var(--coffee-mid); }
+.vc.cat-drink { border-top-color: var(--coffee-mid); }
+.vc.cat-size  { border-top-color: var(--sky); }
+.vc.cat-temp  { border-top-color: var(--gold-mid); }
+.vc.cat-action{ border-top-color: var(--jade-mid); }
+.vc-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 500; color: var(--coffee); }
+.vc-py { font-size: 0.58rem; color: var(--gold); margin: 2px 0 1px; }
+.vc-en { font-size: 0.62rem; color: var(--ink-3); }
+
+.tip { background: var(--jade-pale); border-radius: 7px; padding: 0.65rem 0.95rem; font-size: 0.7rem; color: var(--jade); line-height: 1.55; margin-top: 0.9rem; }
+.tip strong { font-weight: 600; }
+
+.activities { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.75rem; }
+.act { background: var(--cream); border-radius: 8px; padding: 0.55rem 0.8rem; text-align: center; flex: 1; min-width: 90px; }
+.act-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; color: var(--coffee); font-weight: 500; }
+.act-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+
+.slide-close { display: block; background: #2d241f; border-radius: 0 0 14px 14px; }
+.close-inner { padding: 3rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+.close-zh { font-family: 'Noto Serif SC', serif; font-size: 5rem; font-weight: 700; color: var(--white); }
+.close-detail .py { font-size: 1rem; color: var(--coffee-light); letter-spacing: 0.2em; }
+.close-detail .en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: #f6e05e; margin-top: 0.2rem; }
+.close-detail .sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1rem; }
+
+.photo-row { display:flex; gap:8px; margin-bottom:1rem; }
+.photo-slot { flex:1; border-radius:9px; overflow:hidden; position:relative; min-height:110px; background:linear-gradient(135deg,var(--jade-pale),var(--cream-dark)); }
+.photo-slot img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo-cap { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,0.58)); color:white; font-size:0.68rem; font-family:'Noto Serif SC',serif; padding:14px 9px 6px; font-weight:700; letter-spacing:0.04em; }
+.photo-cap small { display:block; font-family:'Inter',sans-serif; font-size:0.56rem; color:rgba(255,255,255,0.72); font-weight:400; }
+.photo-wide { border-radius:10px; overflow:hidden; position:relative; margin-bottom:1rem; height:130px; background:linear-gradient(135deg,var(--sky-pale),var(--cream-dark)); }
+.photo-wide img { width:100%; height:100%; object-fit:cover; display:block; }
+
+.phone-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 0.5rem; }
+.phone-block { display: flex; flex-direction: column; gap: 0.55rem; width: 150px; }
+.phone-mock { width: 150px; border-radius: 16px; overflow: hidden; border: 3px solid #2d241f; box-shadow: 0 6px 16px rgba(45,36,31,0.25); position: relative; }
+.phone-mock img { width: 100%; display: block; }
+.phone-step { font-size: 0.62rem; font-weight: 700; color: var(--gold); text-align: center; }
+.quiz-q { background: var(--cream); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.66rem; color: var(--ink); line-height: 1.45; }
+.quiz-q .py { display: block; color: var(--gold); font-size: 0.6rem; margin-top: 1px; }
+.quiz-callout { position: absolute; border: 2px solid #d69e2e; border-radius: 6px; box-shadow: 0 0 0 3px rgba(214,158,46,0.35); pointer-events: none; animation: quiz-pulse 1.6s ease-in-out infinite; }
+@keyframes quiz-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.quiz-game { display: flex; flex-direction: column; gap: 0.3rem; }
+.quiz-row { display: flex; gap: 0.3rem; }
+.quiz-input { flex: 1; width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #cbb8a0; border-radius: 6px; background: var(--white); color: var(--ink); transition: border-color 0.15s, background 0.15s; }
+.quiz-input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.quiz-input:disabled { background: var(--cream); opacity: 0.85; }
+.quiz-input.flash-correct { border-color: #2f7d52; background: #eaf7ef; animation: quiz-pop 0.4s ease; }
+.quiz-input.flash-wrong { border-color: #c0392b; background: #fbeaea; animation: quiz-shake 0.4s ease; }
+.quiz-check-btn { flex-shrink: 0; padding: 6px 10px; font-size: 0.62rem; font-weight: 700; border: none; border-radius: 6px; background: var(--gold); color: #2d241f; cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.quiz-check-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.quiz-check-btn:disabled { cursor: default; }
+.quiz-check-btn.correct { background: #2f7d52; color: white; animation: quiz-pop 0.4s ease; }
+.quiz-check-btn.wrong { background: #c0392b; color: white; animation: quiz-shake 0.4s ease; }
+@keyframes quiz-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes quiz-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.quiz-hint { font-size: 0.56rem; color: var(--ink-3); }
+.quiz-feedback { font-size: 0.68rem; font-weight: 700; min-height: 1.1em; }
+.quiz-feedback.correct { color: #2f7d52; }
+.quiz-feedback.wrong { color: #c0392b; }
+.quiz-feedback .reveal { display: block; font-weight: 500; color: var(--ink); margin-top: 2px; font-size: 0.62rem; }
+.quiz-feedback .reveal .py { color: var(--gold); }
+.quiz-score { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; font-weight: 700; color: var(--coffee); background: var(--cream); border-radius: 20px; padding: 0.3rem 0.8rem; margin-bottom: 0.8rem; }
+.quiz-score .stars { color: var(--gold); letter-spacing: 1px; }
+.learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+
+.report-score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.report-score .big { font-size: 2.4rem; font-weight: 800; color: var(--jade); }
+.report-score .pct { font-size: 1rem; font-weight: 700; color: var(--gold); }
+.report-groups { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.report-group-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.66rem; }
+.report-group-name { width: 150px; flex-shrink: 0; color: var(--ink); }
+.report-group-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--cream); overflow: hidden; }
+.report-group-fill { height: 100%; background: var(--jade-mid); border-radius: 5px; }
+.report-group-fill.weak { background: var(--rust-light); }
+.report-group-score { width: 36px; flex-shrink: 0; text-align: right; color: var(--ink-3); }
+.report-missed { background: #fbeaea; border-radius: 8px; padding: 0.8rem 1rem; }
+.report-missed h4 { margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--rust); }
+.report-missed-item { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; font-size: 0.66rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(155,34,38,0.12); }
+.report-missed-item:last-child { border-bottom: none; }
+.report-missed-q { color: var(--ink); flex: 1; min-width: 200px; }
+.report-missed-you { color: #c0392b; text-decoration: line-through; }
+.report-missed-correct { color: #2f7d52; font-weight: 600; }
+.report-perfect { background: var(--jade-pale); border-radius: 8px; padding: 1rem; font-size: 0.72rem; color: var(--jade); font-weight: 600; text-align: center; }
+
+.dialogue-exchange { display: flex; flex-direction: column; gap: 0.85rem; margin-bottom: 1rem; }
+.bubble { display: flex; gap: 0.75rem; align-items: flex-start; }
+.bubble.bubble-b { flex-direction: row-reverse; }
+.bubble-avatar { width: 36px; height: 36px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-family: 'Noto Serif SC', serif; font-size: 0.75rem; font-weight: 700; flex-shrink: 0; }
+.avatar-a { background: var(--coffee); color: white; }
+.avatar-b { background: #fff7e6; color: var(--gold); }
+.bubble-content { max-width: 75%; }
+.bubble-role { font-size: 0.58rem; font-weight: 700; color: var(--ink-3); letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.2rem; }
+.bubble-b .bubble-role { text-align: right; }
+.bubble-text { background: var(--cream); border-radius: 0 10px 10px 10px; padding: 0.7rem 0.9rem; }
+.bubble-b .bubble-text { background: var(--jade-pale); border-radius: 10px 0 10px 10px; }
+.bubble-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; color: var(--ink); }
+.bubble-py { font-size: 0.65rem; color: var(--gold); margin-top: 0.2rem; }
+.bubble-en { font-size: 0.7rem; color: var(--ink-3); font-style: italic; margin-top: 0.15rem; }
+
+@media print {
+  body { background: white; padding: 0; }
+  .deck { max-width: 100%; }
+  .slide { break-inside: avoid; margin-bottom: 0; }
+  .deck-brand { display: none; }
+}
+@media (max-width: 640px) {
+  .slide { grid-template-columns: 48px 1fr !important; }
+  .sidebar { padding: 1rem 0.4rem; }
+  .content { padding: 1.25rem; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .cover-zh { font-size: 3.5rem; }
+}
+</style>
+</head>
+<body data-lesson-id="luckin-coffee-ordering">
+
+<div class="deck">
+<div class="deck-brand">
+  <span class="brand-name">新汉 Xīnhàn</span>
+  <span class="brand-sub">HSK 2–3 · Ordering Coffee</span>
+</div>
+
+<!-- ① COVER -->
+<div class="slide slide-cover">
+  <div class="sidebar" style="background:#2d241f;justify-content:center;align-items:center;min-height:300px;">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:38px;height:38px;">
+      <path d="M8 8 Q16 4 24 8 L22 24 Q16 28 10 24 Z" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" fill="none"/>
+      <path d="M10 12 Q16 14 22 12" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" fill="none"/>
+      <line x1="12" y1="8" x2="12" y2="5" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="20" y1="8" x2="20" y2="5" stroke="rgba(255,255,255,0.6)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-scene">
+      <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <circle cx="580" cy="70" r="35" fill="white" opacity="0.1"/>
+        <circle cx="120" cy="220" r="45" fill="white" opacity="0.08"/>
+        <ellipse cx="350" cy="260" rx="180" ry="30" fill="white" opacity="0.05"/>
+        <rect x="450" y="80" width="70" height="110" rx="6" fill="white" opacity="0.12"/>
+        <rect x="460" y="95" width="50" height="8" rx="2" fill="white" opacity="0.2"/>
+        <rect x="460" y="110" width="50" height="8" rx="2" fill="white" opacity="0.2"/>
+        <rect x="460" y="125" width="30" height="8" rx="2" fill="white" opacity="0.2"/>
+        <rect x="180" y="100" width="90" height="120" rx="8" fill="white" opacity="0.1"/>
+        <rect x="195" y="120" width="60" height="10" rx="2" fill="white" opacity="0.15"/>
+        <rect x="195" y="140" width="60" height="10" rx="2" fill="white" opacity="0.15"/>
+        <rect x="195" y="170" width="60" height="30" rx="2" fill="white" opacity="0.12"/>
+        <circle cx="600" cy="200" r="25" fill="white" opacity="0.08"/>
+      </svg>
+    </div>
+    <div class="cover-eyebrow">Ordering Coffee · 点咖啡 · HSK 2–3</div>
+    <div class="cover-zh">点咖啡</div>
+    <div class="cover-py">diǎn kāfēi</div>
+    <div class="cover-en">Ordering Coffee</div>
+    <div class="cover-tags">
+      <span class="tag">HSK 2–3</span>
+      <span class="tag">18 new words</span>
+      <span class="tag">Luckin Coffee</span>
+    </div>
+  </div>
+</div>
+
+<!-- ② WARM-UP -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="4" width="18" height="12" rx="4" fill="rgba(255,255,255,0.85)"/>
+        <path d="M6 16v4l5-4" fill="rgba(255,255,255,0.85)"/>
+        <rect x="9" y="12" width="17" height="11" rx="4" fill="rgba(255,255,255,0.45)"/>
+        <path d="M22 23v3l-4-3" fill="rgba(255,255,255,0.45)"/>
+      </svg>
+      <div class="sb-label">warm up</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Warm-up · 热身</div>
+    <h2>你喜欢喝咖啡吗？ <span class="py-inline">Nǐ xǐhuan hē kāfēi ma?</span></h2>
+
+    <div class="scene">
+      <svg viewBox="0 0 740 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="740" height="148" fill="#f0ebe1" rx="8"/>
+        <circle cx="120" cy="74" r="45" fill="#d8f3dc"/>
+        <path d="M95 55 Q120 45 145 55 L140 100 Q120 110 100 100 Z" fill="#6f5b4d"/>
+        <path d="M98 58 Q120 50 142 58 L138 95 Q120 103 102 95 Z" fill="#a1887f"/>
+        <path d="M145 65 Q160 60 160 75 Q160 90 142 88" stroke="#6f5b4d" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <text x="120" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">咖啡 kāfēi</text>
+        <line x1="220" y1="74" x2="300" y2="74" stroke="#b7791f" stroke-width="2" stroke-dasharray="5,4"/>
+        <polygon points="295,70 305,74 295,78" fill="#b7791f"/>
+        <rect x="340" y="44" width="360" height="70" fill="white" rx="8"/>
+        <text x="370" y="70" font-family="Noto Serif SC,serif" font-size="13" fill="#1a1a1a">我喜欢喝 ______（热/冰）的 ______。</text>
+        <text x="370" y="95" font-family="Inter,sans-serif" font-size="10" fill="#7a7a7a">Wǒ xǐhuan hē ___ (rè/bīng) de ___.</text>
+      </svg>
+    </div>
+
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+      <div style="background:var(--cream);border-radius:8px;padding:0.85rem 1rem;">
+        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--coffee);margin-bottom:0.5rem;">Drinks 饮品</div>
+        <div class="chip-row" style="margin:0;gap:0.35rem;">
+          <div class="chip"><span class="ch">咖啡</span><span class="py">coffee</span></div>
+          <div class="chip"><span class="ch">拿铁</span><span class="py">latte</span></div>
+          <div class="chip"><span class="ch">美式</span><span class="py">americano</span></div>
+          <div class="chip"><span class="ch">冰茶</span><span class="py">iced tea</span></div>
+        </div>
+      </div>
+      <div style="background:var(--cream);border-radius:8px;padding:0.85rem 1rem;">
+        <div style="font-size:0.58rem;font-weight:700;letter-spacing:0.14em;text-transform:uppercase;color:var(--coffee);margin-bottom:0.5rem;">Temperature 温度</div>
+        <div class="chip-row" style="margin:0;gap:0.35rem;">
+          <div class="chip"><span class="ch">热</span><span class="py">hot</span></div>
+          <div class="chip"><span class="ch">冰</span><span class="py">iced</span></div>
+          <div class="chip"><span class="ch">常温</span><span class="py">room temp</span></div>
+        </div>
+      </div>
+    </div>
+    <div class="tip"><strong>Practice:</strong> Tell your partner what you like to drink and whether you prefer it hot or iced.</div>
+  </div>
+</div>
+
+<!-- ③ VOCABULARY -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar" style="background:#4a3b32">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">vocab</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">New Words · 新词 — 18 words</div>
+    <div class="scene" style="margin-bottom:1rem;">
+      <svg viewBox="0 0 720 56" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="56" fill="#f0ebe1" rx="8"/>
+        <rect x="0" y="0" width="180" height="56" fill="#d8f3dc" rx="8 0 0 8"/>
+        <rect x="180" y="0" width="180" height="56" fill="#fff0ee"/>
+        <rect x="360" y="0" width="180" height="56" fill="#fffff0"/>
+        <rect x="540" y="0" width="180" height="56" fill="#e8f4fd" rx="0 8 8 0"/>
+        <circle cx="54" cy="22" r="8" fill="#6f5b4d" opacity="0.9"/><circle cx="54" cy="22" r="3" fill="white"/>
+        <line x1="54" y1="30" x2="54" y2="36" stroke="#6f5b4d" stroke-width="1.5" opacity="0.9"/>
+        <text x="90" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#4a3b32" font-weight="700">Drinks</text>
+        <text x="90" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#6f5b4d">咖啡 · 拿铁 · 美式</text>
+        <rect x="220" y="14" width="16" height="18" fill="#e76f51" rx="2" opacity="0.85"/>
+        <rect x="239" y="18" width="12" height="14" fill="#e76f51" rx="2" opacity="0.65"/>
+        <text x="270" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#9b2226" font-weight="700">Sizes</text>
+        <text x="270" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#e76f51">大杯 · 特大杯</text>
+        <line x1="405" y1="14" x2="405" y2="36" stroke="#b7791f" stroke-width="1.5"/>
+        <line x1="394" y1="20" x2="416" y2="20" stroke="#b7791f" stroke-width="1.2"/>
+        <circle cx="394" cy="27" r="5" fill="#f6e05e" opacity="0.8"/><circle cx="416" cy="16" r="5" fill="#f6e05e" opacity="0.8"/>
+        <text x="450" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#7b5a1a" font-weight="700">Temperature</text>
+        <text x="450" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#b7791f">冰 · 热 · 常温</text>
+        <path d="M575 20 L590 28 L585 22 L605 22 L600 28 L615 20" fill="none" stroke="#1d5f8a" stroke-width="1.5" stroke-linejoin="round"/>
+        <text x="630" y="28" font-family="Noto Serif SC,serif" font-size="9" fill="#1d5f8a" font-weight="700">Actions</text>
+        <text x="630" y="44" font-family="Inter,sans-serif" font-size="7.5" fill="#1d5f8a">买 · 加购物车</text>
+      </svg>
+    </div>
+
+    <div class="vocab-grid">
+      <div class="vc cat-drink"><div class="vc-zh">咖啡</div><div class="vc-py">kāfēi</div><div class="vc-en">coffee</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">拿铁</div><div class="vc-py">nátiě</div><div class="vc-en">latte</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">美式</div><div class="vc-py">měishì</div><div class="vc-en">americano</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">生椰拿铁</div><div class="vc-py">shēngyē nátiě</div><div class="vc-en">coconut latte</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">冰茶</div><div class="vc-py">bīngchá</div><div class="vc-en">iced tea</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">果茶</div><div class="vc-py">guǒchá</div><div class="vc-en">fruit tea</div></div>
+      <div class="vc cat-size"><div class="vc-zh">大杯</div><div class="vc-py">dàbēi</div><div class="vc-en">large</div></div>
+      <div class="vc cat-size"><div class="vc-zh">特大杯</div><div class="vc-py">tèdàbēi</div><div class="vc-en">extra large</div></div>
+      <div class="vc cat-temp"><div class="vc-zh">冰</div><div class="vc-py">bīng</div><div class="vc-en">iced</div></div>
+      <div class="vc cat-temp"><div class="vc-zh">热</div><div class="vc-py">rè</div><div class="vc-en">hot</div></div>
+      <div class="vc cat-temp"><div class="vc-zh">常温</div><div class="vc-py">chángwēn</div><div class="vc-en">room temp</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">糖</div><div class="vc-py">táng</div><div class="vc-en">sugar</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">牛奶</div><div class="vc-py">niúnǎi</div><div class="vc-en">milk</div></div>
+      <div class="vc cat-drink"><div class="vc-zh">燕麦奶</div><div class="vc-py">yànmài nǎi</div><div class="vc-en">oat milk</div></div>
+      <div class="vc cat-action"><div class="vc-zh">优惠券</div><div class="vc-py">yōuhuìquàn</div><div class="vc-en">coupon</div></div>
+      <div class="vc cat-action"><div class="vc-zh">加入购物车</div><div class="vc-py">jiārù gòuwùchē</div><div class="vc-en">add to cart</div></div>
+      <div class="vc cat-action"><div class="vc-zh">立即购买</div><div class="vc-py">lìjí gòumǎi</div><div class="vc-en">buy now</div></div>
+      <div class="vc cat-action"><div class="vc-zh">自提</div><div class="vc-py">zìtí</div><div class="vc-en">self-pickup</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- ④ GRAMMAR 1 — 我要一杯... -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M7 14 Q14 8 21 14 L19 23 Q14 26 9 23 Z" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+        <line x1="10" y1="16" x2="18" y2="16" stroke="rgba(255,255,255,0.6)" stroke-width="1.5"/>
+      </svg>
+      <div class="sb-label">G1 · 我要</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 1 · 语法一</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored"><div class="gs-zh">我要</div><div class="gs-py">wǒ yào</div></div>
+      <div class="gs-part"><div class="gs-plain-zh">一杯</div><div class="gs-plain-py">yì bēi</div></div>
+      <div class="gs-part"><div class="gs-plain-zh">生椰拿铁</div><div class="gs-plain-py">shēngyē nátiě</div></div>
+      <div class="gs-en">I'd like a coconut latte.</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 138" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="138" fill="#faf7f2" rx="8"/>
+        <rect x="80" y="30" width="120" height="85" rx="8" fill="white" stroke="#d8f3dc" stroke-width="2"/>
+        <path d="M95 50 Q140 45 185 50 L180 95 Q140 100 100 95 Z" fill="#6f5b4d"/>
+        <path d="M100 55 Q140 52 180 55 L176 90 Q140 94 104 90 Z" fill="#a1887f"/>
+        <path d="M185 60 Q205 55 205 75 Q205 95 182 92" stroke="#6f5b4d" stroke-width="5" fill="none" stroke-linecap="round"/>
+        <text x="140" y="128" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">一杯咖啡</text>
+        <text x="140" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">yì bēi kāfēi</text>
+        <line x1="260" y1="69" x2="340" y2="69" stroke="#b7791f" stroke-width="2" stroke-dasharray="5,4"/>
+        <polygon points="335,65 345,69 335,73" fill="#b7791f"/>
+        <rect x="380" y="35" width="260" height="70" rx="8" fill="white" stroke="#d8f3dc" stroke-width="2"/>
+        <text x="400" y="62" font-family="Noto Serif SC,serif" font-size="13" fill="#1a1a1a">我要一杯 <tspan fill="#b7791f" font-weight="700">______</tspan>。</text>
+        <text x="400" y="85" font-family="Inter,sans-serif" font-size="10" fill="#7a7a7a">Wǒ yào yì bēi ___.</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex">
+        <div class="ex-zh"><span class="key">我要</span>一杯<span class="key">生椰拿铁</span>。</div>
+        <div class="ex-py">Wǒ yào yì bēi shēngyē nátiě.</div>
+        <div class="ex-en">I'd like a coconut latte.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><span class="key">我要</span>一杯<span class="key">标准美式</span>。</div>
+        <div class="ex-py">Wǒ yào yì bēi biāozhǔn měishì.</div>
+        <div class="ex-en">I'd like a standard americano.</div>
+      </div>
+    </div>
+    <div class="chip-row">
+      <div class="chip"><span class="ch">一杯拿铁</span><span class="py">latte</span></div>
+      <div class="chip"><span class="ch">一杯美式</span><span class="py">americano</span></div>
+      <div class="chip"><span class="ch">一杯冰茶</span><span class="py">iced tea</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ GRAMMAR 2 — 大杯/特大杯/冰/热 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M14 22 L14 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linecap="round"/>
+        <path d="M8 13 L14 7 L20 13" fill="none" stroke="rgba(255,255,255,0.9)" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="14" cy="7" r="4" fill="rgba(255,255,255,0.2)"/>
+      </svg>
+      <div class="sb-label">G2 · 规格</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 2 · 语法二</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored rust"><div class="gs-zh">大杯</div><div class="gs-py">dàbēi</div></div>
+      <div class="gs-sep">还是</div>
+      <div class="gs-part"><div class="gs-plain-zh">特大杯？</div><div class="gs-plain-py">tèdàbēi?</div></div>
+      <div class="gs-en">Large or extra large?</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="148" fill="#faf7f2" rx="8"/>
+        <!-- Large cup -->
+        <path d="M80 40 L75 105 Q100 115 125 105 L120 40 Z" fill="#6f5b4d"/>
+        <path d="M85 48 L118 48 L115 95 Q100 100 88 95 Z" fill="#a1887f"/>
+        <text x="100" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#2d6a4f" font-weight="700">大杯</text>
+        <text x="100" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">~450ml</text>
+        <!-- Extra large -->
+        <path d="M180 30 L173 110 Q205 122 237 110 L230 30 Z" fill="#6f5b4d"/>
+        <path d="M187 40 L223 40 L219 100 Q205 106 191 100 Z" fill="#a1887f"/>
+        <text x="205" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#9b2226" font-weight="700">特大杯</text>
+        <text x="205" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">~553ml</text>
+        <!-- Divider -->
+        <line x1="280" y1="20" x2="280" y2="128" stroke="#ede8df" stroke-width="1.5"/>
+        <!-- Hot -->
+        <path d="M340 50 L335 105 Q360 115 385 105 L380 50 Z" fill="#9b2226"/>
+        <path d="M345 58 L375 58 L372 98 Q360 102 348 98 Z" fill="#e76f51"/>
+        <path d="M352 40 Q355 30 358 40 Q361 30 364 40" stroke="#9b2226" stroke-width="2" fill="none"/>
+        <text x="360" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#9b2226" font-weight="700">热</text>
+        <text x="360" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">rè · hot</text>
+        <!-- Iced -->
+        <path d="M440 50 L435 105 Q460 115 485 105 L480 50 Z" fill="#1d5f8a"/>
+        <path d="M445 58 L475 58 L472 98 Q460 102 448 98 Z" fill="#4a9ec7"/>
+        <circle cx="452" cy="72" r="3" fill="white" opacity="0.5"/>
+        <circle cx="468" cy="85" r="3" fill="white" opacity="0.5"/>
+        <circle cx="455" cy="92" r="2" fill="white" opacity="0.5"/>
+        <text x="460" y="130" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#1d5f8a" font-weight="700">冰</text>
+        <text x="460" y="142" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">bīng · iced</text>
+        <!-- VS -->
+        <text x="560" y="75" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="16" fill="#b7791f" font-weight="700">还是</text>
+        <text x="560" y="95" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#7a7a7a">háishi · or</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex rust">
+        <div class="ex-zh">你要<span class="key-r">大杯</span>还是<span class="key-r">特大杯</span>？</div>
+        <div class="ex-py">Nǐ yào dàbēi háishi tèdàbēi?</div>
+        <div class="ex-en">Large or extra large?</div>
+      </div>
+      <div class="ex rust">
+        <div class="ex-zh">你要<span class="key-r">热的</span>还是<span class="key-r">冰的</span>？</div>
+        <div class="ex-py">Nǐ yào rè de háishi bīng de?</div>
+        <div class="ex-en">Hot or iced?</div>
+      </div>
+      <div class="ex rust">
+        <div class="ex-zh">特大杯，冰的。</div>
+        <div class="ex-py">Tèdàbēi, bīng de.</div>
+        <div class="ex-en">Extra large, iced.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑥ GRAMMAR 3 — 加不加糖/牛奶 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar sky">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="8" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="14" y1="10" x2="14" y2="14" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="14" y1="14" x2="17" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">G3 · 糖奶</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 3 · 语法三</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored sky"><div class="gs-zh">加不加</div><div class="gs-py">jiā bu jiā</div></div>
+      <div class="gs-part"><div class="gs-plain-zh">糖？</div><div class="gs-plain-py">táng?</div></div>
+      <div class="gs-en">With or without sugar?</div>
+    </div>
+
+    <div class="scene">
+      <svg viewBox="0 0 720 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="148" fill="#faf7f2" rx="8"/>
+        <!-- Sugar cubes -->
+        <rect x="80" y="55" width="22" height="22" fill="white" stroke="#d69e2e" stroke-width="1.5" rx="2"/>
+        <rect x="90" y="48" width="22" height="22" fill="white" stroke="#d69e2e" stroke-width="1.5" rx="2"/>
+        <rect x="100" y="40" width="22" height="22" fill="white" stroke="#d69e2e" stroke-width="1.5" rx="2"/>
+        <text x="120" y="100" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#7b5a1a" font-weight="700">糖</text>
+        <text x="120" y="115" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">táng · sugar</text>
+        <!-- Milk -->
+        <rect x="220" y="45" width="40" height="60" rx="4" fill="white" stroke="#a1887f" stroke-width="1.5"/>
+        <rect x="220" y="55" width="40" height="40" fill="#f0f0f0" opacity="0.5"/>
+        <text x="240" y="120" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="11" fill="#1d5f8a" font-weight="700">牛奶</text>
+        <text x="240" y="135" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">niúnǎi · milk</text>
+        <!-- Oat milk -->
+        <rect x="330" y="45" width="40" height="60" rx="4" fill="#f5e6c8" stroke="#b7791f" stroke-width="1.5"/>
+        <text x="350" y="120" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#7b5a1a" font-weight="700">燕麦奶</text>
+        <text x="350" y="135" text-anchor="middle" font-family="Inter,sans-serif" font-size="8" fill="#7a7a7a">yànmài nǎi</text>
+        <!-- Choices -->
+        <rect x="430" y="40" width="120" height="30" rx="6" fill="#e8f4fd" stroke="#1d5f8a" stroke-width="1.5"/>
+        <text x="490" y="60" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#1d5f8a">标准甜</text>
+        <rect x="430" y="80" width="120" height="30" rx="6" fill="#fff0ee" stroke="#9b2226" stroke-width="1.5"/>
+        <text x="490" y="100" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="10" fill="#9b2226">不另外加糖</text>
+      </svg>
+    </div>
+
+    <div class="ex-block">
+      <div class="ex sky">
+        <div class="ex-zh">你<span class="key-s">加不加</span>糖？</div>
+        <div class="ex-py">Nǐ jiā bu jiā táng?</div>
+        <div class="ex-en">Do you want sugar?</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh">我要<span class="key-s">牛奶</span>，不要<span class="key-s">燕麦奶</span>。</div>
+        <div class="ex-py">Wǒ yào niúnǎi, bú yào yànmài nǎi.</div>
+        <div class="ex-en">I want milk, not oat milk.</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh"><span class="key-s">不另外加糖</span>。</div>
+        <div class="ex-py">Bù lìngwài jiā táng.</div>
+        <div class="ex-en">No extra sugar.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑦ DIALOGUE — Ordering at Luckin -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="6" width="20" height="16" rx="2" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="4" y1="11" x2="24" y2="11" stroke="rgba(255,255,255,0.7)" stroke-width="1.5"/>
+        <line x1="9" y1="16" x2="9" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="14" y1="16" x2="14" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+        <line x1="19" y1="16" x2="19" y2="16" stroke="rgba(255,255,255,0.9)" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">dialogue</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Dialogue · 对话</div>
+    <h2>Ordering at Luckin <span class="py-inline">zài Ruìxìng diǎn kāfēi</span></h2>
+
+    <div class="dialogue-exchange">
+      <div class="bubble bubble-a">
+        <div class="bubble-avatar avatar-a">店</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Staff · 店员</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">您好，请问您要喝什么？</div>
+            <div class="bubble-py">Nín hǎo, qǐngwèn nín yào hē shénme?</div>
+            <div class="bubble-en">Hello, what would you like to drink?</div>
+          </div>
+        </div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-avatar avatar-b">我</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Me · 我</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">我要一杯生椰拿铁。</div>
+            <div class="bubble-py">Wǒ yào yì bēi shēngyē nátiě.</div>
+            <div class="bubble-en">I'd like a coconut latte.</div>
+          </div>
+        </div>
+      </div>
+      <div class="bubble bubble-a">
+        <div class="bubble-avatar avatar-a">店</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Staff · 店员</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">大杯还是特大杯？热的还是冰的？</div>
+            <div class="bubble-py">Dàbēi háishi tèdàbēi? Rè de háishi bīng de?</div>
+            <div class="bubble-en">Large or extra large? Hot or iced?</div>
+          </div>
+        </div>
+      </div>
+      <div class="bubble bubble-b">
+        <div class="bubble-avatar avatar-b">我</div>
+        <div class="bubble-content">
+          <div class="bubble-role">Me · 我</div>
+          <div class="bubble-text">
+            <div class="bubble-zh">特大杯，冰的。不另外加糖。</div>
+            <div class="bubble-py">Tèdàbēi, bīng de. Bù lìngwài jiā táng.</div>
+            <div class="bubble-en">Extra large, iced. No extra sugar.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="photo-row">
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=560&q=72" alt="coffee shop" onerror="this.style.display='none'"/>
+        <div class="photo-cap">咖啡店<small>kāfēi diàn · coffee shop</small></div>
+      </div>
+      <div class="photo-slot">
+        <img src="https://images.unsplash.com/photo-1517701550927-30cf4ba1dba5?auto=format&fit=crop&w=560&q=72" alt="iced coffee" onerror="this.style.display='none'"/>
+        <div class="photo-cap">冰咖啡<small>bīng kāfēi · iced coffee</small></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑧ LEARN 1/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 1/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>先登录，再领券 <span class="py-inline">Xiān dēnglù, zài lǐng quàn.</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> before you can order, you sign in once. Coupons are auto-applied — you just tap to claim them.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-login.jpg" alt="Luckin app login screen"/></div>
+        <div class="phone-step">登录 <span style="color:var(--ink-3);font-weight:400;">dēnglù · log in</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-coupon.jpg" alt="Luckin app coupon popup"/></div>
+        <div class="phone-step">优惠券 <span style="color:var(--ink-3);font-weight:400;">yōuhuìquàn · coupons</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑨ TEST 1/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 1/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>你能完成这两步吗？ <span class="py-inline">Nǐ néng wánchéng zhè liǎng bù ma?</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-1" data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer, like in the game:</strong> the gold circle points at the spot in question. Type Chinese, pinyin, or English and hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-login.jpg" alt="Luckin app login quiz"/>
+          <div class="quiz-callout" style="top:57%;left:10%;width:78%;height:5%;"></div>
+        </div>
+        <div class="quiz-q">哪个按钮可以登录账号？<span class="py">Nǎge ànniǔ kěyǐ dēnglù zhànghào?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="手机号安全登录|shouji hao anquan denglu|log in with phone number|log in" data-reveal="手机号安全登录 <span class=&quot;py&quot;>shǒujīhào ānquán dēnglù · log in with phone number</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-coupon.jpg" alt="Luckin app coupon quiz"/>
+          <div class="quiz-callout" style="top:14%;left:5%;width:88%;height:10%;"></div>
+        </div>
+        <div class="quiz-q">这是什么？每周可以领一次<span class="py">Zhè shì shénme? Měi zhōu kěyǐ lǐng yí cì.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="专享券|zhuanxiang quan|exclusive coupon|coupon" data-reveal="专享券 <span class=&quot;py&quot;>zhuānxiǎngquàn · exclusive coupon</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑩ LEARN 2/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 2/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>打开APP，你会看到什么？ <span class="py-inline">Dǎkāi APP, nǐ huì kàndào shénme?</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> the home screen mixes promos, quick services, and a members-only menu — all before you've chosen a drink.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-menu.jpg" alt="Luckin app classic menu"/></div>
+        <div class="phone-step">经典菜单 <span style="color:var(--ink-3);font-weight:400;">jīngdiǎn càidān · classic menu</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-home-services.jpg" alt="Luckin app home services banner"/></div>
+        <div class="phone-step">到店取 / 幸运送 <span style="color:var(--ink-3);font-weight:400;">pickup / delivery</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-member-menu.jpg" alt="Luckin app member menu"/></div>
+        <div class="phone-step">会员菜单 <span style="color:var(--ink-3);font-weight:400;">huìyuán càidān · member menu</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑪ TEST 2/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 2/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>找一找这三个功能 <span class="py-inline">Zhǎo yī zhǎo zhè sān gè gōngnéng.</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-2" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-menu.jpg" alt="Luckin app frequent-orders tab quiz"/>
+          <div class="quiz-callout" style="top:19.5%;left:64%;width:31%;height:4%;"></div>
+        </div>
+        <div class="quiz-q">哪个标签可以看到你常点的咖啡？<span class="py">Nǎge biāoqiān kěyǐ kàndào nǐ chángdiǎn de kāfēi?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="我的常点|wo de chang dian|my frequent orders|frequent orders" data-reveal="我的常点 <span class=&quot;py&quot;>wǒ de chángdiǎn · my frequent orders</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-home-services.jpg" alt="Luckin app pickup icon quiz"/>
+          <div class="quiz-callout" style="top:33%;left:6%;width:28%;height:8%;"></div>
+        </div>
+        <div class="quiz-q">想自己到店拿咖啡，点哪个？<span class="py">Xiǎng zìjǐ dàodiàn ná kāfēi, diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="到店取|dao dian qu|pick up in store|pickup" data-reveal="到店取 <span class=&quot;py&quot;>dàodiàn qǔ · pick up in store</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-member-menu.jpg" alt="Luckin app member menu tab quiz"/>
+          <div class="quiz-callout" style="top:19.5%;left:36%;width:28%;height:4%;"></div>
+        </div>
+        <div class="quiz-q">哪个标签是会员专属菜单？<span class="py">Nǎge biāoqiān shì huìyuán zhuānshǔ càidān?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="会员菜单|huiyuan caidan|member menu" data-reveal="会员菜单 <span class=&quot;py&quot;>huìyuán càidān · member menu</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑫ LEARN 3/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 3/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>选好咖啡后，可以怎么客制化？ <span class="py-inline">Xuǎn hǎo kāfēi hòu, kěyǐ zěnme kèzhìhuà?</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> every drink lets you tweak cup size, temperature, sugar, and milk base before adding to cart.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-customize.jpg" alt="Luckin app customize cup/temp/beans"/></div>
+        <div class="phone-step">杯型 / 温度 <span style="color:var(--ink-3);font-weight:400;">size / temperature</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-sugar-milk.jpg" alt="Luckin app sugar/milk customize"/></div>
+        <div class="phone-step">糖 / 奶基 <span style="color:var(--ink-3);font-weight:400;">sugar / milk</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑬ TEST 3/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 3/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>客制化你的咖啡 <span class="py-inline">Kèzhìhuà nǐ de kāfēi.</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-3" data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-customize.jpg" alt="Luckin app extra-large cup quiz"/>
+          <div class="quiz-callout" style="top:40%;left:33%;width:48%;height:6%;"></div>
+        </div>
+        <div class="quiz-q">想要更大杯，应该点哪个？<span class="py">Xiǎng yào gèng dà bēi, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="特大杯|te da bei|extra-large cup|extra large" data-reveal="特大杯 <span class=&quot;py&quot;>tè dà bēi · extra-large cup</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-sugar-milk.jpg" alt="Luckin app no sugar quiz"/>
+          <div class="quiz-callout" style="top:12%;left:28%;width:38%;height:5%;"></div>
+        </div>
+        <div class="quiz-q">不想加糖，应该点哪个？<span class="py">Bù xiǎng jiā táng, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="不另外加糖|bu lingwai jia tang|no extra sugar|no sugar" data-reveal="不另外加糖 <span class=&quot;py&quot;>bù lìngwài jiā táng · no extra sugar</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑭ LEARN 4/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 4/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>付钱、取餐，怎么操作？ <span class="py-inline">Fùqián, qǔcān, zěnme cāozuò?</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> checkout is one tap with saved payment, then the app gives you a pickup number — no cashier needed.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-confirm.jpg" alt="Luckin app confirm order"/></div>
+        <div class="phone-step">确认订单 <span style="color:var(--ink-3);font-weight:400;">quèrèn dìngdān · confirm order</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-done.jpg" alt="Luckin app order completed, pickup number"/></div>
+        <div class="phone-step">取餐号 <span style="color:var(--ink-3);font-weight:400;">qǔcānhào · pickup number</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑮ TEST 4/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 4/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>付款和取餐 <span class="py-inline">Fùkuǎn hé qǔcān.</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-4" data-total="2">✅ <span class="score-correct">0</span>/<span class="score-total">2</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-confirm.jpg" alt="Luckin app pay without password quiz"/>
+          <div class="quiz-callout" style="top:91%;left:60%;width:37%;height:6%;"></div>
+        </div>
+        <div class="quiz-q">想要免密码付款，应该点哪个？<span class="py">Xiǎng yào miǎn mìmǎ fùkuǎn, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="免密支付|mianmi zhifu|pay without password" data-reveal="免密支付 <span class=&quot;py&quot;>miǎnmì zhīfù · pay without password</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-done.jpg" alt="Luckin app order again quiz"/>
+          <div class="quiz-callout" style="top:19%;left:49%;width:43%;height:6%;"></div>
+        </div>
+        <div class="quiz-q">想再买一次一样的，应该点哪个？<span class="py">Xiǎng zài mǎi yí cì yíyàng de, yīnggāi diǎn nǎge?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="再来一单|zai lai yi dan|order again" data-reveal="再来一单 <span class=&quot;py&quot;>zài lái yì dān · order again</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑯ LEARN 5/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="7" y="3" width="14" height="22" rx="3" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <line x1="11" y1="22" x2="17" y2="22" stroke="rgba(255,255,255,0.9)" stroke-width="1.8" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">learn 5/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="learn-badge">Learn · 学习</div>
+    <div class="sec-label">How It Really Works · 手机点单</div>
+    <h2>会员卡、历史订单、选门店 <span class="py-inline">Huìyuán kǎ, lìshǐ dìngdān, xuǎn méndiàn.</span></h2>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Reality check:</strong> members get exclusive pricing, a one-tap repeat-order button, and a map to pick a different store.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-member-card.jpg" alt="Luckin app member card"/></div>
+        <div class="phone-step">会员卡 <span style="color:var(--ink-3);font-weight:400;">huìyuán kǎ · member card</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-my-orders.jpg" alt="Luckin app frequent orders page"/></div>
+        <div class="phone-step">我的常点 <span style="color:var(--ink-3);font-weight:400;">wǒ de chángdiǎn · frequent orders</span></div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock"><img src="screens/shot-store-map.jpg" alt="Luckin app store selection"/></div>
+        <div class="phone-step">选择门店 <span style="color:var(--ink-3);font-weight:400;">xuǎnzé méndiàn · choose a store</span></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑰ TEST 5/5 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">test 5/5</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>会员和门店 <span class="py-inline">Huìyuán hé méndiàn.</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-5" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Same rules:</strong> read the screen, type your answer, hit Enter or tap 检查.</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-member-card.jpg" alt="Luckin app member card quiz"/>
+          <div class="quiz-callout" style="top:47%;left:5%;width:60%;height:18%;"></div>
+        </div>
+        <div class="quiz-q">这是给所有人看的，还是只给会员看的价格？<span class="py">Zhè shì gěi shéi kàn de jiàgé?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="会员价|huiyuan jia|members-only price|members only price" data-reveal="会员价 <span class=&quot;py&quot;>huìyuán jià · members-only price</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-my-orders.jpg" alt="Luckin app order-again quiz"/>
+          <div class="quiz-callout" style="top:25%;left:6%;width:30%;height:5%;"></div>
+        </div>
+        <div class="quiz-q">这个按钮可以重复买上次一样的咖啡，是哪几个字？<span class="py">Zhège ànniǔ shì nǎ jǐ gè zì?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="再来一单|zai lai yi dan|order again" data-reveal="再来一单 <span class=&quot;py&quot;>zài lái yì dān · order again</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-store-map.jpg" alt="Luckin app store selection quiz"/>
+          <div class="quiz-callout" style="top:9%;left:8%;width:84%;height:6%;"></div>
+        </div>
+        <div class="quiz-q">你要换一家店取咖啡，应该点这个页面做什么？<span class="py">Nǐ yào zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选择门店|xuanze mendian|choose a store|choose store" data-reveal="选择门店（自提 / 送货上门）<span class=&quot;py&quot;>xuǎnzé méndiàn · choose a store</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑱ FINAL TEST -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M6 14 L12 20 L22 8" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">final test</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Interface Check · 看懂界面</div>
+    <h2>综合挑战：你现在看懂界面了吗？ <span class="py-inline">Zōnghé tiǎozhàn: nǐ xiànzài kàndǒng jièmiàn le ma?</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="final" data-total="5">✅ <span class="score-correct">0</span>/<span class="score-total">5</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Final test — no gold circle this time.</strong> Look at the whole screen and say what it's for, in your own words (Chinese, pinyin, or English).</div>
+    <div class="phone-row">
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-login.jpg" alt="Luckin app login final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面要做什么？<span class="py">Zhège huàmiàn yào zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="登录|denglu|log in|sign in" data-reveal="登录 <span class=&quot;py&quot;>dēnglù · log in</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-home-services.jpg" alt="Luckin app services final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面主要可以做什么？<span class="py">Zhège huàmiàn zhǔyào kěyǐ zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选到店取或送货|choose pickup or delivery|pickup or delivery" data-reveal="选到店取或送货 <span class=&quot;py&quot;>xuǎn dàodiàn qǔ huò sònghuò · choose pickup or delivery</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-customize.jpg" alt="Luckin app customize final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面在做什么？<span class="py">Zhège huàmiàn zài zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选规格|xuan guige|choose drink specs|customize" data-reveal="选规格（杯型/温度/咖啡豆）<span class=&quot;py&quot;>xuǎn guīgé · choose drink specs</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-confirm.jpg" alt="Luckin app confirm final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这是哪个步骤？<span class="py">Zhè shì nǎge bùzhòu?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="确认订单|queren dingdan|confirm order|confirm and pay" data-reveal="确认订单并付款 <span class=&quot;py&quot;>quèrèn dìngdān bìng fùkuǎn · confirm and pay</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block">
+        <div class="phone-mock">
+          <img src="screens/shot-store-map.jpg" alt="Luckin app store map final quiz"/>
+          
+        </div>
+        <div class="quiz-q">这个画面可以做什么？<span class="py">Zhège huàmiàn kěyǐ zuò shénme?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="打字猜猜看…" data-answer="选择门店|xuanze mendian|choose a store" data-reveal="选择门店 <span class=&quot;py&quot;>xuǎnzé méndiàn · choose a store</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑲ LESSON REPORT — populated by JS once every test block is answered -->
+<div class="slide" id="lesson-report-slide" style="grid-template-columns:64px 1fr; display:none;">
+  <div class="sidebar dark">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 21 L5 13 M12 21 L12 8 M19 21 L19 16 M23 21 L23 11" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">your report</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Lesson Report · 学习报告</div>
+    <h2>你的学习报告 <span class="py-inline">Nǐ de xuéxí bàogào.</span></h2>
+    <div id="report-score" class="report-score"></div>
+    <div id="report-groups" class="report-groups"></div>
+    <div id="report-missed"></div>
+  </div>
+</div>
+
+<!-- ⑳ REVIEW -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar dark">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <polygon points="14,4 17,11 24,11 18,16 20,23 14,19 8,23 10,16 4,11 11,11" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label">review</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+</div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Review · 复习</div>
+    <h2>Useful phrases <span class="py-inline">chángyòng yǔjù</span></h2>
+    <div class="photo-wide">
+      <img src="https://images.unsplash.com/photo-1509042239860-f550ce710b93?auto=format&fit=crop&w=900&q=72" alt="coffee beans" onerror="this.style.display='none'"/>
+      <div class="photo-cap">咖啡 kāfēi<small>choose your drink, size, and temperature</small></div>
+    </div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+      <div class="ex" style="margin:0;">
+        <div class="ex-zh">我要一杯______。</div>
+        <div class="ex-py">Wǒ yào yì bēi ___.</div>
+      </div>
+      <div class="ex" style="margin:0;">
+        <div class="ex-zh">大杯还是特大杯？</div>
+        <div class="ex-py">Dàbēi háishi tèdàbēi?</div>
+      </div>
+      <div class="ex" style="margin:0;">
+        <div class="ex-zh">热的还是冰的？</div>
+        <div class="ex-py">Rè de háishi bīng de?</div>
+      </div>
+      <div class="ex" style="margin:0;">
+        <div class="ex-zh">加不加糖？</div>
+        <div class="ex-py">Jiā bu jiā táng?</div>
+      </div>
+      <div class="ex" style="margin:0;">
+        <div class="ex-zh">我要自提。</div>
+        <div class="ex-py">Wǒ yào zìtí.</div>
+      </div>
+      <div class="ex" style="margin:0;">
+        <div class="ex-zh">多少钱？</div>
+        <div class="ex-py">Duōshao qián?</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ㉑ CLOSING -->
+<div class="slide slide-close">
+  <div class="close-inner">
+    <div class="close-zh">谢谢</div>
+    <div class="close-detail">
+      <div class="py">Xièxie</div>
+      <div class="en">Enjoy your coffee with Xinhan Chinese</div>
+      <div class="sub">HSK 2–3 · Ordering Coffee</div>
+    </div>
+  </div>
+</div>
+
+</div>
+
+<script>
+(function () {
+  // Generic across lessons: any deck that sets data-lesson-id on <body> and
+  // data-group on each [data-quiz-score] block gets per-answer + final-grade
+  // logging for free. Never blocks the UI — network failures are swallowed,
+  // and with no lessonId (or no server, e.g. opened as a bare file) it just
+  // skips the network calls and behaves exactly like a local-only quiz.
+  var lessonId = document.body.dataset.lessonId || '';
+  var allInputs = Array.prototype.slice.call(document.querySelectorAll('.quiz-input'));
+  var reportShown = false;
+  var wrongAnswers = [];
+
+  var GROUP_NAMES = {
+    'group-1': 'Sign-in & Promos · 登录优惠',
+    'group-2': 'Browse & Discover · 浏览发现',
+    'group-3': 'Customize Order · 客制化',
+    'group-4': 'Checkout & Pickup · 付款取餐',
+    'group-5': 'Loyalty & History · 会员历史',
+    'final': 'Final Test · 综合挑战',
+  };
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function logAttempt(payload) {
+    if (!lessonId) return;
+    fetch('/api/lessons/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(function () {});
+  }
+
+  function logCompletion(score, total, groupList) {
+    if (!lessonId) return;
+    fetch('/api/lessons/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lessonId: lessonId, score: score, total: total, groups: groupList }),
+    }).catch(function () {});
+  }
+
+  function buildReport() {
+    var groups = {};
+    document.querySelectorAll('[data-quiz-score]').forEach(function (box) {
+      var groupId = box.dataset.group || 'default';
+      groups[groupId] = {
+        groupId: groupId,
+        score: Number(box.querySelector('.score-correct').textContent),
+        total: Number(box.dataset.total),
+      };
+    });
+    var groupList = Object.keys(groups).map(function (k) { return groups[k]; });
+    var score = groupList.reduce(function (s, g) { return s + g.score; }, 0);
+    var total = groupList.reduce(function (s, g) { return s + g.total; }, 0);
+    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+
+    var scoreBox = document.getElementById('report-score');
+    if (scoreBox) {
+      scoreBox.innerHTML =
+        '<span class="big">' + score + '/' + total + '</span>' +
+        '<span class="pct">' + pct + '%</span>';
+    }
+
+    var groupsBox = document.getElementById('report-groups');
+    if (groupsBox) {
+      groupsBox.innerHTML = groupList.map(function (g) {
+        var p = g.total > 0 ? (g.score / g.total) * 100 : 0;
+        var weak = p < 100 ? ' weak' : '';
+        return '<div class="report-group-row">' +
+          '<div class="report-group-name">' + (GROUP_NAMES[g.groupId] || g.groupId) + '</div>' +
+          '<div class="report-group-bar"><div class="report-group-fill' + weak + '" style="width:' + p + '%"></div></div>' +
+          '<div class="report-group-score">' + g.score + '/' + g.total + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    var missedBox = document.getElementById('report-missed');
+    if (missedBox) {
+      if (wrongAnswers.length === 0) {
+        missedBox.innerHTML = '<div class="report-perfect">完美！Perfect score — every screen, right answer. 🎉</div>';
+      } else {
+        missedBox.innerHTML = '<div class="report-missed"><h4>Words & screens to review · 需要复习的词</h4>' +
+          wrongAnswers.map(function (w) {
+            return '<div class="report-missed-item">' +
+              '<span class="report-missed-q">' + escapeHtml(w.questionText) + '</span>' +
+              '<span class="report-missed-you">' + escapeHtml(w.userAnswer || '(blank)') + '</span>' +
+              '<span class="report-missed-correct">' + w.reveal + '</span>' +
+              '</div>';
+          }).join('') +
+          '</div>';
+      }
+    }
+
+    var slide = document.getElementById('lesson-report-slide');
+    if (slide) {
+      slide.style.display = 'grid';
+      slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    logCompletion(score, total, groupList);
+  }
+
+  function maybeShowReport() {
+    if (reportShown) return;
+    var allDone = allInputs.every(function (i) { return i.disabled; });
+    if (!allDone) return;
+    reportShown = true;
+    buildReport();
+  }
+
+  allInputs.forEach(function (input, globalIndex) {
+    var row = input.closest('.quiz-game');
+    var feedback = row.querySelector('.quiz-feedback');
+    var checkBtn = row.querySelector('.quiz-check-btn');
+    var answers = (input.dataset.answer || '').split('|').map(function (a) {
+      return a.trim().toLowerCase();
+    });
+    var reveal = input.dataset.reveal || '';
+    var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+    var questionText = input.closest('.phone-block') ? input.closest('.phone-block').querySelector('.quiz-q').textContent.trim() : '';
+
+    function check() {
+      if (input.disabled) return;
+      var val = input.value.trim().toLowerCase();
+      if (!val) return;
+      var correct = answers.indexOf(val) !== -1;
+
+      feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+      feedback.innerHTML = (correct ? '对! Duì! Right!' : '错! Cuò! Wrong!') +
+        (reveal ? '<span class="reveal">' + reveal + '</span>' : '');
+
+      input.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+      if (checkBtn) {
+        checkBtn.classList.add(correct ? 'correct' : 'wrong');
+        checkBtn.textContent = correct ? '✓' : '✗';
+        checkBtn.disabled = true;
+      }
+      input.disabled = true;
+
+      if (correct && scoreBox) {
+        var counter = scoreBox.querySelector('.score-correct');
+        counter.textContent = String(Number(counter.textContent) + 1);
+      }
+      if (!correct) {
+        wrongAnswers.push({
+          questionText: questionText,
+          userAnswer: input.value.trim(),
+          reveal: reveal,
+        });
+      }
+
+      logAttempt({
+        lessonId: lessonId,
+        groupId: scoreBox ? scoreBox.dataset.group : 'default',
+        questionIndex: globalIndex,
+        questionText: questionText,
+        userAnswer: input.value.trim(),
+        correct: correct,
+      });
+      maybeShowReport();
+    }
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') check();
+    });
+    if (checkBtn) checkBtn.addEventListener('click', check);
+  });
+})();
+</script>
+</body>
+</html>
