@@ -6,7 +6,7 @@
 - Website front page + auth pages built and deployed to stage.xinhan.org (2026-05-24)
 - Awaiting Pedro's review on stage.xinhan.org
 - Teaching materials audited; full catalog in `CONTENT_AUDIT.md`
-- Trial-lesson hub live at `/trial-lesson` with 4 interactive decks (2026-07-02)
+- Trial-lesson hub live at `/trial-lesson` with progressive HSK 1–6 cycle + extra trial lessons (2026-07-02)
 
 ---
 
@@ -41,6 +41,8 @@
 - [x] 2026-07-02 — Created new HSK 3 lesson deck "Many Ways to Say It" in `uncoveredDocs/HSKideas/15 Many Ways to Say It/` (HTML + PDF, drawings + pictures)
 - [x] 2026-07-02 — Built trial-lesson selector hub (`app/trial-lesson/page.tsx`) and lesson player (`app/trial-lesson/[lessonId]/page.tsx`)
 - [x] 2026-07-02 — Deployed 4 interactive trial lesson decks under `public/trial-lesson/`: `banjia`, `mood-weather`, `many-ways`, `mood-weather-v2`
+- [x] 2026-07-02 — Restored original Luckin Coffee trial lesson at `/trial-lesson/luckin-coffee`
+- [x] 2026-07-02 — Created progressive HSK 1–6 trial lesson cycle: `hsk-1` to `hsk-6` with level-appropriate vocabulary and grammar
 - [x] 2026-07-02 — Wired all trial lesson quizzes to `/api/lessons/attempt` and `/api/lessons/complete` for score persistence
 
 ---
@@ -64,3 +66,7 @@
   - Files: `app/trial-lesson/page.tsx`, `app/trial-lesson/[lessonId]/page.tsx`, `public/trial-lesson/banjia/index.html`, `public/trial-lesson/mood-weather/index.html`, `public/trial-lesson/many-ways/index.html`, `public/trial-lesson/mood-weather-v2/index.html`, `build_trial_decks.py`
   - Features: JWT-gated selector page, iframe lesson player, interactive quizzes per deck, per-group scoring, end-of-lesson report, MongoDB persistence via `/api/lessons/attempt` and `/api/lessons/complete`
   - Status: done — `npm run build` passes; `npm run lint` still prompts for ESLint setup (pre-existing)
+- [2026-07-02] **Kimi (Maestro)** — Restored Luckin Coffee lesson + built progressive HSK 1–6 cycle
+  - Files: `public/trial-lesson/luckin-coffee/index.html`, `public/trial-lesson/hsk-1/index.html` … `public/trial-lesson/hsk-6/index.html`, `build_hsk_cycle.py`, `app/trial-lesson/page.tsx`, `app/trial-lesson/[lessonId]/page.tsx`
+  - Features: original Luckin Coffee lesson moved to `/trial-lesson/luckin-coffee`; 6 new progressive HSK decks with level-appropriate vocab/grammar/quizzes; selector split into "Progressive HSK Cycle" and "More Trial Lessons"
+  - Status: done — `npm run build` passes; not yet pushed
