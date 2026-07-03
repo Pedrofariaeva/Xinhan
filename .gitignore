@@ -5,6 +5,8 @@ node_modules/
 *.env*.local
 .vercel
 .venv/
+__pycache__/
+*.pyc
 
 # Local documents — not part of the codebase
 docs1/

@@ -1,0 +1,1031 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>搬家 — Moving House · Xinhan Chinese · HSK 2</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --jade: #2d6a4f; --jade-mid: #40916c; --jade-light: #74c69d; --jade-pale: #d8f3dc;
+  --gold: #b7791f; --gold-mid: #d69e2e; --gold-pale: #fffff0;
+  --rust: #9b2226; --rust-light: #e76f51; --rust-pale: #fff0ee;
+  --sky: #1d5f8a; --sky-pale: #e8f4fd;
+  --cream: #faf7f2; --cream-dark: #ede8df;
+  --ink: #1a1a1a; --ink-2: #3d3d3d; --ink-3: #7a7a7a;
+  --white: #fff;
+}
+body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink); padding: 2.5rem 1rem 5rem; }
+
+.deck { max-width: 940px; margin: 0 auto; }
+.deck-brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--jade); }
+.brand-sub  { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+
+.slide { display: grid; background: var(--white); overflow: hidden; margin-bottom: 3px; }
+.slide:first-of-type { border-radius: 14px 14px 0 0; }
+.slide:last-of-type  { border-radius: 0 0 14px 14px; }
+
+.sidebar {
+  display: flex; flex-direction: column;
+  padding: 1.5rem 0.65rem 1.5rem 0.9rem;
+  background: var(--jade);
+  gap: 1.8rem; min-width: 64px;
+  position: relative;
+}
+.sidebar::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+.sb-icon { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.sb-icon svg { width: 28px; height: 28px; }
+.sb-label { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.2; }
+.sb-prog { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: auto; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: #d69e2e; }
+.dot.done   { background: var(--jade-light); }
+.sidebar.rust  { background: var(--rust); }
+.sidebar.sky   { background: var(--sky); }
+.sidebar.gold  { background: #7b5a1a; }
+.sidebar.cream { background: var(--cream-dark); }
+.sidebar.cream::after { display:none; }
+.sidebar.cream .sb-label { color: var(--jade); }
+.sidebar.dark  { background: #1b2e1f; }
+
+.content { padding: 2rem 2.5rem 2rem 2rem; flex: 1; }
+.sec-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--jade-mid); margin-bottom: 0.9rem; }
+.content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.3; }
+.zh-inline { font-family: 'Noto Serif SC', serif; color: var(--jade); }
+.py-inline { font-size: 0.72rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--gold); letter-spacing: 0.07em; }
+
+.scene { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.scene svg { display: block; width: 100%; }
+
+/* COVER */
+.slide-cover { grid-template-columns: 90px 1fr; }
+.cover-content { background: var(--jade); padding: 2.5rem 2.5rem 2rem; position: relative; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover-scene { position: absolute; top: 0; right: 0; left: 0; bottom: 0; opacity: 0.18; }
+.cover-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--jade-light); margin-bottom: 0.7rem; position: relative; }
+.cover-zh { font-family: 'Noto Serif SC', serif; font-size: 5.8rem; font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; position: relative; }
+.cover-py { font-size: 1.25rem; font-weight: 300; color: var(--jade-light); letter-spacing: 0.18em; margin: 0.3rem 0; position: relative; }
+.cover-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.45rem; color: #f6e05e; position: relative; margin-bottom: 1.5rem; }
+.cover-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; position: relative; }
+.tag { padding: 0.22rem 0.8rem; border-radius: 999px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+
+/* GRAMMAR STRIP */
+.grammar-strip { display: flex; align-items: center; gap: 0; background: var(--cream); border-radius: 10px; overflow: hidden; margin-bottom: 1.4rem; }
+.gs-part { padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+.gs-part.colored { background: var(--jade); }
+.gs-part.colored.rust { background: var(--rust); }
+.gs-part.colored.sky  { background: var(--sky); }
+.gs-part.colored.gold { background: #7b5a1a; }
+.gs-zh { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1; }
+.gs-py { font-size: 0.58rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; margin-top: 2px; }
+.gs-sep { font-size: 1.1rem; color: var(--ink-3); padding: 0 0.3rem; }
+.gs-plain-zh { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 500; color: var(--jade); }
+.gs-plain-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+.gs-en { margin-left: auto; padding: 0.75rem 1.25rem; font-size: 0.72rem; color: var(--ink-3); font-style: italic; border-left: 1px solid var(--cream-dark); }
+
+/* EXAMPLES */
+.ex-block { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem; }
+.ex { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid var(--jade-mid); }
+.ex.rust { border-left-color: var(--rust-light); }
+.ex.sky  { border-left-color: #4a9ec7; }
+.ex-zh { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--ink); margin-bottom: 0.15rem; }
+.key  { color: var(--jade); font-weight: 700; }
+.key-r{ color: var(--rust); font-weight: 700; }
+.key-s{ color: var(--sky); font-weight: 700; }
+.ex-py { font-size: 0.63rem; color: var(--gold); letter-spacing: 0.03em; margin-bottom: 0.1rem; }
+.ex-en { font-size: 0.69rem; color: var(--ink-3); font-style: italic; }
+
+/* CHIPS */
+.chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; background: var(--cream); border: 1.5px solid var(--cream-dark); }
+.chip .ch { font-family: 'Noto Serif SC', serif; font-size: 0.85rem; color: var(--jade); font-weight: 500; }
+.chip .py { font-size: 0.58rem; color: var(--gold); margin-left: 0.25rem; }
+
+/* VOCAB */
+.vocab-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.vc { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 7px; padding: 0.55rem 0.7rem; border-top: 3px solid var(--jade-mid); }
+.vc.cat-move   { border-top-color: var(--rust-light); }
+.vc.cat-adj    { border-top-color: var(--gold-mid); }
+.vc.cat-gram   { border-top-color: var(--sky); }
+.vc-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 500; color: var(--jade); }
+.vc-py { font-size: 0.58rem; color: var(--gold); margin: 2px 0 1px; }
+.vc-en { font-size: 0.62rem; color: var(--ink-3); }
+
+/* MATCH */
+.match-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; }
+.ml { background: #fff0ee; border-radius: 7px; padding: 0.6rem 0.85rem; display: flex; gap: 0.5rem; align-items: flex-start; }
+.mr { background: #f0f7ff; border-radius: 7px; padding: 0.6rem 0.85rem; display: flex; gap: 0.5rem; align-items: center; }
+.mn { font-weight: 700; color: var(--rust); font-size: 0.9rem; min-width: 16px; }
+.ml-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; }
+.ml-py { font-size: 0.58rem; color: var(--ink-3); }
+.ma { font-weight: 700; color: var(--sky); font-size: 0.9rem; min-width: 16px; }
+.mr-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; }
+.mr-py { font-size: 0.58rem; color: var(--ink-3); }
+
+.tip { background: var(--jade-pale); border-radius: 7px; padding: 0.65rem 0.95rem; font-size: 0.7rem; color: var(--jade); line-height: 1.55; margin-top: 0.9rem; }
+.tip strong { font-weight: 600; }
+
+.activities { display: flex; gap: 0.6rem; flex-wrap: wrap; margin-top: 0.75rem; }
+.act { background: var(--cream); border-radius: 8px; padding: 0.55rem 0.8rem; text-align: center; flex: 1; min-width: 90px; }
+.act-zh { font-family: 'Noto Serif SC', serif; font-size: 0.88rem; color: var(--jade); font-weight: 500; }
+.act-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+
+/* CLOSING */
+.slide-close { display: block; background: #1b3a28; border-radius: 0 0 14px 14px; }
+.close-inner { padding: 3rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+.close-zh { font-family: 'Noto Serif SC', serif; font-size: 5rem; font-weight: 700; color: var(--white); }
+.close-detail .py { font-size: 1rem; color: var(--jade-light); letter-spacing: 0.2em; }
+.close-detail .en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: #f6e05e; margin-top: 0.2rem; }
+.close-detail .sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1rem; }
+
+/* ── PHOTO ELEMENTS ── */
+.photo-row { display:flex; gap:8px; margin-bottom:1rem; }
+.photo-slot { flex:1; border-radius:9px; overflow:hidden; position:relative; min-height:110px; background:linear-gradient(135deg,var(--jade-pale),var(--cream-dark)); }
+.photo-slot img { width:100%; height:100%; object-fit:cover; display:block; transition:opacity .2s; }
+.photo-cap { position:absolute; bottom:0; left:0; right:0; background:linear-gradient(transparent,rgba(0,0,0,0.58)); color:white; font-size:0.68rem; font-family:'Noto Serif SC',serif; padding:14px 9px 6px; font-weight:700; letter-spacing:0.04em; }
+.photo-cap small { display:block; font-family:'Inter',sans-serif; font-size:0.56rem; color:rgba(255,255,255,0.72); font-weight:400; }
+.photo-wide { border-radius:10px; overflow:hidden; position:relative; margin-bottom:1rem; height:130px; background:linear-gradient(135deg,var(--sky-pale),var(--cream-dark)); }
+.photo-wide img { width:100%; height:100%; object-fit:cover; display:block; }
+.photo-wide .photo-cap { font-size:0.78rem; }
+
+@media print {
+  body { background: white; padding: 0; }
+  .deck { max-width: 100%; }
+  .slide { break-inside: avoid; margin-bottom: 0; }
+  .deck-brand { display: none; }
+}
+@media (max-width: 640px) {
+  .slide { grid-template-columns: 48px 1fr !important; }
+  .sidebar { padding: 1rem 0.4rem; }
+  .content { padding: 1.25rem; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .cover-zh { font-size: 3.5rem; }
+}
+
+/* --- INTERACTIVE QUIZ STYLES --- */
+.phone-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 0.5rem; }
+.phone-block { display: flex; flex-direction: column; gap: 0.55rem; width: 150px; }
+.phone-block.wide { width: 200px; }
+.phone-mock { width: 150px; border-radius: 16px; overflow: hidden; border: 3px solid var(--jade); box-shadow: 0 6px 16px rgba(45,106,79,0.25); position: relative; background: var(--cream); }
+.phone-mock svg { width: 100%; display: block; }
+.phone-step { font-size: 0.62rem; font-weight: 700; color: var(--gold); text-align: center; }
+.quiz-q { background: var(--cream); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.66rem; color: var(--ink); line-height: 1.45; }
+.quiz-q .py { display: block; color: var(--gold); font-size: 0.6rem; margin-top: 1px; }
+.quiz-callout { position: absolute; border: 2px solid #f6e05e; border-radius: 6px; box-shadow: 0 0 0 3px rgba(246,224,94,0.35); pointer-events: none; animation: quiz-pulse 1.6s ease-in-out infinite; }
+@keyframes quiz-pulse { 0%, 100% { opacity: 0.55; } 50% { opacity: 1; } }
+.quiz-game { display: flex; flex-direction: column; gap: 0.3rem; }
+.quiz-row { display: flex; gap: 0.3rem; }
+.quiz-input { flex: 1; width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #d2d2d2; border-radius: 6px; background: var(--white); color: var(--ink); transition: border-color 0.15s, background 0.15s; }
+.quiz-input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.quiz-input:disabled { background: var(--cream); opacity: 0.85; }
+.quiz-input.flash-correct { border-color: #2f7d52; background: #eaf7ef; animation: quiz-pop 0.4s ease; }
+.quiz-input.flash-wrong { border-color: #c0392b; background: #fbeaea; animation: quiz-shake 0.4s ease; }
+.quiz-check-btn { flex-shrink: 0; padding: 6px 10px; font-size: 0.62rem; font-weight: 700; border: none; border-radius: 6px; background: var(--gold); color: var(--jade); cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.quiz-check-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.quiz-check-btn:disabled { cursor: default; }
+.quiz-check-btn.correct { background: #2f7d52; color: white; animation: quiz-pop 0.4s ease; }
+.quiz-check-btn.wrong { background: #c0392b; color: white; animation: quiz-shake 0.4s ease; }
+@keyframes quiz-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes quiz-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.quiz-hint { font-size: 0.56rem; color: var(--ink-3); }
+.quiz-feedback { font-size: 0.68rem; font-weight: 700; min-height: 1.1em; }
+.quiz-feedback.correct { color: #2f7d52; }
+.quiz-feedback.wrong { color: #c0392b; }
+.quiz-feedback .reveal { display: block; font-weight: 500; color: var(--ink); margin-top: 2px; font-size: 0.62rem; }
+.quiz-feedback .reveal .py { color: var(--gold); }
+.quiz-score { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; font-weight: 700; color: var(--jade); background: var(--cream); border-radius: 20px; padding: 0.3rem 0.8rem; margin-bottom: 0.8rem; }
+.quiz-score .stars { color: var(--gold); letter-spacing: 1px; }
+.learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.report-score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.report-score .big { font-size: 2.4rem; font-weight: 800; color: var(--jade); }
+.report-score .pct { font-size: 1rem; font-weight: 700; color: var(--gold); }
+.report-groups { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.report-group-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.66rem; }
+.report-group-name { width: 150px; flex-shrink: 0; color: var(--ink); }
+.report-group-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--cream); overflow: hidden; }
+.report-group-fill { height: 100%; background: var(--jade-mid); border-radius: 5px; }
+.report-group-fill.weak { background: var(--rust-light); }
+.report-group-score { width: 36px; flex-shrink: 0; text-align: right; color: var(--ink-3); }
+.report-missed { background: #fbeaea; border-radius: 8px; padding: 0.8rem 1rem; }
+.report-missed h4 { margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--rust); }
+.report-missed-item { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; font-size: 0.66rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(155,34,38,0.12); }
+.report-missed-item:last-child { border-bottom: none; }
+.report-missed-q { color: var(--ink); flex: 1; min-width: 200px; }
+.report-missed-you { color: #c0392b; text-decoration: line-through; }
+.report-missed-correct { color: #2f7d52; font-weight: 600; }
+.report-perfect { background: var(--jade-pale); border-radius: 8px; padding: 1rem; font-size: 0.72rem; color: var(--jade); font-weight: 600; text-align: center; }
+.sidebar.dark { background: #1a3a2b; }
+
+
+</style>
+</head>
+<body data-lesson-id="hsk-2/banjia">
+
+<div class="deck">
+<div class="deck-brand">
+  <span class="brand-name">新汉 Xīnhàn</span>
+  <span class="brand-sub">HSK 2 · Housing &amp; Moving</span>
+</div>
+
+
+<!-- COVER -->
+<div class="slide slide-cover">
+  <div class="sidebar" style="background:#1a3d2b;justify-content:center;align-items:center;min-height:300px;">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:38px;height:38px;">
+      <path d="M4 14L16 4l12 10v14H4V14z" stroke="rgba(255,255,255,0.9)" stroke-width="1.5" stroke-linejoin="round" fill="none"/>
+      <rect x="12" y="20" width="8" height="8" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-scene">
+      <svg viewBox="0 0 700 300" xmlns="http://www.w3.org/2000/svg" preserveAspectRatio="xMidYMid slice">
+        <rect x="470" y="60" width="200" height="200" fill="white" rx="4"/>
+        <polygon points="470,60 570,10 670,60" fill="white"/>
+        <rect x="530" y="120" width="80" height="140" fill="rgba(0,0,0,0.15)" rx="2"/>
+        <rect x="490" y="100" width="40" height="50" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="30" y="140" width="120" height="120" fill="white" rx="3"/>
+        <polygon points="30,140 90,100 150,140" fill="white"/>
+        <rect x="70" y="180" width="40" height="80" fill="rgba(0,0,0,0.1)" rx="2"/>
+        <rect x="180" y="180" width="180" height="80" fill="white" rx="6"/>
+        <rect x="300" y="160" width="60" height="100" fill="rgba(255,255,255,0.8)" rx="4"/>
+        <circle cx="215" cy="265" r="16" fill="white"/><circle cx="215" cy="265" r="8" fill="rgba(0,0,0,0.12)"/>
+        <circle cx="320" cy="265" r="16" fill="white"/><circle cx="320" cy="265" r="8" fill="rgba(0,0,0,0.12)"/>
+        <rect x="200" y="185" width="35" height="35" fill="rgba(255,255,255,0.6)" rx="3"/>
+        <rect x="242" y="185" width="35" height="35" fill="rgba(255,255,255,0.5)" rx="3"/>
+        <rect x="200" y="157" width="35" height="25" fill="rgba(255,255,255,0.4)" rx="3"/>
+        <path d="M160 230 L180 230" stroke="white" stroke-width="4" stroke-linecap="round"/>
+        <path d="M172 222 L182 230 L172 238" fill="none" stroke="white" stroke-width="3" stroke-linejoin="round"/>
+      </svg>
+    </div>
+    <div class="cover-eyebrow">Housing &middot; 住 &middot; Level 2</div>
+    <div class="cover-zh">搬家</div>
+    <div class="cover-py">bān jiā</div>
+    <div class="cover-en">Moving House</div>
+    <div class="cover-tags">
+      <span class="tag">HSK 2</span>
+      <span class="tag">18 new words</span>
+      <span class="tag">3 grammar points</span>
+    </div>
+  </div>
+</div>
+
+
+<!-- WARM-UP / GOALS -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="2" y="4" width="18" height="12" rx="4" fill="rgba(255,255,255,0.85)"/>
+        <path d="M6 16v4l5-4" fill="rgba(255,255,255,0.85)"/>
+        <rect x="9" y="12" width="17" height="11" rx="4" fill="rgba(255,255,255,0.45)"/>
+        <path d="M22 23v3l-4-3" fill="rgba(255,255,255,0.45)"/>
+      </svg>
+      <div class="sb-label">warm up</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Warm-up &middot; 热身</div>
+    <h2>你的家怎么样？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ de jiā zěn me yàng?</span></h2>
+    <div class="scene">
+      <svg viewBox="0 0 720 148" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="148" fill="#f0ebe1" rx="8"/>
+        <rect x="260" y="40" width="200" height="108" fill="#d8f3dc" rx="6"/>
+        <polygon points="260,40 360,10 460,40" fill="#74c69d"/>
+        <rect x="330" y="90" width="60" height="58" fill="#40916c" rx="3"/>
+        <rect x="340" y="105" width="18" height="18" fill="#fffff0" rx="2"/>
+        <rect x="365" y="105" width="18" height="18" fill="#fffff0" rx="2"/>
+        <rect x="352" y="128" width="16" height="20" fill="#2d6a4f" rx="2"/>
+        <circle cx="360" cy="25" r="12" fill="#f6e05e"/>
+        <text x="360" y="85" text-anchor="middle" font-family="Noto Serif SC,serif" font-size="22" fill="#2d6a4f" font-weight="700">家</text>
+        <text x="360" y="148" text-anchor="middle" font-family="Inter,sans-serif" font-size="9" fill="#7a7a7a">home &middot; moving house</text>
+      </svg>
+    </div>
+    <div class="chip-row">
+          <div class="chip"><span class="ch">方便</span><span class="py">convenient</span></div>
+          <div class="chip"><span class="ch">近</span><span class="py">near</span></div>
+          <div class="chip"><span class="ch">远</span><span class="py">far</span></div>
+          <div class="chip"><span class="ch">安静</span><span class="py">quiet</span></div>
+          <div class="chip"><span class="ch">舒服</span><span class="py">comfortable</span></div>
+          <div class="chip"><span class="ch">干净</span><span class="py">clean</span></div>
+    </div>
+    <div class="tip">Tell your partner: 我家离超市很近。 / 这里很安静。 / 我的家不大，但是很舒服。</div>
+  </div>
+</div>
+
+
+<!-- VOCABULARY -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar" style="background:#245c42">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">vocab</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot active"></div><div class="dot"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">New Words &middot; 新词 &mdash; 18 new words</div>
+    <div class="vocab-grid">
+      <div class="vc cat-move"><div class="vc-zh">搬家</div><div class="vc-py">bān jiā</div><div class="vc-en">move house</div></div>
+      <div class="vc cat-move"><div class="vc-zh">搬到</div><div class="vc-py">bān dào</div><div class="vc-en">move to</div></div>
+      <div class="vc cat-move"><div class="vc-zh">找到</div><div class="vc-py">zhǎo dào</div><div class="vc-en">find</div></div>
+      <div class="vc cat-move"><div class="vc-zh">工作</div><div class="vc-py">gōng zuò</div><div class="vc-en">work / job</div></div>
+      <div class="vc cat-move"><div class="vc-zh">上班</div><div class="vc-py">shàng bān</div><div class="vc-en">go to work</div></div>
+      <div class="vc cat-move"><div class="vc-zh">买东西</div><div class="vc-py">mǎi dōng xi</div><div class="vc-en">shopping</div></div>
+      <div class="vc cat-adj"><div class="vc-zh">方便</div><div class="vc-py">fāng biàn</div><div class="vc-en">convenient</div></div>
+      <div class="vc cat-adj"><div class="vc-zh">近</div><div class="vc-py">jìn</div><div class="vc-en">near</div></div>
+      <div class="vc cat-adj"><div class="vc-zh">远</div><div class="vc-py">yuǎn</div><div class="vc-en">far</div></div>
+      <div class="vc cat-adj"><div class="vc-zh">安静</div><div class="vc-py">ān jìng</div><div class="vc-en">quiet</div></div>
+      <div class="vc cat-adj"><div class="vc-zh">舒服</div><div class="vc-py">shū fu</div><div class="vc-en">comfortable</div></div>
+      <div class="vc cat-adj"><div class="vc-zh">干净</div><div class="vc-py">gān jìng</div><div class="vc-en">clean</div></div>
+      <div class="vc cat-move"><div class="vc-zh">超市</div><div class="vc-py">chāo shì</div><div class="vc-en">supermarket</div></div>
+      <div class="vc cat-move"><div class="vc-zh">公园</div><div class="vc-py">gōng yuán</div><div class="vc-en">park</div></div>
+      <div class="vc cat-move"><div class="vc-zh">医院</div><div class="vc-py">yī yuàn</div><div class="vc-en">hospital</div></div>
+      <div class="vc cat-move"><div class="vc-zh">学校</div><div class="vc-py">xué xiào</div><div class="vc-en">school</div></div>
+      <div class="vc cat-gram"><div class="vc-zh">先</div><div class="vc-py">xiān</div><div class="vc-en">first</div></div>
+      <div class="vc cat-gram"><div class="vc-zh">然后</div><div class="vc-py">rán hòu</div><div class="vc-en">then</div></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- GRAMMAR 1 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="14" y1="5" x2="14" y2="24" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="5" y1="11" x2="23" y2="11" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <circle cx="5" cy="17" r="4" fill="rgba(255,255,255,0.7)"/>
+        <circle cx="23" cy="8" r="4" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+      <div class="sb-label">G1 &middot; 离</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 1 &middot; 语法1</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored rust"><div class="gs-zh">A</div><div class="gs-py">place A</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part colored rust"><div class="gs-zh">离</div><div class="gs-py">lí</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">B</div><div class="gs-plain-py">place B</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">近 / 远</div><div class="gs-plain-py">near / far</div></div>
+      <div class="gs-en">A is near / far from B</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex sky">
+        <div class="ex-zh">我家<span class="key-s">离</span>超市很近。</div>
+        <div class="ex-py">Wǒ jiā lí chāo shì hěn jìn.</div>
+        <div class="ex-en">My home is very close to the supermarket.</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh">他的家<span class="key-s">离</span>学校很远。</div>
+        <div class="ex-py">Tā de jiā lí xué xiào hěn yuǎn.</div>
+        <div class="ex-en">His home is very far from school.</div>
+      </div>
+      <div class="ex sky">
+        <div class="ex-zh">新公司<span class="key-s">离</span>公园很近。</div>
+        <div class="ex-py">Xīn gōng sī lí gōng yuán hěn jìn.</div>
+        <div class="ex-en">The new company is very close to the park.</div>
+      </div>
+    </div>
+    
+    <div class="tip"><strong>离 tells us the distance between two places.</strong></div>
+  </div>
+</div>
+
+
+<!-- GRAMMAR 2 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar sky">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="14" y1="5" x2="14" y2="24" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="5" y1="11" x2="23" y2="11" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <circle cx="5" cy="17" r="4" fill="rgba(255,255,255,0.7)"/>
+        <circle cx="23" cy="8" r="4" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+      <div class="sb-label">G2 &middot; 先…然后</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 2 &middot; 语法2</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored sky"><div class="gs-zh">先</div><div class="gs-py">xiān</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">action 1</div><div class="gs-plain-py">动作一</div></div>
+      <div class="gs-sep">，</div>
+      <div class="gs-part colored sky"><div class="gs-zh">然后</div><div class="gs-py">rán hòu</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">action 2</div><div class="gs-plain-py">动作二</div></div>
+      <div class="gs-en">first…, then…</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex">
+        <div class="ex-zh">我<span class="key">先</span>吃饭，<span class="key">然后</span>搬家。</div>
+        <div class="ex-py">Wǒ xiān chī fàn, rán hòu bān jiā.</div>
+        <div class="ex-en">First I eat, then I move house.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh">你<span class="key">先</span>找到工作，<span class="key">然后</span>找房子。</div>
+        <div class="ex-py">Nǐ xiān zhǎo dào gōng zuò, rán hòu zhǎo fáng zi.</div>
+        <div class="ex-en">First find a job, then look for a house.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh">搬家那天，我们<span class="key">先</span>收拾东西，<span class="key">然后</span>坐车去新家。</div>
+        <div class="ex-py">Bān jiā nà tiān, wǒ men xiān shōu shi dōng xi, rán hòu zuò chē qù xīn jiā.</div>
+        <div class="ex-en">On moving day, first pack things, then take a car to the new home.</div>
+      </div>
+    </div>
+    
+    <div class="tip"><strong>Use 先…然后 to describe two actions in order.</strong></div>
+  </div>
+</div>
+
+
+<!-- GRAMMAR 3 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <line x1="14" y1="5" x2="14" y2="24" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="5" y1="11" x2="23" y2="11" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <circle cx="5" cy="17" r="4" fill="rgba(255,255,255,0.7)"/>
+        <circle cx="23" cy="8" r="4" fill="rgba(255,255,255,0.5)"/>
+      </svg>
+      <div class="sb-label">G3 &middot; 比 / 更</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot active"></div>
+      <div class="dot"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 3 &middot; 语法3</div>
+    <div class="grammar-strip">
+      <div class="gs-part colored gold"><div class="gs-zh">A</div><div class="gs-py">subject</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part colored gold"><div class="gs-zh">比</div><div class="gs-py">bǐ</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">B</div><div class="gs-plain-py">object</div></div>
+      <div class="gs-sep">+</div>
+      <div class="gs-part"><div class="gs-plain-zh">adj</div><div class="gs-plain-py">adjective</div></div>
+      <div class="gs-en">A is more [adj] than B</div>
+    </div>
+    <div class="ex-block">
+      <div class="ex">
+        <div class="ex-zh">这里<span class="key">比</span>那里安静。</div>
+        <div class="ex-py">Zhè lǐ bǐ nà lǐ ān jìng.</div>
+        <div class="ex-en">Here is quieter than there.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh">新房子<span class="key">比</span>旧房子大。</div>
+        <div class="ex-py">Xīn fáng zi bǐ jiù fáng zi dà.</div>
+        <div class="ex-en">The new house is bigger than the old house.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh">住在城市<span class="key">更</span>方便。</div>
+        <div class="ex-py">Zhù zài chéng shì gèng fāng biàn.</div>
+        <div class="ex-en">Living in the city is even more convenient.</div>
+      </div>
+    </div>
+    
+    <div class="tip"><strong>比 compares two things. 更 adds emphasis: "even more".</strong></div>
+  </div>
+</div>
+
+
+<!-- DIALOGUE -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar" style="background:#1d5f8a">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="3" y="6" width="22" height="16" rx="4" stroke="rgba(255,255,255,0.9)" stroke-width="1.5"/>
+        <path d="M8 14h12M8 18h8" stroke="rgba(255,255,255,0.8)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">dialogue</div>
+    </div>
+    <div class="sb-prog">
+      <div class="dot done"></div><div class="dot done"></div><div class="dot done"></div>
+      <div class="dot active"></div><div class="dot"></div><div class="dot"></div>
+    </div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Dialogue &middot; 对话</div>
+    <h2>你为什么要搬家？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ wèi shén me yào bān jiā?</span></h2>
+    <div class="scene">
+      <svg viewBox="0 0 720 110" xmlns="http://www.w3.org/2000/svg">
+        <rect width="720" height="110" fill="#e8f4fd" rx="8"/>
+        <rect x="30" y="25" width="300" height="60" fill="#ffffff" rx="8" stroke="#1d5f8a" stroke-width="1.5"/>
+        <text x="50" y="55" font-family="Noto Serif SC,serif" font-size="13" fill="#1d5f8a" font-weight="700">A</text>
+        <text x="50" y="75" font-family="Inter,sans-serif" font-size="9" fill="#7a7a7a">ask about moving</text>
+        <rect x="390" y="25" width="300" height="60" fill="#ffffff" rx="8" stroke="#40916c" stroke-width="1.5"/>
+        <text x="410" y="55" font-family="Noto Serif SC,serif" font-size="13" fill="#40916c" font-weight="700">B</text>
+        <text x="410" y="75" font-family="Inter,sans-serif" font-size="9" fill="#7a7a7a">answer &amp; explain</text>
+        <path d="M345 55 L375 55" stroke="#b7791f" stroke-width="2" stroke-linecap="round" marker-end="url(#arr)"/>
+        <defs><marker id="arr" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto" markerUnits="strokeWidth"><path d="M0,0 L0,6 L9,3 z" fill="#b7791f"/></marker></defs>
+      </svg>
+    </div>
+    <div class="ex-block">
+      <div class="ex">
+        <div class="ex-zh"><strong>A</strong>：你为什么要搬家？</div>
+        <div class="ex-py">Nǐ wèi shén me yào bān jiā?</div>
+        <div class="ex-en">Why do you want to move house?</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><strong>B</strong>：因为我的家离超市太远。</div>
+        <div class="ex-py">Yīn wèi wǒ de jiā lí chāo shì tài yuǎn.</div>
+        <div class="ex-en">Because my home is too far from the supermarket.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><strong>A</strong>：你想搬到什么地方？</div>
+        <div class="ex-py">Nǐ xiǎng bān dào shén me dì fāng?</div>
+        <div class="ex-en">Where do you want to move to?</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><strong>B</strong>：我想搬到离公司近的地方。</div>
+        <div class="ex-py">Wǒ xiǎng bān dào lí gōng sī jìn de dì fāng.</div>
+        <div class="ex-en">I want to move somewhere close to the company.</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><strong>A</strong>：你找到新房子了吗？</div>
+        <div class="ex-py">Nǐ zhǎo dào xīn fáng zi le ma?</div>
+        <div class="ex-en">Have you found a new house?</div>
+      </div>
+      <div class="ex">
+        <div class="ex-zh"><strong>B</strong>：还没有。我先找工作，然后找房子。</div>
+        <div class="ex-py">Hái méi yǒu. Wǒ xiān zhǎo gōng zuò, rán hòu zhǎo fáng zi.</div>
+        <div class="ex-en">Not yet. First I’ll find a job, then look for a house.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- REVIEW -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar cream">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <circle cx="14" cy="14" r="10" stroke="#2d6a4f" stroke-width="1.5"/>
+        <path d="M9 14 L13 18 L20 10" stroke="#2d6a4f" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <div class="sb-label" style="color:var(--jade);">review</div>
+    </div>
+  </div>
+  <div class="content" style="background:var(--cream);">
+    <div class="sec-label">Review &middot; 复习</div>
+    <h2>3 grammar points — all in context</h2>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:0.6rem;">
+      <div style="background:var(--white);border-radius:8px;padding:0.8rem;border-left:3px solid var(--jade-mid);">
+        <div style="font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--jade-mid);margin-bottom:0.35rem;">离 lí</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:0.9rem;margin-bottom:0.15rem;">我家离超市很近。</div>
+        <div style="font-size:0.65rem;color:var(--ink-3);font-style:italic;">My home is close to the supermarket.</div>
+      </div>
+      <div style="background:var(--white);border-radius:8px;padding:0.8rem;border-left:3px solid #d69e2e;">
+        <div style="font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:#d69e2e;margin-bottom:0.35rem;">先…然后 xiān…rán hòu</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:0.9rem;margin-bottom:0.15rem;">先找工作，然后找房子。</div>
+        <div style="font-size:0.65rem;color:var(--ink-3);font-style:italic;">First find a job, then look for a house.</div>
+      </div>
+      <div style="background:var(--white);border-radius:8px;padding:0.8rem;border-left:3px solid var(--rust-light);">
+        <div style="font-size:0.58rem;font-weight:700;text-transform:uppercase;letter-spacing:0.12em;color:var(--rust-light);margin-bottom:0.35rem;">比 / 更 bǐ / gèng</div>
+        <div style="font-family:'Noto Serif SC',serif;font-size:0.9rem;margin-bottom:0.15rem;">新房子比旧房子大。</div>
+        <div style="font-size:0.65rem;color:var(--ink-3);font-style:italic;">The new house is bigger than the old one.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- CLOSING -->
+<div class="slide slide-close">
+  <div style="display:flex;gap:3px;height:90px;overflow:hidden;">
+    <div style="flex:1;overflow:hidden;position:relative;"><img src="https://images.unsplash.com/photo-1528360983277-13d401cdc186?auto=format&fit=crop&w=300&q=72" alt="Chinese city" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"/></div>
+    <div style="flex:1;overflow:hidden;position:relative;"><img src="https://images.unsplash.com/photo-1560448204-e02f11c3d0e2?auto=format&fit=crop&w=300&q=72" alt="apartment" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"/></div>
+    <div style="flex:1;overflow:hidden;position:relative;"><img src="https://images.unsplash.com/photo-1600566752355-35792bedcfea?auto=format&fit=crop&w=300&q=72" alt="moving boxes" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"/></div>
+    <div style="flex:1;overflow:hidden;position:relative;"><img src="https://images.unsplash.com/photo-1567428485548-c499e4df5187?auto=format&fit=crop&w=300&q=72" alt="new home" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"/></div>
+    <div style="flex:1;overflow:hidden;position:relative;"><img src="https://images.unsplash.com/photo-1542838132-92c53300491e?auto=format&fit=crop&w=300&q=72" alt="supermarket" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"/></div>
+    <div style="flex:1;overflow:hidden;position:relative;"><img src="https://images.unsplash.com/photo-1476480862126-209bfaa8edc8?auto=format&fit=crop&w=300&q=72" alt="park running" onerror="this.style.display='none'" style="width:100%;height:100%;object-fit:cover;display:block;"/></div>
+  </div>
+  <div class="close-inner">
+    <div>
+      <div class="close-zh">再见</div>
+      <div class="close-detail">
+        <div class="py">zài jiàn</div>
+        <div class="en">Goodbye</div>
+        <div class="sub">Xinhan Chinese &middot; HSK 2 &middot; 搬家 Moving House</div>
+      </div>
+    </div>
+    <svg viewBox="0 0 230 168" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:230px;height:168px;opacity:0.8;">
+      <circle cx="20" cy="15" r="1.5" fill="white" opacity="0.8"/>
+      <circle cx="55" cy="8" r="1" fill="white" opacity="0.6"/>
+      <circle cx="90" cy="20" r="1.5" fill="white" opacity="0.7"/>
+      <circle cx="130" cy="12" r="1" fill="white" opacity="0.5"/>
+      <circle cx="165" cy="18" r="1.5" fill="white" opacity="0.8"/>
+      <circle cx="200" cy="8" r="1" fill="white" opacity="0.6"/>
+      <circle cx="40" cy="30" r="1" fill="white" opacity="0.4"/>
+      <circle cx="150" cy="30" r="1.5" fill="white" opacity="0.5"/>
+      <circle cx="185" cy="28" r="18" fill="#f6e05e" opacity="0.8"/>
+      <circle cx="194" cy="22" r="13" fill="#1b3a28" opacity="0.9"/>
+      <ellipse cx="115" cy="158" rx="140" ry="48" fill="#1f4a2c"/>
+      <polygon points="62,92 115,55 168,92" fill="#c89440" opacity="0.9"/>
+      <rect x="73" y="92" width="84" height="62" fill="#dfc06a" opacity="0.9" rx="2"/>
+      <rect x="100" y="120" width="26" height="34" fill="#7b5a1a" rx="2"/>
+      <circle cx="123" cy="137" r="2.5" fill="#f6e05e" opacity="0.8"/>
+      <rect x="78" y="102" width="22" height="18" fill="#f6e05e" rx="1" opacity="0.9"/>
+      <rect x="128" y="102" width="22" height="18" fill="#f6e05e" rx="1" opacity="0.9"/>
+      <circle cx="38" cy="122" r="19" fill="#1f4a2c" opacity="0.9"/>
+      <circle cx="32" cy="114" r="15" fill="#245c42" opacity="0.8"/>
+      <rect x="35" y="138" width="5" height="20" fill="#7a5a3a"/>
+      <circle cx="188" cy="120" r="17" fill="#1f4a2c" opacity="0.9"/>
+      <rect x="184" y="134" width="5" height="24" fill="#7a5a3a"/>
+      <rect x="50" y="140" width="36" height="14" fill="#2d6a4f" opacity="0.7" rx="2"/>
+      <rect x="78" y="135" width="12" height="19" fill="#40916c" opacity="0.6" rx="2"/>
+      <circle cx="58" cy="155" r="4.5" fill="#1a3d2b"/>
+      <circle cx="78" cy="155" r="4.5" fill="#1a3d2b"/>
+    </svg>
+  </div>
+</div>
+
+
+<!-- QUIZ: Vocabulary &middot; 词汇 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">test 1/3</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test &middot; 小测验</div>
+    <div class="sec-label">Vocabulary &middot; 词汇</div>
+    <h2>搬家小测验 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Bān jiā xiǎo cè yàn</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-1" data-total="3">&#9989; <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">&#9733;</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type the Chinese word or fill the blank.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">'move house' 的中文是什么？<span class="py">What is 'move house' in Chinese?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="搬家..." data-answer="搬家|bān jiā|ban jia" data-reveal="搬家 <span class=&quot;py&quot;>bān jiā &middot; move house</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'convenient' 的中文是什么？<span class="py">What is 'convenient' in Chinese?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="方便..." data-answer="方便|fāng biàn|fang bian" data-reveal="方便 <span class=&quot;py&quot;>fāng biàn &middot; convenient</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'supermarket' 的中文是什么？<span class="py">What is 'supermarket' in Chinese?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="超市..." data-answer="超市|chāo shì|chao shi" data-reveal="超市 <span class=&quot;py&quot;>chāo shì &middot; supermarket</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- QUIZ: Grammar &middot; 语法 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">test 2/3</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test &middot; 小测验</div>
+    <div class="sec-label">Grammar &middot; 语法</div>
+    <h2>搬家小测验 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Bān jiā xiǎo cè yàn</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="group-2" data-total="3">&#9989; <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">&#9733;</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type the Chinese word or fill the blank.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">我的家_____超市很远。<span class="py">Wǒ de jiā ___ chāo shì hěn yuǎn.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="离..." data-answer="离|lí|li" data-reveal="离 <span class=&quot;py&quot;>lí &middot; away from</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">_____找房子，然后搬家。<span class="py">___ zhǎo fáng zi, rán hòu bān jiā.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="先..." data-answer="先|xiān|xian" data-reveal="先 <span class=&quot;py&quot;>xiān &middot; first</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">这里_____那里安静。<span class="py">Zhè lǐ ___ nà lǐ ān jìng.</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="比..." data-answer="比|bǐ|bi" data-reveal="比 <span class=&quot;py&quot;>bǐ &middot; than</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- QUIZ: Final Test &middot; 综合挑战 -->
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+        <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+        <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">test 3/3</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test &middot; 小测验</div>
+    <div class="sec-label">Final Test &middot; 综合挑战</div>
+    <h2>搬家小测验 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Bān jiā xiǎo cè yàn</span></h2>
+    <div class="quiz-score" data-quiz-score data-group="final" data-total="3">&#9989; <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">&#9733;</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type the Chinese word or fill the blank.</strong></div>
+    <div class="phone-row">
+      <div class="phone-block wide">
+        <div class="quiz-q">'near' 的中文是什么？<span class="py">What is 'near' in Chinese?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="近..." data-answer="近|jìn|jin" data-reveal="近 <span class=&quot;py&quot;>jìn &middot; near</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'find' 的中文是什么？<span class="py">What is 'find' in Chinese?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="找到..." data-answer="找到|zhǎo dào|zhao dao" data-reveal="找到 <span class=&quot;py&quot;>zhǎo dào &middot; find</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+      <div class="phone-block wide">
+        <div class="quiz-q">'work / job' 的中文是什么？<span class="py">What is 'work / job' in Chinese?</span></div>
+        <div class="quiz-game">
+          <div class="quiz-row">
+            <input type="text" class="quiz-input" placeholder="工作..." data-answer="工作|gōng zuò|gong zuo" data-reveal="工作 <span class=&quot;py&quot;>gōng zuò &middot; work / job</span>"/>
+            <button type="button" class="quiz-check-btn">检查</button>
+          </div>
+          <div class="quiz-feedback"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<!-- LESSON REPORT -->
+<div class="slide" id="lesson-report-slide" style="grid-template-columns:64px 1fr; display:none;">
+  <div class="sidebar dark">
+    <div class="sb-icon">
+      <svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M5 21 L5 13 M12 21 L12 8 M19 21 L19 16 M23 21 L23 11" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" stroke-linecap="round"/>
+      </svg>
+      <div class="sb-label">your report</div>
+    </div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Lesson Report &middot; 学习报告</div>
+    <h2>你的学习报告 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ de xuéxí bàogào.</span></h2>
+    <div id="report-score" class="report-score"></div>
+    <div id="report-groups" class="report-groups"></div>
+    <div id="report-missed"></div>
+  </div>
+</div>
+
+</div>
+<script>
+(function () {
+  var lessonId = document.body.dataset.lessonId || '';
+  var allInputs = Array.prototype.slice.call(document.querySelectorAll('.quiz-input'));
+  var reportShown = false;
+  var wrongAnswers = [];
+
+  var GROUP_NAMES = {'group-1': 'Vocabulary · 词汇', 'group-2': 'Grammar · 语法', 'final': 'Final Test · 综合挑战'};
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  function logAttempt(payload) {
+    if (!lessonId) return;
+    fetch('/api/lessons/attempt', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload),
+    }).catch(function () {});
+  }
+
+  function logCompletion(score, total, groupList) {
+    if (!lessonId) return;
+    fetch('/api/lessons/complete', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ lessonId: lessonId, score: score, total: total, groups: groupList }),
+    }).catch(function () {});
+  }
+
+  function buildReport() {
+    var groups = {};
+    document.querySelectorAll('[data-quiz-score]').forEach(function (box) {
+      var groupId = box.dataset.group || 'default';
+      groups[groupId] = {
+        groupId: groupId,
+        score: Number(box.querySelector('.score-correct').textContent),
+        total: Number(box.dataset.total),
+      };
+    });
+    var groupList = Object.keys(groups).map(function (k) { return groups[k]; });
+    var score = groupList.reduce(function (s, g) { return s + g.score; }, 0);
+    var total = groupList.reduce(function (s, g) { return s + g.total; }, 0);
+    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+
+    var scoreBox = document.getElementById('report-score');
+    if (scoreBox) {
+      scoreBox.innerHTML =
+        '<span class="big">' + score + '/' + total + '</span>' +
+        '<span class="pct">' + pct + '%</span>';
+    }
+
+    var groupsBox = document.getElementById('report-groups');
+    if (groupsBox) {
+      groupsBox.innerHTML = groupList.map(function (g) {
+        var p = g.total > 0 ? (g.score / g.total) * 100 : 0;
+        var weak = p < 100 ? ' weak' : '';
+        return '<div class="report-group-row">' +
+          '<div class="report-group-name">' + (GROUP_NAMES[g.groupId] || g.groupId) + '</div>' +
+          '<div class="report-group-bar"><div class="report-group-fill' + weak + '" style="width:' + p + '%"></div></div>' +
+          '<div class="report-group-score">' + g.score + '/' + g.total + '</div>' +
+          '</div>';
+      }).join('');
+    }
+
+    var missedBox = document.getElementById('report-missed');
+    if (missedBox) {
+      if (wrongAnswers.length === 0) {
+        missedBox.innerHTML = '<div class="report-perfect">\u5b8c\u7f8e\uff01Perfect score \u2014 every answer right. \ud83c\udf89</div>';
+      } else {
+        missedBox.innerHTML = '<div class="report-missed"><h4>Words &amp; phrases to review \u00b7 \u9700\u8981\u590d\u4e60\u7684\u8bcd</h4>' +
+          wrongAnswers.map(function (w) {
+            return '<div class="report-missed-item">' +
+              '<span class="report-missed-q">' + escapeHtml(w.questionText) + '</span>' +
+              '<span class="report-missed-you">' + escapeHtml(w.userAnswer || '(blank)') + '</span>' +
+              '<span class="report-missed-correct">' + w.reveal + '</span>' +
+              '</div>';
+          }).join('') +
+          '</div>';
+      }
+    }
+
+    var slide = document.getElementById('lesson-report-slide');
+    if (slide) {
+      slide.style.display = 'grid';
+      slide.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }
+
+    logCompletion(score, total, groupList);
+  }
+
+  function maybeShowReport() {
+    if (reportShown) return;
+    var allDone = allInputs.every(function (i) { return i.disabled; });
+    if (!allDone) return;
+    reportShown = true;
+    buildReport();
+  }
+
+  allInputs.forEach(function (input, globalIndex) {
+    var row = input.closest('.quiz-game');
+    var feedback = row.querySelector('.quiz-feedback');
+    var checkBtn = row.querySelector('.quiz-check-btn');
+    var answers = (input.dataset.answer || '').split('|').map(function (a) {
+      return a.trim().toLowerCase();
+    });
+    var reveal = input.dataset.reveal || '';
+    var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+    var questionText = input.closest('.phone-block') ? input.closest('.phone-block').querySelector('.quiz-q').textContent.trim() : '';
+
+    function check() {
+      if (input.disabled) return;
+      var val = input.value.trim().toLowerCase();
+      if (!val) return;
+      var correct = answers.indexOf(val) !== -1;
+
+      feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+      feedback.innerHTML = (correct ? '\u5bf9! Du\u00ec! Right!' : '\u9519! Cu\u00f2! Wrong!') +
+        (reveal ? '<span class="reveal">' + reveal + '</span>' : '');
+
+      input.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+      if (checkBtn) {
+        checkBtn.classList.add(correct ? 'correct' : 'wrong');
+        checkBtn.textContent = correct ? '\u2713' : '\u2717';
+        checkBtn.disabled = true;
+      }
+      input.disabled = true;
+
+      if (correct && scoreBox) {
+        var counter = scoreBox.querySelector('.score-correct');
+        counter.textContent = String(Number(counter.textContent) + 1);
+      }
+      if (!correct) {
+        wrongAnswers.push({
+          questionText: questionText,
+          userAnswer: input.value.trim(),
+          reveal: reveal,
+        });
+      }
+
+      logAttempt({
+        lessonId: lessonId,
+        groupId: scoreBox ? scoreBox.dataset.group : 'default',
+        questionIndex: globalIndex,
+        questionText: questionText,
+        userAnswer: input.value.trim(),
+        correct: correct,
+      });
+      maybeShowReport();
+    }
+
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') check();
+    });
+    if (checkBtn) checkBtn.addEventListener('click', check);
+  });
+})();
+</script>
+</body>
+</html>
