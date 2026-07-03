@@ -119,3 +119,38 @@
 - **Build status:** ✅ Clean build — `npm run build` passes. `npm run lint` still prompts for ESLint config (pre-existing).
 - **Commits:** `1c991c0`, `77b6cb0` on `stage` branch; pushed to origin.
 - **Handoff to Pedro:** Ready for review at `stage.xinhan.org/trial-lesson`.
+
+
+## 2026-07-03 — Kimi (Maestro) — Trial-Lesson HSK Level Matrix Audit & Fixes
+
+- **What:** Audited the partial HSK 1–6 × story matrix restructure, fixed broken lesson IDs, and added fallbacks for missing level variants.
+- **Why:** Pedro said "retry" / "check everything behind" after the matrix restructure left many combinations without files and several hsk-3 decks still using old lesson IDs.
+- **What changed:**
+  - Moved/renamed all trial lesson decks to `public/trial-lesson/<level>/<story>/`:
+    - `banjia` → `hsk-3/banjia`
+    - `luckin-coffee` → `hsk-3/luckin-coffee`
+    - `many-ways` → `hsk-3/many-ways`
+    - `mood-weather` → `hsk-3/mood-weather`
+    - `mood-weather-v2` → `hsk-3/mood-weather-v2`
+  - Added pre-existing level adaptations: `hsk-1/banjia`, `hsk-2/banjia`, `hsk-4/banjia`, `hsk-5/banjia`, `hsk-6/banjia`
+  - Fixed `data-lesson-id` attributes on all hsk-3 decks to match the new path format (e.g. `hsk-3/luckin-coffee`)
+  - Rewrote `app/trial-lesson/page.tsx` to render the full 6 × 5 level/story grid and show a "Soon" badge when a deck file is missing
+  - Rewrote `app/trial-lesson/[level]/[storyId]/page.tsx` to check whether the static deck exists and render a placeholder with a link to the HSK 3 version when it does not
+  - Committed generator scripts `generate_luckin_levels.py` and `generate_mood_weather_levels.py` (note: `generate_mood_weather_levels.py` currently defines data for HSK 1–2 but does not write output files)
+  - Added `__pycache__/` and `*.pyc` to `.gitignore`
+- **Build status:** ✅ Clean build — `npm run build` passes. `npm run lint` still prompts for ESLint config (pre-existing).
+- **Commit:** `455618b` on `stage` branch; pushed to origin.
+- **Handoff to Pedro:**
+  - Deployed to `stage.xinhan.org/trial-lesson`
+  - Currently available decks:
+    - HSK 1: banjia
+    - HSK 2: banjia
+    - HSK 3: banjia, luckin-coffee, many-ways, mood-weather, mood-weather-v2
+    - HSK 4: banjia
+    - HSK 5: banjia
+    - HSK 6: banjia
+  - Missing level variants (show "Soon" badge):
+    - mood-weather: HSK 1, 2, 4, 5, 6
+    - many-ways: HSK 1, 2, 4, 5, 6
+    - mood-weather-v2: HSK 1, 2, 4, 5, 6
+    - luckin-coffee: HSK 1, 2, 4, 5, 6 (generator exists; needs to be run)
