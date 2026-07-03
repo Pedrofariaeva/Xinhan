@@ -1,16 +1,29 @@
-# Xinhan — Current Plan
+PLAN — Complete 6 × 5 HSK trial-lesson matrix
+Created: 2026-07-03
 
-## Active Phase
+GOAL
+Have a working deck file at public/trial-lesson/<level>/<story>/index.html for every
+combination of:
+  Levels: hsk-1, hsk-2, hsk-3, hsk-4, hsk-5, hsk-6
+  Stories: luckin-coffee, mood-weather, banjia, many-ways, mood-weather-v2
 
-1. [x] Set up `.ai/` protocol system ← DONE
-2. [x] Build MVP website front page + auth pages ← DONE
-3. [x] Build universal pepe/claudino protocol for ALL repos ← DONE (v7.2 deployed to all GitHub repos)
-4. [ ] Get Pedro's review on design and content
-5. [ ] Choose tech stack (keep vanilla HTML or move to framework?)
-6. [ ] Organize teaching materials for web presentation
+CURRENT STATE
+- banjia: all 6 levels exist (hsk-1/2/4/5/6 were added earlier; hsk-3 is original)
+- luckin-coffee: only hsk-3 exists; generator script ready for 1/2/4/5/6
+- mood-weather: only hsk-3 exists; generator has data for 1–2 but no output logic
+- many-ways: only hsk-3 exists; no generator
+- mood-weather-v2: only hsk-3 exists; no generator
 
-## Notes
-
-- See `CONTENT_AUDIT.md` for content inventory and curriculum gap analysis.
-- Do NOT reorganize `docs1/2/3/` without Pedro's explicit approval.
-- Deployment rule: ALWAYS preview branch first. Production (`main`) ONLY with explicit approval phrases.
+STEPS
+1. Run generate_luckin_levels.py → create hsk-1/2/4/5/6 luckin-coffee decks
+2. Fix generate_mood_weather_levels.py:
+   a. Add file-output / HTML assembly
+   b. Add level data for hsk-3/4/5/6
+   c. Run it → create hsk-1/2/4/5/6 mood-weather decks
+3. Create generate_many_ways_levels.py → create hsk-1/2/4/5/6 many-ways decks
+4. Create generate_mood_weather_v2_levels.py → create hsk-1/2/4/5/6 mood-weather-v2 decks
+5. Audit all 30 decks:
+   a. Confirm correct data-lesson-id (e.g. "hsk-4/mood-weather")
+   b. Confirm consistent titles/brand labels per level
+6. Run npm run build and fix any TypeScript/build errors
+7. Commit, push to stage, update .ai/history.md + tasks.md
