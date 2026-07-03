@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>一句话，几种说法？ — One Idea, Many Sentences · Xinhan Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --jade: #2d6a4f; --jade-mid: #40916c; --jade-light: #74c69d; --jade-pale: #d8f3dc;
+  --gold: #b7791f; --gold-mid: #d69e2e; --gold-pale: #fffff0;
+  --rust: #9b2226; --rust-light: #e76f51; --rust-pale: #fff0ee;
+  --accent: #c05621;
+  --accent-mid: #dd6b20;
+  --accent-dark: #7c2d12;
+  --accent-pale: #fff5eb;
+  --cream: #faf7f2; --cream-dark: #ede8df;
+  --ink: #1a1a1a; --ink-2: #3d3d3d; --ink-3: #7a7a7a;
+  --white: #fff;
+}
+body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink); padding: 2.5rem 1rem 5rem; }
+.deck { max-width: 940px; margin: 0 auto; }
+.deck-brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--accent); }
+.brand-sub  { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+.slide { display: grid; background: var(--white); overflow: hidden; margin-bottom: 3px; }
+.slide:first-of-type { border-radius: 14px 14px 0 0; }
+.slide:last-of-type  { border-radius: 0 0 14px 14px; }
+.sidebar {
+  display: flex; flex-direction: column;
+  padding: 1.5rem 0.65rem 1.5rem 0.9rem;
+  background: var(--accent);
+  gap: 1.8rem; min-width: 64px;
+  position: relative;
+}
+.sidebar::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+.sb-icon { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.sb-icon svg { width: 28px; height: 28px; }
+.sb-label { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.2; }
+.sb-prog { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: auto; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: #f6e05e; }
+.dot.done   { background: var(--accent-mid); }
+.sidebar.rust  { background: var(--rust); }
+.sidebar.gold  { background: #7b5a1a; }
+.sidebar.jade  { background: var(--jade-mid); }
+.sidebar.dark  { background: #7c2d12; }
+.content { padding: 2rem 2.5rem 2rem 2rem; flex: 1; }
+.sec-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-mid); margin-bottom: 0.9rem; }
+.content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.3; }
+.zh-inline { font-family: 'Noto Serif SC', serif; color: var(--accent); }
+.py-inline { font-size: 0.72rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--gold); letter-spacing: 0.07em; }
+.scene { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.scene svg { display: block; width: 100%; }
+.slide-cover { grid-template-columns: 90px 1fr; }
+.cover-content { background: var(--accent); padding: 2.5rem 2.5rem 2rem; position: relative; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-pale); margin-bottom: 0.7rem; position: relative; }
+.cover-zh { font-family: 'Noto Serif SC', serif; font-size: 5.8rem; font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; position: relative; }
+.cover-py { font-size: 1.25rem; font-weight: 300; color: var(--accent-pale); letter-spacing: 0.18em; margin: 0.3rem 0; position: relative; }
+.cover-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.45rem; color: #f6e05e; position: relative; margin-bottom: 1.5rem; }
+.cover-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; position: relative; }
+.tag { padding: 0.22rem 0.8rem; border-radius: 999px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+.grammar-strip { display: flex; align-items: center; gap: 0; background: var(--cream); border-radius: 10px; overflow: hidden; margin-bottom: 1.4rem; }
+.gs-part { padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+.gs-part.colored { background: var(--accent); }
+.gs-part.colored.rust { background: var(--rust); }
+.gs-part.colored.jade { background: var(--jade-mid); }
+.gs-part.colored.gold { background: #7b5a1a; }
+.gs-zh { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1; }
+.gs-py { font-size: 0.58rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; margin-top: 2px; }
+.gs-sep { font-size: 1.1rem; color: var(--ink-3); padding: 0 0.3rem; }
+.gs-plain-zh { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 500; color: var(--accent); }
+.gs-plain-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+.gs-en { margin-left: auto; padding: 0.75rem 1.25rem; font-size: 0.72rem; color: var(--ink-3); font-style: italic; border-left: 1px solid var(--cream-dark); }
+.ex-block { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem; }
+.ex { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid var(--accent-mid); }
+.ex.rust { border-left-color: var(--rust-light); }
+.ex.jade { border-left-color: var(--jade-mid); }
+.ex-zh { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--ink); margin-bottom: 0.15rem; }
+.key  { color: var(--accent); font-weight: 700; }
+.key-r{ color: var(--rust); font-weight: 700; }
+.key-j{ color: var(--jade-mid); font-weight: 700; }
+.key-g{ color: var(--gold); font-weight: 700; }
+.ex-py { font-size: 0.63rem; color: var(--gold); letter-spacing: 0.03em; margin-bottom: 0.1rem; }
+.ex-en { font-size: 0.69rem; color: var(--ink-3); font-style: italic; }
+.chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; background: var(--cream); border: 1.5px solid var(--cream-dark); }
+.chip .ch { font-family: 'Noto Serif SC', serif; font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+.chip .py { font-size: 0.58rem; color: var(--gold); margin-left: 0.25rem; }
+.vocab-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.vc { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 7px; padding: 0.55rem 0.7rem; border-top: 3px solid var(--accent-mid); }
+.vc.cat-mood { border-top-color: var(--rust-light); }
+.vc.cat-weather { border-top-color: #1d5f8a; }
+.vc.cat-act { border-top-color: var(--gold-mid); }
+.vc.cat-gram { border-top-color: var(--jade); }
+.vc-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 500; color: var(--accent); }
+.vc-py { font-size: 0.58rem; color: var(--gold); margin: 2px 0 1px; }
+.vc-en { font-size: 0.62rem; color: var(--ink-3); }
+.tip { background: var(--accent-pale); border-radius: 7px; padding: 0.65rem 0.95rem; font-size: 0.7rem; color: var(--accent-dark); line-height: 1.55; margin-top: 0.9rem; }
+.tip strong { font-weight: 600; }
+.practice { background: linear-gradient(135deg, var(--accent-pale), #e8f4fd); border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1rem; border-left: 4px solid var(--accent-mid); }
+.practice-title { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+.practice-item { display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 0.45rem; }
+.practice-item:last-child { margin-bottom: 0; }
+.practice-num { min-width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.practice-text { font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+.practice-text .zh { font-family: 'Noto Serif SC', serif; color: var(--accent); font-weight: 500; }
+.dial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1.25rem; }
+.dial-a, .dial-b { border-radius: 10px; padding: 0.85rem 1rem; }
+.dial-a { background: #e8f4fd; border-left: 3px solid #1d5f8a; }
+.dial-b { background: var(--accent-pale); border-left: 3px solid var(--accent-mid); }
+.dial-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.35rem; color: var(--accent); }
+.dial-zh { font-family: 'Noto Serif SC', serif; font-size: 0.92rem; margin-bottom: 0.15rem; }
+.dial-py { font-size: 0.6rem; color: var(--gold); margin-bottom: 0.1rem; }
+.dial-en { font-size: 0.66rem; color: var(--ink-3); font-style: italic; }
+.phone-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 0.5rem; }
+.phone-block { display: flex; flex-direction: column; gap: 0.55rem; width: 150px; }
+.phone-block.wide { width: 200px; }
+.quiz-q { background: var(--cream); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.66rem; color: var(--ink); line-height: 1.45; }
+.quiz-q .py { display: block; color: var(--gold); font-size: 0.6rem; margin-top: 1px; }
+.quiz-game { display: flex; flex-direction: column; gap: 0.3rem; }
+.quiz-row { display: flex; gap: 0.3rem; }
+.quiz-input { flex: 1; width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #d2d2d2; border-radius: 6px; background: var(--white); color: var(--ink); transition: border-color 0.15s, background 0.15s; }
+.quiz-input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.quiz-input:disabled { background: var(--cream); opacity: 0.85; }
+.quiz-input.flash-correct { border-color: #2f7d52; background: #eaf7ef; animation: quiz-pop 0.4s ease; }
+.quiz-input.flash-wrong { border-color: #c0392b; background: #fbeaea; animation: quiz-shake 0.4s ease; }
+.quiz-check-btn { flex-shrink: 0; padding: 6px 10px; font-size: 0.62rem; font-weight: 700; border: none; border-radius: 6px; background: var(--gold); color: var(--accent-dark); cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.quiz-check-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.quiz-check-btn:disabled { cursor: default; }
+.quiz-check-btn.correct { background: #2f7d52; color: white; animation: quiz-pop 0.4s ease; }
+.quiz-check-btn.wrong { background: #c0392b; color: white; animation: quiz-shake 0.4s ease; }
+@keyframes quiz-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes quiz-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.quiz-feedback { font-size: 0.68rem; font-weight: 700; min-height: 1.1em; }
+.quiz-feedback.correct { color: #2f7d52; }
+.quiz-feedback.wrong { color: #c0392b; }
+.quiz-feedback .reveal { display: block; font-weight: 500; color: var(--ink); margin-top: 2px; font-size: 0.62rem; }
+.quiz-feedback .reveal .py { color: var(--gold); }
+.quiz-score { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; font-weight: 700; color: var(--accent); background: var(--cream); border-radius: 20px; padding: 0.3rem 0.8rem; margin-bottom: 0.8rem; }
+.quiz-score .stars { color: var(--gold); letter-spacing: 1px; }
+.learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.report-score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.report-score .big { font-size: 2.4rem; font-weight: 800; color: var(--jade); }
+.report-score .pct { font-size: 1rem; font-weight: 700; color: var(--gold); }
+.report-groups { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.report-group-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.66rem; }
+.report-group-name { width: 150px; flex-shrink: 0; color: var(--ink); }
+.report-group-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--cream); overflow: hidden; }
+.report-group-fill { height: 100%; background: var(--jade-mid); border-radius: 5px; }
+.report-group-fill.weak { background: var(--rust-light); }
+.report-group-score { width: 36px; flex-shrink: 0; text-align: right; color: var(--ink-3); }
+.report-missed { background: #fbeaea; border-radius: 8px; padding: 0.8rem 1rem; }
+.report-missed h4 { margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--rust); }
+.report-missed-item { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; font-size: 0.66rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(155,34,38,0.12); }
+.report-missed-item:last-child { border-bottom: none; }
+.report-missed-q { color: var(--ink); flex: 1; min-width: 200px; }
+.report-missed-you { color: #c0392b; text-decoration: line-through; }
+.report-missed-correct { color: #2f7d52; font-weight: 600; }
+.report-perfect { background: var(--jade-pale); border-radius: 8px; padding: 1rem; font-size: 0.72rem; color: var(--jade); font-weight: 600; text-align: center; }
+.slide-close { display: block; background: #7c2d12; border-radius: 0 0 14px 14px; }
+.close-inner { padding: 3rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+.close-zh { font-family: 'Noto Serif SC', serif; font-size: 5rem; font-weight: 700; color: var(--white); }
+.close-detail .py { font-size: 1rem; color: var(--accent-pale); letter-spacing: 0.2em; }
+.close-detail .en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: #f6e05e; margin-top: 0.2rem; }
+.close-detail .sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1rem; }
+@media print {
+  body { background: white; padding: 0; }
+  .deck { max-width: 100%; }
+  .slide { break-inside: avoid; break-after: page; margin-bottom: 0; }
+  .slide:last-of-type { break-after: auto; }
+  .deck-brand { display: none; }
+}
+@media (max-width: 640px) {
+  .slide { grid-template-columns: 48px 1fr !important; }
+  .sidebar { padding: 1rem 0.4rem; }
+  .content { padding: 1.25rem; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .cover-zh { font-size: 3.5rem; }
+}
+</style>
+</head>
+<body data-lesson-id="hsk-4/many-ways">
+<div class="deck">
+<div class="deck-brand"><span class="brand-name">新汉 Xīnhàn</span><span class="brand-sub">HSK 4 · One Idea, Many Sentences</span></div>
+<!-- COVER -->
+<div class="slide slide-cover">
+  <div class="sidebar" style="background:#7c2d12;justify-content:center;align-items:center;min-height:300px;">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:38px;height:38px;">
+      <path d="M8 22h16M8 22v-8c0-3.3 2.7-6 6-6h4c3.3 0 6 2.7 6 6v8" stroke="rgba(255,255,255,0.9)" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+      <circle cx="13" cy="15" r="1.5" fill="rgba(255,255,255,0.9)"/>
+      <circle cx="19" cy="15" r="1.5" fill="rgba(255,255,255,0.9)"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-eyebrow">Speaking · 口语 · HSK 4</div>
+    <div class="cover-zh">一句话，几种说法？</div>
+    <div class="cover-py">yí jù huà, jǐ zhǒng shuōfǎ?</div>
+    <div class="cover-en">One Idea, Many Sentences</div>
+    <div class="cover-tags">
+      <span class="tag">HSK 4</span>
+      <span class="tag">12 new words</span>
+      <span class="tag">3 grammar points</span>
+    </div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="10" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <circle cx="14" cy="11" r="3" fill="rgba(255,255,255,0.85)"/>
+      <path d="M9 19c0-2.8 2.2-5 5-5s5 2.2 5 5" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+    </svg><div class="sb-label">warm up</div></div>
+    <div class="sb-prog"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Warm-up · 热身</div>
+    <h2>正式一点还是随便一点？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Zhèngshì yìdiǎn háishi suíbiàn yìdiǎn?</span></h2>
+    <div class="tip"><strong>Practice:</strong> Choose formal or casual ways to express yourself depending on the situation.</div>
+    <div class="chip-row"><div class="chip"><span class="ch">打扰一下</span><span class="py">excuse me</span></div><div class="chip"><span class="ch">请问</span><span class="py">may I ask</span></div><div class="chip"><span class="ch">不好意思</span><span class="py">sorry</span></div><div class="chip"><span class="ch">麻烦你</span><span class="py">trouble you</span></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar #dd6b20">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">vocab</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">New Words · 新词 — 12 words</div>
+    <div class="vocab-grid"><div class="vc cat-act"><div class="vc-zh">打扰</div><div class="vc-py">dǎ rǎo</div><div class="vc-en">disturb</div></div>
+<div class="vc cat-act"><div class="vc-zh">请问</div><div class="vc-py">qǐng wèn</div><div class="vc-en">may I ask</div></div>
+<div class="vc cat-mood"><div class="vc-zh">不好意思</div><div class="vc-py">bù hǎo yì si</div><div class="vc-en">sorry / excuse me</div></div>
+<div class="vc cat-act"><div class="vc-zh">麻烦</div><div class="vc-py">má fan</div><div class="vc-en">trouble</div></div>
+<div class="vc cat-mood"><div class="vc-zh">正式</div><div class="vc-py">zhèng shì</div><div class="vc-en">formal</div></div>
+<div class="vc cat-mood"><div class="vc-zh">随便</div><div class="vc-py">suí biàn</div><div class="vc-en">casual</div></div>
+<div class="vc cat-act"><div class="vc-zh">根据</div><div class="vc-py">gēn jù</div><div class="vc-en">according to</div></div>
+<div class="vc cat-act"><div class="vc-zh">情况</div><div class="vc-py">qíng kuàng</div><div class="vc-en">situation</div></div>
+<div class="vc cat-act"><div class="vc-zh">决定</div><div class="vc-py">jué dìng</div><div class="vc-en">decide</div></div>
+<div class="vc cat-mood"><div class="vc-zh">合适</div><div class="vc-py">hé shì</div><div class="vc-en">suitable</div></div>
+<div class="vc cat-gram"><div class="vc-zh">对…说</div><div class="vc-py">duì...shuō</div><div class="vc-en">say to…</div></div>
+<div class="vc cat-gram"><div class="vc-zh">看情况</div><div class="vc-py">kàn qíng kuàng</div><div class="vc-en">see the situation</div></div></div>
+    <div class="tip"><strong>Tip:</strong> Focus on the highlighted grammar words.</div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar jade">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">G1 · 请问 / 打扰一下</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 1 · 语法1</div>
+    <div class="grammar-strip"><div class="gs-part"><div class="gs-plain-zh">请问</div><div class="gs-plain-py">qǐngwèn</div></div><div class="gs-part"><div class="gs-plain-zh">打扰一下</div><div class="gs-plain-py">dǎrǎo yíxià</div></div><div class="gs-en">Polite ways to get attention</div></div>
+    <div class="ex-block"><div class="ex "><div class="ex-zh"><span class="key">请问</span>，现在几点？</div><div class="ex-py">Qǐngwèn, xiànzài jǐ diǎn?</div><div class="ex-en">Excuse me, what time is it now?</div></div>
+<div class="ex "><div class="ex-zh"><span class="key">打扰一下</span>，我能问你一个问题吗？</div><div class="ex-py">Dǎrǎo yíxià, wǒ néng wèn nǐ yí gè wèntí ma?</div><div class="ex-en">Sorry to bother you, can I ask you a question?</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">G2 · 不好意思 / 麻烦你</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 2 · 语法2</div>
+    <div class="grammar-strip"><div class="gs-part"><div class="gs-plain-zh">不好意思</div><div class="gs-plain-py">bùhǎoyìsi</div></div><div class="gs-part"><div class="gs-plain-zh">麻烦你</div><div class="gs-plain-py">máfan nǐ</div></div><div class="gs-en">Softening requests</div></div>
+    <div class="ex-block"><div class="ex "><div class="ex-zh"><span class="key">不好意思</span>，请让一下。</div><div class="ex-py">Bùhǎoyìsi, qǐng ràng yíxià.</div><div class="ex-en">Excuse me, please make way.</div></div>
+<div class="ex "><div class="ex-zh"><span class="key">麻烦你</span>帮我拿一下。</div><div class="ex-py">Máfan nǐ bāng wǒ ná yíxià.</div><div class="ex-en">Could you please help me take it?</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">G3 · 根据…决定…</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 3 · 语法3</div>
+    <div class="grammar-strip"><div class="gs-part"><div class="gs-plain-zh">根据</div><div class="gs-plain-py">gēnjù</div></div><div class="gs-part"><div class="gs-plain-zh">situation</div><div class="gs-plain-py"></div></div><div class="gs-part"><div class="gs-plain-zh">决定</div><div class="gs-plain-py">juédìng</div></div><div class="gs-part"><div class="gs-plain-zh">action</div><div class="gs-plain-py"></div></div><div class="gs-en">Decide based on…</div></div>
+    <div class="ex-block"><div class="ex "><div class="ex-zh"><span class="key">根据</span>情况<span class="key">决定</span>怎么说。</div><div class="ex-py">Gēnjù qíngkuàng juédìng zěnme shuō.</div><div class="ex-en">Decide how to say it based on the situation.</div></div>
+<div class="ex "><div class="ex-zh"><span class="key">看情况</span>吧。</div><div class="ex-py">Kàn qíngkuàng ba.</div><div class="ex-en">Let&#x27;s see the situation.</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar #dd6b20">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="10" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <circle cx="14" cy="11" r="3" fill="rgba(255,255,255,0.85)"/>
+      <path d="M9 19c0-2.8 2.2-5 5-5s5 2.2 5 5" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+    </svg><div class="sb-label">dialogue</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Dialogue · 对话</div>
+    <h2>怎么问时间？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Zěnme wèn shíjiān?</span></h2>
+    <div class="dial-grid"><div class="dial-a"><div class="dial-label">A — Formal</div><div class="dial-zh">打扰一下，请问现在几点？</div><div class="dial-py">Dǎrǎo yíxià, qǐngwèn xiànzài jǐ diǎn?</div><div class="dial-en">Excuse me, may I ask what time it is?</div></div>
+<div class="dial-b"><div class="dial-label">B — Answer</div><div class="dial-zh">现在三点半。</div><div class="dial-py">Xiànzài sān diǎn bàn.</div><div class="dial-en">It&#x27;s half past three now.</div></div>
+<div class="dial-a"><div class="dial-label">A — Casual</div><div class="dial-zh">哎，现在几点了？</div><div class="dial-py">Āi, xiànzài jǐ diǎn le?</div><div class="dial-en">Hey, what time is it?</div></div>
+<div class="dial-b"><div class="dial-label">B — Answer</div><div class="dial-zh">三点半。</div><div class="dial-py">Sān diǎn bàn.</div><div class="dial-en">Half past three.</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 1/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Politeness · 礼貌</div>
+    <h2>礼貌用语</h2>
+    <div class="quiz-score" data-quiz-score data-group="group-1" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">'may I ask' 用中文怎么说？<span class="py">How do you say 'may I ask'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="请问|qing wen|qingwen" data-reveal="请问 <span class=&quot;py&quot;>qǐngwèn · may I ask</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'excuse me (soft)' 用中文怎么说？<span class="py">How do you say 'excuse me'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="打扰一下|da rao yi xia|daraoyixia" data-reveal="打扰一下 <span class=&quot;py&quot;>dǎrǎo yíxià · excuse me</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'sorry / excuse me' 用中文怎么说？<span class="py">How do you say 'sorry'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="不好意思|bu hao yi si|buhaoyisi" data-reveal="不好意思 <span class=&quot;py&quot;>bùhǎoyìsi · sorry</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 2/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Requests · 请求</div>
+    <h2>请求表达</h2>
+    <div class="quiz-score" data-quiz-score data-group="group-2" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">'trouble you' 用中文怎么说？<span class="py">How do you say 'trouble you'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="麻烦你|ma fan ni|mafanni" data-reveal="麻烦你 <span class=&quot;py&quot;>máfan nǐ · trouble you</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'formal' 用中文怎么说？<span class="py">How do you say 'formal'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="正式|zheng shi|zhengshi" data-reveal="正式 <span class=&quot;py&quot;>zhèngshì · formal</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'casual' 用中文怎么说？<span class="py">How do you say 'casual'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="随便|sui bian|suibian" data-reveal="随便 <span class=&quot;py&quot;>suíbiàn · casual</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 3/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Grammar · 语法</div>
+    <h2>根据 / 看情况</h2>
+    <div class="quiz-score" data-quiz-score data-group="group-3" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">____情况决定怎么说。<span class="py">___ qíngkuàng juédìng zěnme shuō.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="根据|gēn jù|gen ju" data-reveal="根据 <span class=&quot;py&quot;>gēnjù · according to</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">____吧。<span class="py">___ ba.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="看情况|kàn qíng kuàng|kan qing kuang" data-reveal="看情况 <span class=&quot;py&quot;>kàn qíngkuàng · see the situation</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">____你帮我拿一下。<span class="py">___ nǐ bāng wǒ ná yíxià.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="麻烦|má fan|ma fan" data-reveal="麻烦 <span class=&quot;py&quot;>máfan · trouble</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 4/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Final Challenge · 综合挑战</div>
+    <h2>小挑战</h2>
+    <div class="quiz-score" data-quiz-score data-group="final" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">'suitable' 用中文怎么说？<span class="py">How do you say 'suitable'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="合适|hé shì|he shi" data-reveal="合适 <span class=&quot;py&quot;>héshì · suitable</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'situation' 用中文怎么说？<span class="py">How do you say 'situation'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="情况|qíng kuàng|qing kuang" data-reveal="情况 <span class=&quot;py&quot;>qíngkuàng · situation</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'decide' 用中文怎么说？<span class="py">How do you say 'decide'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="决定|jué dìng|jue ding" data-reveal="决定 <span class=&quot;py&quot;>juédìng · decide</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" id="lesson-report-slide" style="grid-template-columns:64px 1fr; display:none;">
+  <div class="sidebar dark">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 21 L5 13 M12 21 L12 8 M19 21 L19 16 M23 21 L23 11" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" stroke-linecap="round"/>
+    </svg><div class="sb-label">your report</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Lesson Report · 学习报告</div>
+    <h2>你的学习报告 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ de xuéxí bàogào.</span></h2>
+    <div id="report-score" class="report-score"></div>
+    <div id="report-groups" class="report-groups"></div>
+    <div id="report-missed"></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar dark">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">review</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Review · 复习</div>
+    <h2>Useful phrases · 常用语</h2>
+    <div class="chip-row"><div class="chip"><span class="ch">请问</span><span class="py">formal ask</span></div><div class="chip"><span class="ch">打扰一下</span><span class="py">excuse me</span></div><div class="chip"><span class="ch">不好意思</span><span class="py">sorry</span></div><div class="chip"><span class="ch">麻烦你</span><span class="py">trouble you</span></div><div class="chip"><span class="ch">根据情况</span><span class="py">based on situation</span></div><div class="chip"><span class="ch">看情况</span><span class="py">see situation</span></div></div>
+    <div class="practice">
+      <div class="practice-title">Key sentences · 重点句</div>
+      <div class="practice-item"><div class="practice-num">1</div><div class="practice-text"><span class="zh">请问，现在几点？ / 打扰一下，请问现在几点？</span></div></div>
+<div class="practice-item"><div class="practice-num">2</div><div class="practice-text"><span class="zh">不好意思，请让一下。 / 麻烦你帮我拿一下。</span></div></div>
+<div class="practice-item"><div class="practice-num">3</div><div class="practice-text"><span class="zh">根据情况决定怎么说。 / 看情况吧。</span></div></div>
+    </div>
+  </div>
+</div>
+<div class="slide slide-close">
+  <div class="close-inner">
+    <div class="close-zh">多说</div>
+    <div class="close-detail">
+      <div class="py">Duō shuō</div>
+      <div class="en">The more ways you can say it, the more Chinese you are</div>
+      <div class="sub">HSK 4 · One Idea, Many Sentences</div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+(function () {
+  var lessonId = document.body.dataset.lessonId || '';
+  var allInputs = Array.prototype.slice.call(document.querySelectorAll('.quiz-input'));
+  var reportShown = false;
+  var wrongAnswers = [];
+  var GROUP_NAMES = {"group-1": "Politeness · 礼貌", "group-2": "Requests · 请求", "group-3": "Grammar · 语法", "final": "Final Challenge · 综合挑战"};
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function logAttempt(payload) {
+    if (!lessonId) return;
+    fetch('/api/lessons/attempt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(function () {});
+  }
+  function logCompletion(score, total, groupList) {
+    if (!lessonId) return;
+    fetch('/api/lessons/complete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonId: lessonId, score: score, total: total, groups: groupList }) }).catch(function () {});
+  }
+  function buildReport() {
+    var groups = {};
+    document.querySelectorAll('[data-quiz-score]').forEach(function (box) {
+      var groupId = box.dataset.group || 'default';
+      groups[groupId] = { groupId: groupId, score: Number(box.querySelector('.score-correct').textContent), total: Number(box.dataset.total) };
+    });
+    var groupList = Object.keys(groups).map(function (k) { return groups[k]; });
+    var score = groupList.reduce(function (s, g) { return s + g.score; }, 0);
+    var total = groupList.reduce(function (s, g) { return s + g.total; }, 0);
+    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+    var scoreBox = document.getElementById('report-score');
+    if (scoreBox) { scoreBox.innerHTML = '<span class="big">' + score + '/' + total + '</span><span class="pct">' + pct + '%</span>'; }
+    var groupsBox = document.getElementById('report-groups');
+    if (groupsBox) {
+      groupsBox.innerHTML = groupList.map(function (g) {
+        var p = g.total > 0 ? (g.score / g.total) * 100 : 0;
+        var weak = p < 100 ? ' weak' : '';
+        return '<div class="report-group-row"><div class="report-group-name">' + (GROUP_NAMES[g.groupId] || g.groupId) + '</div><div class="report-group-bar"><div class="report-group-fill' + weak + '" style="width:' + p + '%"></div></div><div class="report-group-score">' + g.score + '/' + g.total + '</div></div>';
+      }).join('');
+    }
+    var missedBox = document.getElementById('report-missed');
+    if (missedBox) {
+      if (wrongAnswers.length === 0) { missedBox.innerHTML = '<div class="report-perfect">完美！Perfect score — every answer right. 🎉</div>'; }
+      else {
+        missedBox.innerHTML = '<div class="report-missed"><h4>Words & phrases to review · 需要复习的词</h4>' + wrongAnswers.map(function (w) {
+          return '<div class="report-missed-item"><span class="report-missed-q">' + escapeHtml(w.questionText) + '</span><span class="report-missed-you">' + escapeHtml(w.userAnswer || '(blank)') + '</span><span class="report-missed-correct">' + w.reveal + '</span></div>';
+        }).join('') + '</div>';
+      }
+    }
+    var slide = document.getElementById('lesson-report-slide');
+    if (slide) { slide.style.display = 'grid'; slide.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    logCompletion(score, total, groupList);
+  }
+  function maybeShowReport() {
+    if (reportShown) return;
+    var allDone = allInputs.every(function (i) { return i.disabled; });
+    if (!allDone) return;
+    reportShown = true; buildReport();
+  }
+  allInputs.forEach(function (input, globalIndex) {
+    var row = input.closest('.quiz-game');
+    var feedback = row.querySelector('.quiz-feedback');
+    var checkBtn = row.querySelector('.quiz-check-btn');
+    var answers = (input.dataset.answer || '').split('|').map(function (a) { return a.trim().toLowerCase(); });
+    var reveal = input.dataset.reveal || '';
+    var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+    var questionText = input.closest('.phone-block') ? input.closest('.phone-block').querySelector('.quiz-q').textContent.trim() : '';
+    function check() {
+      if (input.disabled) return;
+      var val = input.value.trim().toLowerCase();
+      if (!val) return;
+      var correct = answers.indexOf(val) !== -1;
+      feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+      feedback.innerHTML = (correct ? '对! Duì! Right!' : '错! Cuò! Wrong!') + (reveal ? '<span class="reveal">' + reveal + '</span>' : '');
+      input.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+      if (checkBtn) { checkBtn.classList.add(correct ? 'correct' : 'wrong'); checkBtn.textContent = correct ? '✓' : '✗'; checkBtn.disabled = true; }
+      input.disabled = true;
+      if (correct && scoreBox) { var counter = scoreBox.querySelector('.score-correct'); counter.textContent = String(Number(counter.textContent) + 1); }
+      if (!correct) { wrongAnswers.push({ questionText: questionText, userAnswer: input.value.trim(), reveal: reveal }); }
+      logAttempt({ lessonId: lessonId, groupId: scoreBox ? scoreBox.dataset.group : 'default', questionIndex: globalIndex, questionText: questionText, userAnswer: input.value.trim(), correct: correct });
+      maybeShowReport();
+    }
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+    if (checkBtn) checkBtn.addEventListener('click', check);
+  });
+})();
+</script>
+</body>
+</html>

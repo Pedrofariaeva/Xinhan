@@ -1,0 +1,646 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>心情和天气 — Mood & Weather · Xinhan Chinese</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@300;400;500;700&family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --jade: #2d6a4f; --jade-mid: #40916c; --jade-light: #74c69d; --jade-pale: #d8f3dc;
+  --gold: #b7791f; --gold-mid: #d69e2e; --gold-pale: #fffff0;
+  --rust: #9b2226; --rust-light: #e76f51; --rust-pale: #fff0ee;
+  --accent: #1d5f8a;
+  --accent-mid: #4a9ec7;
+  --accent-dark: #153d5c;
+  --accent-pale: #e8f4fd;
+  --cream: #faf7f2; --cream-dark: #ede8df;
+  --ink: #1a1a1a; --ink-2: #3d3d3d; --ink-3: #7a7a7a;
+  --white: #fff;
+}
+body { font-family: 'Inter', sans-serif; background: #d6cfc4; color: var(--ink); padding: 2.5rem 1rem 5rem; }
+.deck { max-width: 940px; margin: 0 auto; }
+.deck-brand { display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem; }
+.brand-name { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--accent); }
+.brand-sub  { font-size: 0.68rem; color: var(--ink-3); text-transform: uppercase; letter-spacing: 0.12em; }
+.slide { display: grid; background: var(--white); overflow: hidden; margin-bottom: 3px; }
+.slide:first-of-type { border-radius: 14px 14px 0 0; }
+.slide:last-of-type  { border-radius: 0 0 14px 14px; }
+.sidebar {
+  display: flex; flex-direction: column;
+  padding: 1.5rem 0.65rem 1.5rem 0.9rem;
+  background: var(--accent);
+  gap: 1.8rem; min-width: 64px;
+  position: relative;
+}
+.sidebar::after {
+  content: ''; position: absolute; right: 0; top: 0; bottom: 0; width: 2px;
+  background: linear-gradient(to bottom, rgba(255,255,255,0.25), transparent);
+}
+.sb-icon { display: flex; flex-direction: column; align-items: center; gap: 0.3rem; }
+.sb-icon svg { width: 28px; height: 28px; }
+.sb-label { font-size: 0.48rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: rgba(255,255,255,0.55); text-align: center; line-height: 1.2; }
+.sb-prog { display: flex; flex-direction: column; align-items: center; gap: 5px; margin-top: auto; }
+.dot { width: 7px; height: 7px; border-radius: 50%; background: rgba(255,255,255,0.2); }
+.dot.active { background: #f6e05e; }
+.dot.done   { background: var(--accent-mid); }
+.sidebar.rust  { background: var(--rust); }
+.sidebar.gold  { background: #7b5a1a; }
+.sidebar.jade  { background: var(--jade-mid); }
+.sidebar.dark  { background: #153d5c; }
+.content { padding: 2rem 2.5rem 2rem 2rem; flex: 1; }
+.sec-label { font-size: 0.6rem; font-weight: 700; letter-spacing: 0.2em; text-transform: uppercase; color: var(--accent-mid); margin-bottom: 0.9rem; }
+.content h2 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 600; margin-bottom: 1.25rem; line-height: 1.3; }
+.zh-inline { font-family: 'Noto Serif SC', serif; color: var(--accent); }
+.py-inline { font-size: 0.72rem; font-family: 'Inter', sans-serif; font-weight: 400; color: var(--gold); letter-spacing: 0.07em; }
+.scene { width: 100%; border-radius: 10px; overflow: hidden; margin-bottom: 1.25rem; }
+.scene svg { display: block; width: 100%; }
+.slide-cover { grid-template-columns: 90px 1fr; }
+.cover-content { background: var(--accent); padding: 2.5rem 2.5rem 2rem; position: relative; min-height: 300px; display: flex; flex-direction: column; justify-content: flex-end; overflow: hidden; }
+.cover-eyebrow { font-size: 0.65rem; font-weight: 700; letter-spacing: 0.25em; text-transform: uppercase; color: var(--accent-pale); margin-bottom: 0.7rem; position: relative; }
+.cover-zh { font-family: 'Noto Serif SC', serif; font-size: 5.8rem; font-weight: 700; color: var(--white); line-height: 1; letter-spacing: -0.02em; position: relative; }
+.cover-py { font-size: 1.25rem; font-weight: 300; color: var(--accent-pale); letter-spacing: 0.18em; margin: 0.3rem 0; position: relative; }
+.cover-en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 1.45rem; color: #f6e05e; position: relative; margin-bottom: 1.5rem; }
+.cover-tags { display: flex; gap: 0.5rem; flex-wrap: wrap; position: relative; }
+.tag { padding: 0.22rem 0.8rem; border-radius: 999px; font-size: 0.66rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; background: rgba(255,255,255,0.15); color: rgba(255,255,255,0.9); }
+.grammar-strip { display: flex; align-items: center; gap: 0; background: var(--cream); border-radius: 10px; overflow: hidden; margin-bottom: 1.4rem; }
+.gs-part { padding: 0.75rem 1rem; display: flex; flex-direction: column; align-items: center; }
+.gs-part.colored { background: var(--accent); }
+.gs-part.colored.rust { background: var(--rust); }
+.gs-part.colored.jade { background: var(--jade-mid); }
+.gs-part.colored.gold { background: #7b5a1a; }
+.gs-zh { font-family: 'Noto Serif SC', serif; font-size: 1.5rem; font-weight: 700; color: var(--white); line-height: 1; }
+.gs-py { font-size: 0.58rem; color: rgba(255,255,255,0.7); letter-spacing: 0.06em; margin-top: 2px; }
+.gs-sep { font-size: 1.1rem; color: var(--ink-3); padding: 0 0.3rem; }
+.gs-plain-zh { font-family: 'Noto Serif SC', serif; font-size: 1.1rem; font-weight: 500; color: var(--accent); }
+.gs-plain-py { font-size: 0.58rem; color: var(--gold); margin-top: 2px; }
+.gs-en { margin-left: auto; padding: 0.75rem 1.25rem; font-size: 0.72rem; color: var(--ink-3); font-style: italic; border-left: 1px solid var(--cream-dark); }
+.ex-block { display: flex; flex-direction: column; gap: 0.65rem; margin-bottom: 1.25rem; }
+.ex { background: var(--cream); border-radius: 8px; padding: 0.8rem 1rem; border-left: 3px solid var(--accent-mid); }
+.ex.rust { border-left-color: var(--rust-light); }
+.ex.jade { border-left-color: var(--jade-mid); }
+.ex-zh { font-family: 'Noto Serif SC', serif; font-size: 0.98rem; color: var(--ink); margin-bottom: 0.15rem; }
+.key  { color: var(--accent); font-weight: 700; }
+.key-r{ color: var(--rust); font-weight: 700; }
+.key-j{ color: var(--jade-mid); font-weight: 700; }
+.key-g{ color: var(--gold); font-weight: 700; }
+.ex-py { font-size: 0.63rem; color: var(--gold); letter-spacing: 0.03em; margin-bottom: 0.1rem; }
+.ex-en { font-size: 0.69rem; color: var(--ink-3); font-style: italic; }
+.chip-row { display: flex; gap: 0.5rem; flex-wrap: wrap; margin-bottom: 1rem; }
+.chip { padding: 0.25rem 0.75rem; border-radius: 999px; font-size: 0.7rem; background: var(--cream); border: 1.5px solid var(--cream-dark); }
+.chip .ch { font-family: 'Noto Serif SC', serif; font-size: 0.85rem; color: var(--accent); font-weight: 500; }
+.chip .py { font-size: 0.58rem; color: var(--gold); margin-left: 0.25rem; }
+.vocab-grid { display: grid; grid-template-columns: repeat(4,1fr); gap: 6px; }
+.vc { background: var(--white); border: 1px solid var(--cream-dark); border-radius: 7px; padding: 0.55rem 0.7rem; border-top: 3px solid var(--accent-mid); }
+.vc.cat-mood { border-top-color: var(--rust-light); }
+.vc.cat-weather { border-top-color: #1d5f8a; }
+.vc.cat-act { border-top-color: var(--gold-mid); }
+.vc.cat-gram { border-top-color: var(--jade); }
+.vc-zh { font-family: 'Noto Serif SC', serif; font-size: 1rem; font-weight: 500; color: var(--accent); }
+.vc-py { font-size: 0.58rem; color: var(--gold); margin: 2px 0 1px; }
+.vc-en { font-size: 0.62rem; color: var(--ink-3); }
+.tip { background: var(--accent-pale); border-radius: 7px; padding: 0.65rem 0.95rem; font-size: 0.7rem; color: var(--accent-dark); line-height: 1.55; margin-top: 0.9rem; }
+.tip strong { font-weight: 600; }
+.practice { background: linear-gradient(135deg, var(--accent-pale), #e8f4fd); border-radius: 10px; padding: 1rem 1.2rem; margin-top: 1rem; border-left: 4px solid var(--accent-mid); }
+.practice-title { font-size: 0.58rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; color: var(--accent); margin-bottom: 0.5rem; }
+.practice-item { display: flex; gap: 0.6rem; align-items: flex-start; margin-bottom: 0.45rem; }
+.practice-item:last-child { margin-bottom: 0; }
+.practice-num { min-width: 20px; height: 20px; border-radius: 50%; background: var(--accent); color: white; font-size: 0.65rem; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.practice-text { font-size: 0.82rem; color: var(--ink-2); line-height: 1.45; }
+.practice-text .zh { font-family: 'Noto Serif SC', serif; color: var(--accent); font-weight: 500; }
+.dial-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 0.7rem; margin-bottom: 1.25rem; }
+.dial-a, .dial-b { border-radius: 10px; padding: 0.85rem 1rem; }
+.dial-a { background: #e8f4fd; border-left: 3px solid #1d5f8a; }
+.dial-b { background: var(--accent-pale); border-left: 3px solid var(--accent-mid); }
+.dial-label { font-size: 0.55rem; font-weight: 700; letter-spacing: 0.14em; text-transform: uppercase; margin-bottom: 0.35rem; color: var(--accent); }
+.dial-zh { font-family: 'Noto Serif SC', serif; font-size: 0.92rem; margin-bottom: 0.15rem; }
+.dial-py { font-size: 0.6rem; color: var(--gold); margin-bottom: 0.1rem; }
+.dial-en { font-size: 0.66rem; color: var(--ink-3); font-style: italic; }
+.phone-row { display: flex; gap: 16px; flex-wrap: wrap; justify-content: flex-start; margin-bottom: 0.5rem; }
+.phone-block { display: flex; flex-direction: column; gap: 0.55rem; width: 150px; }
+.phone-block.wide { width: 200px; }
+.quiz-q { background: var(--cream); border-radius: 8px; padding: 0.5rem 0.65rem; font-size: 0.66rem; color: var(--ink); line-height: 1.45; }
+.quiz-q .py { display: block; color: var(--gold); font-size: 0.6rem; margin-top: 1px; }
+.quiz-game { display: flex; flex-direction: column; gap: 0.3rem; }
+.quiz-row { display: flex; gap: 0.3rem; }
+.quiz-input { flex: 1; width: 100%; box-sizing: border-box; padding: 6px 8px; font-size: 0.66rem; font-family: inherit; border: 1px solid #d2d2d2; border-radius: 6px; background: var(--white); color: var(--ink); transition: border-color 0.15s, background 0.15s; }
+.quiz-input:focus { outline: 2px solid var(--gold); outline-offset: 1px; }
+.quiz-input:disabled { background: var(--cream); opacity: 0.85; }
+.quiz-input.flash-correct { border-color: #2f7d52; background: #eaf7ef; animation: quiz-pop 0.4s ease; }
+.quiz-input.flash-wrong { border-color: #c0392b; background: #fbeaea; animation: quiz-shake 0.4s ease; }
+.quiz-check-btn { flex-shrink: 0; padding: 6px 10px; font-size: 0.62rem; font-weight: 700; border: none; border-radius: 6px; background: var(--gold); color: var(--accent-dark); cursor: pointer; transition: background 0.15s, transform 0.15s; }
+.quiz-check-btn:hover:not(:disabled) { transform: translateY(-1px); }
+.quiz-check-btn:disabled { cursor: default; }
+.quiz-check-btn.correct { background: #2f7d52; color: white; animation: quiz-pop 0.4s ease; }
+.quiz-check-btn.wrong { background: #c0392b; color: white; animation: quiz-shake 0.4s ease; }
+@keyframes quiz-pop { 0% { transform: scale(1); } 40% { transform: scale(1.12); } 100% { transform: scale(1); } }
+@keyframes quiz-shake { 0%, 100% { transform: translateX(0); } 20% { transform: translateX(-5px); } 40% { transform: translateX(5px); } 60% { transform: translateX(-4px); } 80% { transform: translateX(4px); } }
+.quiz-feedback { font-size: 0.68rem; font-weight: 700; min-height: 1.1em; }
+.quiz-feedback.correct { color: #2f7d52; }
+.quiz-feedback.wrong { color: #c0392b; }
+.quiz-feedback .reveal { display: block; font-weight: 500; color: var(--ink); margin-top: 2px; font-size: 0.62rem; }
+.quiz-feedback .reveal .py { color: var(--gold); }
+.quiz-score { display: inline-flex; align-items: center; gap: 0.4rem; font-size: 0.66rem; font-weight: 700; color: var(--accent); background: var(--cream); border-radius: 20px; padding: 0.3rem 0.8rem; margin-bottom: 0.8rem; }
+.quiz-score .stars { color: var(--gold); letter-spacing: 1px; }
+.learn-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--jade); background: var(--jade-pale); border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.test-badge { display: inline-block; font-size: 0.6rem; font-weight: 700; letter-spacing: 0.06em; text-transform: uppercase; color: var(--rust); background: #fbeaea; border-radius: 20px; padding: 0.25rem 0.7rem; margin-bottom: 0.6rem; }
+.report-score { display: flex; align-items: baseline; gap: 0.6rem; margin: 0.5rem 0 1rem; }
+.report-score .big { font-size: 2.4rem; font-weight: 800; color: var(--jade); }
+.report-score .pct { font-size: 1rem; font-weight: 700; color: var(--gold); }
+.report-groups { display: flex; flex-direction: column; gap: 0.4rem; margin-bottom: 1.2rem; }
+.report-group-row { display: flex; align-items: center; gap: 0.6rem; font-size: 0.66rem; }
+.report-group-name { width: 150px; flex-shrink: 0; color: var(--ink); }
+.report-group-bar { flex: 1; height: 8px; border-radius: 5px; background: var(--cream); overflow: hidden; }
+.report-group-fill { height: 100%; background: var(--jade-mid); border-radius: 5px; }
+.report-group-fill.weak { background: var(--rust-light); }
+.report-group-score { width: 36px; flex-shrink: 0; text-align: right; color: var(--ink-3); }
+.report-missed { background: #fbeaea; border-radius: 8px; padding: 0.8rem 1rem; }
+.report-missed h4 { margin: 0 0 0.5rem; font-size: 0.72rem; color: var(--rust); }
+.report-missed-item { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: baseline; font-size: 0.66rem; padding: 0.35rem 0; border-bottom: 1px solid rgba(155,34,38,0.12); }
+.report-missed-item:last-child { border-bottom: none; }
+.report-missed-q { color: var(--ink); flex: 1; min-width: 200px; }
+.report-missed-you { color: #c0392b; text-decoration: line-through; }
+.report-missed-correct { color: #2f7d52; font-weight: 600; }
+.report-perfect { background: var(--jade-pale); border-radius: 8px; padding: 1rem; font-size: 0.72rem; color: var(--jade); font-weight: 600; text-align: center; }
+.slide-close { display: block; background: #153d5c; border-radius: 0 0 14px 14px; }
+.close-inner { padding: 3rem 3.5rem; display: flex; align-items: center; justify-content: space-between; }
+.close-zh { font-family: 'Noto Serif SC', serif; font-size: 5rem; font-weight: 700; color: var(--white); }
+.close-detail .py { font-size: 1rem; color: var(--accent-pale); letter-spacing: 0.2em; }
+.close-detail .en { font-family: 'Playfair Display', serif; font-style: italic; font-size: 0.9rem; color: #f6e05e; margin-top: 0.2rem; }
+.close-detail .sub { font-size: 0.62rem; color: rgba(255,255,255,0.3); letter-spacing: 0.12em; text-transform: uppercase; margin-top: 1rem; }
+@media print {
+  body { background: white; padding: 0; }
+  .deck { max-width: 100%; }
+  .slide { break-inside: avoid; break-after: page; margin-bottom: 0; }
+  .slide:last-of-type { break-after: auto; }
+  .deck-brand { display: none; }
+}
+@media (max-width: 640px) {
+  .slide { grid-template-columns: 48px 1fr !important; }
+  .sidebar { padding: 1rem 0.4rem; }
+  .content { padding: 1.25rem; }
+  .vocab-grid { grid-template-columns: repeat(2,1fr); }
+  .cover-zh { font-size: 3.5rem; }
+}
+</style>
+</head>
+<body data-lesson-id="hsk-6/mood-weather">
+<div class="deck">
+<div class="deck-brand"><span class="brand-name">新汉 Xīnhàn</span><span class="brand-sub">HSK 6 · Mood & Weather</span></div>
+<!-- COVER -->
+<div class="slide slide-cover">
+  <div class="sidebar" style="background:#153d5c;justify-content:center;align-items:center;min-height:300px;">
+    <svg viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" style="width:38px;height:38px;">
+      <circle cx="16" cy="16" r="5" fill="rgba(255,255,255,0.9)"/>
+      <path d="M16 5v3M16 24v3M5 16h3M24 16h3M8.3 8.3l2.1 2.1M21.6 21.6l2.1 2.1M8.3 23.7l2.1-2.1M21.6 10.4l2.1-2.1" stroke="rgba(255,255,255,0.85)" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M10 26c0-3.3 2.7-6 6-6s6 2.7 6 6" fill="rgba(255,255,255,0.4)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+    </svg>
+  </div>
+  <div class="cover-content">
+    <div class="cover-eyebrow">Daily life · 日常生活 · HSK 6</div>
+    <div class="cover-zh">心情和天气</div>
+    <div class="cover-py">xīn qíng hé tiān qì</div>
+    <div class="cover-en">Mood & Weather</div>
+    <div class="cover-tags">
+      <span class="tag">HSK 6</span>
+      <span class="tag">12 new words</span>
+      <span class="tag">3 grammar points</span>
+    </div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="10" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <circle cx="14" cy="11" r="3" fill="rgba(255,255,255,0.85)"/>
+      <path d="M9 19c0-2.8 2.2-5 5-5s5 2.2 5 5" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+    </svg><div class="sb-label">warm up</div></div>
+    <div class="sb-prog"><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Warm-up · 热身</div>
+    <h2>气候如何塑造人的情绪与文化？ <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Qìhòu rúhé sùzào rén de qíngxù yǔ wénhuà?</span></h2>
+    <div class="tip"><strong>Practice:</strong> Discuss the deeper relationship between climate, emotion, and culture.</div>
+    <div class="chip-row"><div class="chip"><span class="ch">潜移默化</span><span class="py">subtly influence</span></div><div class="chip"><span class="ch">根深蒂固</span><span class="py">deep-rooted</span></div><div class="chip"><span class="ch">因地制宜</span><span class="py">adapt locally</span></div><div class="chip"><span class="ch">气候带</span><span class="py">climate zone</span></div><div class="chip"><span class="ch">心态</span><span class="py">mindset</span></div><div class="chip"><span class="ch">生活方式</span><span class="py">lifestyle</span></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar #4a9ec7">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">vocab</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">New Words · 新词 — 12 words</div>
+    <div class="vocab-grid"><div class="vc cat-weather"><div class="vc-zh">气候</div><div class="vc-py">qì hòu</div><div class="vc-en">climate</div></div>
+<div class="vc cat-weather"><div class="vc-zh">气候带</div><div class="vc-py">qì hòu dài</div><div class="vc-en">climate zone</div></div>
+<div class="vc cat-weather"><div class="vc-zh">温带</div><div class="vc-py">wēn dài</div><div class="vc-en">temperate zone</div></div>
+<div class="vc cat-weather"><div class="vc-zh">热带</div><div class="vc-py">rè dài</div><div class="vc-en">tropical zone</div></div>
+<div class="vc cat-weather"><div class="vc-zh">潜移默化</div><div class="vc-py">qián yí mò huà</div><div class="vc-en">subtly influence</div></div>
+<div class="vc cat-mood"><div class="vc-zh">根深蒂固</div><div class="vc-py">gēn shēn dì gù</div><div class="vc-en">deep-rooted</div></div>
+<div class="vc cat-mood"><div class="vc-zh">心态</div><div class="vc-py">xīn tài</div><div class="vc-en">mindset</div></div>
+<div class="vc cat-mood"><div class="vc-zh">乐观</div><div class="vc-py">lè guān</div><div class="vc-en">optimistic</div></div>
+<div class="vc cat-mood"><div class="vc-zh">悲观</div><div class="vc-py">bēi guān</div><div class="vc-en">pessimistic</div></div>
+<div class="vc cat-act"><div class="vc-zh">塑造</div><div class="vc-py">sù zào</div><div class="vc-en">shape / mold</div></div>
+<div class="vc cat-act"><div class="vc-zh">因地制宜</div><div class="vc-py">yīn dì zhì yí</div><div class="vc-en">adapt to local conditions</div></div>
+<div class="vc cat-gram"><div class="vc-zh">换言之</div><div class="vc-py">huàn yán zhī</div><div class="vc-en">in other words</div></div></div>
+    <div class="tip"><strong>Tip:</strong> Focus on the highlighted grammar words.</div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">G1 · 潜移默化地…</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 1 · 语法1</div>
+    <div class="grammar-strip"><div class="gs-part"><div class="gs-plain-zh">潜移默化</div><div class="gs-plain-py">qiányímòhuà</div></div><div class="gs-part"><div class="gs-plain-zh">地</div><div class="gs-plain-py">de</div></div><div class="gs-part"><div class="gs-plain-zh">verb</div><div class="gs-plain-py">influence</div></div><div class="gs-en">subtly influence…</div></div>
+    <div class="ex-block"><div class="ex "><div class="ex-zh">气候会<span class="key">潜移默化地</span>影响人的心态。</div><div class="ex-py">Qìhòu huì qiányímòhuà de yǐngxiǎng rén de xīntài.</div><div class="ex-en">Climate will subtly influence people&#x27;s mindset.</div></div>
+<div class="ex "><div class="ex-zh">文化习惯<span class="key">潜移默化地</span>塑造了我们的生活方式。</div><div class="ex-py">Wénhuà xíguàn qiányímòhuà de sùzào le wǒmen de shēnghuó fāngshì.</div><div class="ex-en">Cultural habits subtly shape our lifestyle.</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar gold">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">G2 · 之所以…究其原因为…</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 2 · 语法2</div>
+    <div class="grammar-strip"><div class="gs-part"><div class="gs-plain-zh">之所以</div><div class="gs-plain-py">zhīsuǒyǐ</div></div><div class="gs-part"><div class="gs-plain-zh">result</div><div class="gs-plain-py"></div></div><div class="gs-part"><div class="gs-plain-zh">究其原因为</div><div class="gs-plain-py">qiū jí qí yuán wéi</div></div><div class="gs-part"><div class="gs-plain-zh">root cause</div><div class="gs-plain-py"></div></div><div class="gs-en">The reason why… is rooted in…</div></div>
+    <div class="ex-block"><div class="ex "><div class="ex-zh">北方人之所以更乐观，<span class="key">究其原因为</span>阳光充足。</div><div class="ex-py">Běifāng rén zhīsuǒyǐ gèng lèguān, qiū jí qí yuán wéi yángguāng chōngzú.</div><div class="ex-en">The reason northerners are more optimistic is rooted in ample sunshine.</div></div>
+<div class="ex "><div class="ex-zh">他们之所以适应寒冷，<span class="key">究其原因为</span>根深蒂固的生活习惯。</div><div class="ex-py">Tāmen zhīsuǒyǐ shìyìng hánlěng, qiū jí qí yuán wéi gēnshēndìgù de shēnghuó xíguàn.</div><div class="ex-en">The reason they adapt to cold is rooted in deep-rooted living habits.</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar jade">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">G3 · 换言之</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Grammar 3 · 语法3</div>
+    <div class="grammar-strip"><div class="gs-part"><div class="gs-plain-zh">换言之</div><div class="gs-plain-py">huànyánzhī</div></div><div class="gs-part"><div class="gs-plain-zh">restatement</div><div class="gs-plain-py"></div></div><div class="gs-en">in other words</div></div>
+    <div class="ex-block"><div class="ex "><div class="ex-zh">天气影响情绪；<span class="key">换言之</span>，环境塑造心态。</div><div class="ex-py">Tiānqì yǐngxiǎng qíngxù; huànyánzhī, huánjìng sùzào xīntài.</div><div class="ex-en">Weather affects emotion; in other words, environment shapes mindset.</div></div>
+<div class="ex "><div class="ex-zh">他们因地制宜；<span class="key">换言之</span>，他们根据环境调整生活方式。</div><div class="ex-py">Tāmen yīndìzhìyí; huànyánzhī, tāmen gēnjù huánjìng tiáozhěng shēnghuó fāngshì.</div><div class="ex-en">They adapt to local conditions; in other words, they adjust their lifestyle according to the environment.</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar #4a9ec7">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="10" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <circle cx="14" cy="11" r="3" fill="rgba(255,255,255,0.85)"/>
+      <path d="M9 19c0-2.8 2.2-5 5-5s5 2.2 5 5" fill="rgba(255,255,255,0.5)" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+    </svg><div class="sb-label">dialogue</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div><div class="dot"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Dialogue · 对话</div>
+    <h2>气候与文化心态 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Qìhòu yǔ wénhuà xīntài</span></h2>
+    <div class="dial-grid"><div class="dial-a"><div class="dial-label">A — Analyst</div><div class="dial-zh">有研究指出，阳光充足地区的人更乐观。你觉得原因是什么？</div><div class="dial-py">Yǒu yánjiū zhǐchū, yángguāng chōngzú dìqū de rén gèng lèguān. Nǐ juéde yuányīn shì shénme?</div><div class="dial-en">Some studies show people in sunny regions are more optimistic. What do you think is the reason?</div></div>
+<div class="dial-b"><div class="dial-label">B — Expert</div><div class="dial-zh">究其原因为气候潜移默化地影响了心态。阳光让人积极，阴雨则容易让人低落。</div><div class="dial-py">Qiū jí qí yuán wéi qìhòu qiányímòhuà de yǐngxiǎng le xīntài. Yángguāng ràng rén jījí, yīnyǔ zé róngyì ràng rén dīluò.</div><div class="dial-en">The root cause is that climate subtly influences mindset. Sunshine makes people positive, while rain tends to make people low.</div></div>
+<div class="dial-a"><div class="dial-label">A — Analyst</div><div class="dial-zh">那不同气候带的人生活方式也不同吗？</div><div class="dial-py">Nà bùtóng qìhòudài de rén shēnghuó fāngshì yě bùtóng ma?</div><div class="dial-en">Do people in different climate zones also have different lifestyles?</div></div>
+<div class="dial-b"><div class="dial-label">B — Expert</div><div class="dial-zh">当然。热带地区的人生活节奏较慢；换言之，他们更懂得因地制宜，适应环境。</div><div class="dial-py">Dāngrán. Rèdài dìqū de rén shēnghuó jiézòu jiào màn; huànyánzhī, tāmen gèng dǒngde yīndìzhìyí, shìyìng huánjìng.</div><div class="dial-en">Of course. People in tropical regions have a slower pace of life; in other words, they better understand adapting to local conditions.</div></div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 1/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot active"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Climate · 气候</div>
+    <h2>气候词</h2>
+    <div class="quiz-score" data-quiz-score data-group="group-1" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">'climate zone' 用中文怎么说？<span class="py">How do you say 'climate zone'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="气候带|qì hòu dài|qi hou dai" data-reveal="气候带 <span class=&quot;py&quot;>qìhòudài · climate zone</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'temperate zone' 用中文怎么说？<span class="py">How do you say 'temperate zone'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="温带|wēn dài|wen dai" data-reveal="温带 <span class=&quot;py&quot;>wēndài · temperate zone</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'subtly influence' 用中文怎么说？<span class="py">How do you say 'subtly influence'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="潜移默化|qián yí mò huà|qian yi mo hua" data-reveal="潜移默化 <span class=&quot;py&quot;>qiányímòhuà · subtly influence</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 2/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Mindset · 心态</div>
+    <h2>心态词</h2>
+    <div class="quiz-score" data-quiz-score data-group="group-2" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">'mindset' 用中文怎么说？<span class="py">How do you say 'mindset'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="心态|xīn tài|xin tai" data-reveal="心态 <span class=&quot;py&quot;>xīntài · mindset</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'optimistic' 用中文怎么说？<span class="py">How do you say 'optimistic'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="乐观|lè guān|le guan" data-reveal="乐观 <span class=&quot;py&quot;>lèguān · optimistic</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'deep-rooted' 用中文怎么说？<span class="py">How do you say 'deep-rooted'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="根深蒂固|gēn shēn dì gù|gen shen di gu" data-reveal="根深蒂固 <span class=&quot;py&quot;>gēnshēndìgù · deep-rooted</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 3/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Grammar · 语法</div>
+    <h2>潜移默化 / 究其原因为 / 换言之</h2>
+    <div class="quiz-score" data-quiz-score data-group="group-3" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">气候会____地影响人的心态。<span class="py">Qìhòu huì ___ de yǐngxiǎng rén de xīntài.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="潜移默化|qiányímòhuà|qian yi mo hua" data-reveal="潜移默化 <span class=&quot;py&quot;>qiányímòhuà · subtly</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">他们之所以适应寒冷，____根深蒂固的生活习惯。<span class="py">Tāmen zhīsuǒyǐ shìyìng hánlěng, ___ gēnshēndìgù de shēnghuó xíguàn.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="究其原因为|qiū jí qí yuán wéi|qiu ji qi yuan wei" data-reveal="究其原因为 <span class=&quot;py&quot;>qiūjíqíyuánwéi · root cause is</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">他们因地制宜；____，他们根据环境调整生活方式。<span class="py">Tāmen yīndìzhìyí; ___, tāmen gēnjù huánjìng tiáozhěng shēnghuó fāngshì.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="换言之|huàn yán zhī|huan yan zhi" data-reveal="换言之 <span class=&quot;py&quot;>huànyánzhī · in other words</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar rust">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <circle cx="14" cy="14" r="6" stroke="rgba(255,255,255,0.85)" stroke-width="1.5" fill="none"/>
+      <path d="M14 6v2M14 20v2M6 14h2M20 14h2" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">test 4/4</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="test-badge">Test · 小测验</div>
+    <div class="sec-label">Final Challenge · 综合挑战</div>
+    <h2>小挑战</h2>
+    <div class="quiz-score" data-quiz-score data-group="final" data-total="3">✅ <span class="score-correct">0</span>/<span class="score-total">3</span> <span class="stars">★</span></div>
+    <div class="tip" style="margin-top:0;margin-bottom:1rem;"><strong>Type your answer</strong> in Chinese, pinyin, or English. Hit Enter or tap 检查.</div>
+    <div class="phone-row"><div class="phone-block wide">
+    <div class="quiz-q">'shape / mold' 用中文怎么说？<span class="py">How do you say 'shape'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="塑造|sù zào|su zao" data-reveal="塑造 <span class=&quot;py&quot;>sùzào · shape</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">'pessimistic' 用中文怎么说？<span class="py">How do you say 'pessimistic'?</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="悲观|bēi guān|bei guan" data-reveal="悲观 <span class=&quot;py&quot;>bēiguān · pessimistic</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div>
+<div class="phone-block wide">
+    <div class="quiz-q">天气影响情绪；____，环境塑造心态。<span class="py">Tiānqì yǐngxiǎng qíngxù; ___, huánjìng sùzào xīntài.</span></div>
+    <div class="quiz-game">
+      <div class="quiz-row">
+        <input type="text" class="quiz-input" placeholder="Type your answer…" data-answer="换言之|huàn yán zhī|huan yan zhi" data-reveal="换言之 <span class=&quot;py&quot;>huànyánzhī · in other words</span>"/>
+        <button type="button" class="quiz-check-btn">检查</button>
+      </div>
+      <div class="quiz-feedback"></div>
+    </div>
+  </div></div>
+  </div>
+</div>
+<div class="slide" id="lesson-report-slide" style="grid-template-columns:64px 1fr; display:none;">
+  <div class="sidebar dark">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M5 21 L5 13 M12 21 L12 8 M19 21 L19 16 M23 21 L23 11" stroke="rgba(255,255,255,0.9)" stroke-width="2.2" stroke-linecap="round"/>
+    </svg><div class="sb-label">your report</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Lesson Report · 学习报告</div>
+    <h2>你的学习报告 <span style="font-family:'Inter';font-weight:300;font-size:0.78rem;color:var(--gold);letter-spacing:0.07em;">Nǐ de xuéxí bàogào.</span></h2>
+    <div id="report-score" class="report-score"></div>
+    <div id="report-groups" class="report-groups"></div>
+    <div id="report-missed"></div>
+  </div>
+</div>
+<div class="slide" style="grid-template-columns:64px 1fr">
+  <div class="sidebar dark">
+    <div class="sb-icon"><svg viewBox="0 0 28 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="4" y="3" width="20" height="22" rx="2" stroke="rgba(255,255,255,0.85)" stroke-width="1.5"/>
+      <line x1="8" y1="9" x2="20" y2="9" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="14" x2="20" y2="14" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+      <line x1="8" y1="19" x2="15" y2="19" stroke="rgba(255,255,255,0.7)" stroke-width="1.5" stroke-linecap="round"/>
+    </svg><div class="sb-label">review</div></div>
+    <div class="sb-prog"><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div><div class="dot done"></div></div>
+  </div>
+  <div class="content">
+    <div class="sec-label">Review · 复习</div>
+    <h2>Useful phrases · 常用语</h2>
+    <div class="chip-row"><div class="chip"><span class="ch">潜移默化</span><span class="py">subtly</span></div><div class="chip"><span class="ch">根深蒂固</span><span class="py">deep-rooted</span></div><div class="chip"><span class="ch">因地制宜</span><span class="py">adapt locally</span></div><div class="chip"><span class="ch">换言之</span><span class="py">in other words</span></div><div class="chip"><span class="ch">究其原因为</span><span class="py">root cause</span></div><div class="chip"><span class="ch">心态</span><span class="py">mindset</span></div></div>
+    <div class="practice">
+      <div class="practice-title">Key sentences · 重点句</div>
+      <div class="practice-item"><div class="practice-num">1</div><div class="practice-text"><span class="zh">气候会潜移默化地影响人的心态。</span></div></div>
+<div class="practice-item"><div class="practice-num">2</div><div class="practice-text"><span class="zh">北方人之所以更乐观，究其原因为阳光充足。</span></div></div>
+<div class="practice-item"><div class="practice-num">3</div><div class="practice-text"><span class="zh">天气影响情绪；换言之，环境塑造心态。</span></div></div>
+    </div>
+  </div>
+</div>
+<div class="slide slide-close">
+  <div class="close-inner">
+    <div class="close-zh">再见</div>
+    <div class="close-detail">
+      <div class="py">Zàijiàn</div>
+      <div class="en">See you next time — stay happy, rain or shine</div>
+      <div class="sub">HSK 6 · Mood & Weather</div>
+    </div>
+  </div>
+</div>
+</div>
+<script>
+(function () {
+  var lessonId = document.body.dataset.lessonId || '';
+  var allInputs = Array.prototype.slice.call(document.querySelectorAll('.quiz-input'));
+  var reportShown = false;
+  var wrongAnswers = [];
+  var GROUP_NAMES = {"group-1": "Climate · 气候", "group-2": "Mindset · 心态", "group-3": "Grammar · 语法", "final": "Final Challenge · 综合挑战"};
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+  function logAttempt(payload) {
+    if (!lessonId) return;
+    fetch('/api/lessons/attempt', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) }).catch(function () {});
+  }
+  function logCompletion(score, total, groupList) {
+    if (!lessonId) return;
+    fetch('/api/lessons/complete', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ lessonId: lessonId, score: score, total: total, groups: groupList }) }).catch(function () {});
+  }
+  function buildReport() {
+    var groups = {};
+    document.querySelectorAll('[data-quiz-score]').forEach(function (box) {
+      var groupId = box.dataset.group || 'default';
+      groups[groupId] = { groupId: groupId, score: Number(box.querySelector('.score-correct').textContent), total: Number(box.dataset.total) };
+    });
+    var groupList = Object.keys(groups).map(function (k) { return groups[k]; });
+    var score = groupList.reduce(function (s, g) { return s + g.score; }, 0);
+    var total = groupList.reduce(function (s, g) { return s + g.total; }, 0);
+    var pct = total > 0 ? Math.round((score / total) * 100) : 0;
+    var scoreBox = document.getElementById('report-score');
+    if (scoreBox) { scoreBox.innerHTML = '<span class="big">' + score + '/' + total + '</span><span class="pct">' + pct + '%</span>'; }
+    var groupsBox = document.getElementById('report-groups');
+    if (groupsBox) {
+      groupsBox.innerHTML = groupList.map(function (g) {
+        var p = g.total > 0 ? (g.score / g.total) * 100 : 0;
+        var weak = p < 100 ? ' weak' : '';
+        return '<div class="report-group-row"><div class="report-group-name">' + (GROUP_NAMES[g.groupId] || g.groupId) + '</div><div class="report-group-bar"><div class="report-group-fill' + weak + '" style="width:' + p + '%"></div></div><div class="report-group-score">' + g.score + '/' + g.total + '</div></div>';
+      }).join('');
+    }
+    var missedBox = document.getElementById('report-missed');
+    if (missedBox) {
+      if (wrongAnswers.length === 0) { missedBox.innerHTML = '<div class="report-perfect">完美！Perfect score — every answer right. 🎉</div>'; }
+      else {
+        missedBox.innerHTML = '<div class="report-missed"><h4>Words & phrases to review · 需要复习的词</h4>' + wrongAnswers.map(function (w) {
+          return '<div class="report-missed-item"><span class="report-missed-q">' + escapeHtml(w.questionText) + '</span><span class="report-missed-you">' + escapeHtml(w.userAnswer || '(blank)') + '</span><span class="report-missed-correct">' + w.reveal + '</span></div>';
+        }).join('') + '</div>';
+      }
+    }
+    var slide = document.getElementById('lesson-report-slide');
+    if (slide) { slide.style.display = 'grid'; slide.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    logCompletion(score, total, groupList);
+  }
+  function maybeShowReport() {
+    if (reportShown) return;
+    var allDone = allInputs.every(function (i) { return i.disabled; });
+    if (!allDone) return;
+    reportShown = true; buildReport();
+  }
+  allInputs.forEach(function (input, globalIndex) {
+    var row = input.closest('.quiz-game');
+    var feedback = row.querySelector('.quiz-feedback');
+    var checkBtn = row.querySelector('.quiz-check-btn');
+    var answers = (input.dataset.answer || '').split('|').map(function (a) { return a.trim().toLowerCase(); });
+    var reveal = input.dataset.reveal || '';
+    var scoreBox = input.closest('.content') ? input.closest('.content').querySelector('[data-quiz-score]') : null;
+    var questionText = input.closest('.phone-block') ? input.closest('.phone-block').querySelector('.quiz-q').textContent.trim() : '';
+    function check() {
+      if (input.disabled) return;
+      var val = input.value.trim().toLowerCase();
+      if (!val) return;
+      var correct = answers.indexOf(val) !== -1;
+      feedback.className = 'quiz-feedback ' + (correct ? 'correct' : 'wrong');
+      feedback.innerHTML = (correct ? '对! Duì! Right!' : '错! Cuò! Wrong!') + (reveal ? '<span class="reveal">' + reveal + '</span>' : '');
+      input.classList.add(correct ? 'flash-correct' : 'flash-wrong');
+      if (checkBtn) { checkBtn.classList.add(correct ? 'correct' : 'wrong'); checkBtn.textContent = correct ? '✓' : '✗'; checkBtn.disabled = true; }
+      input.disabled = true;
+      if (correct && scoreBox) { var counter = scoreBox.querySelector('.score-correct'); counter.textContent = String(Number(counter.textContent) + 1); }
+      if (!correct) { wrongAnswers.push({ questionText: questionText, userAnswer: input.value.trim(), reveal: reveal }); }
+      logAttempt({ lessonId: lessonId, groupId: scoreBox ? scoreBox.dataset.group : 'default', questionIndex: globalIndex, questionText: questionText, userAnswer: input.value.trim(), correct: correct });
+      maybeShowReport();
+    }
+    input.addEventListener('keydown', function (e) { if (e.key === 'Enter') check(); });
+    if (checkBtn) checkBtn.addEventListener('click', check);
+  });
+})();
+</script>
+</body>
+</html>
