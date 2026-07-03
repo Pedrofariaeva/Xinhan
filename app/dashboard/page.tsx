@@ -91,9 +91,9 @@ export default async function DashboardPage() {
           <div className="dash-card">
             <div className="dash-card-icon" style={{ background: '#faf3e8' }}>📊</div>
             <h3>My Progress</h3>
-            <p>Track your completion across levels and themes. Coming soon.</p>
-            <Link href="#" className="dash-card-link" style={{ opacity: 0.4, pointerEvents: 'none' }}>
-              Coming soon →
+            <p>Track your completion across levels and themes with saved scores.</p>
+            <Link href="/dashboard/progress" className="dash-card-link">
+              View progress →
             </Link>
           </div>
         </div>
