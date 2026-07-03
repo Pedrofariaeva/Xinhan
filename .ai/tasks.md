@@ -6,7 +6,7 @@
 - Website front page + auth pages built and deployed to stage.xinhan.org (2026-05-24)
 - Awaiting Pedro's review on stage.xinhan.org
 - Teaching materials audited; full catalog in `CONTENT_AUDIT.md`
-- Trial-lesson hub live at `/trial-lesson` as a 6 × 5 HSK level/story matrix; available decks marked, missing variants show "Soon" (2026-07-03)
+- Trial-lesson hub live at `/trial-lesson` as a complete 6 × 5 HSK level/story matrix; all 30 deck files now exist (2026-07-03)
 
 ---
 
@@ -14,7 +14,7 @@
 
 - [ ] Get Pedro's review on front page design at stage.xinhan.org
 - [ ] Get Pedro's review on sign-in / sign-up flow at stage.xinhan.org
-- [ ] Get Pedro's review on trial-lesson hub at `/trial-lesson` (now shows 6 HSK levels × 5 stories; missing variants marked "Soon")
+- [ ] Get Pedro's review on trial-lesson hub at `/trial-lesson` (now shows complete 6 HSK levels × 5 stories; all 30 decks available)
 - [ ] Decide whether to fix ESLint setup (`npm run lint` prompts for config) or commit as-is
 - [ ] Set up proper build tooling if needed (ask Pedro first)
 - [ ] Clean up duplicate files across docs1/2/3 (ask Pedro first)
@@ -45,18 +45,18 @@
 - [x] 2026-07-02 — Created progressive HSK 1–6 trial lesson cycle: `hsk-1` to `hsk-6` with level-appropriate vocabulary and grammar
 - [x] 2026-07-02 — Reverted generic HSK 1–6 cycle; hub now uses the 5 existing lessons (`luckin-coffee`, `mood-weather`, `banjia`, `many-ways`, `mood-weather-v2`) in progressive order
 - [x] 2026-07-03 — Audited trial-lesson HSK level matrix restructure, fixed lesson IDs, added coming-soon fallbacks, pushed to `stage`
+- [x] 2026-07-03 — Completed full 6 × 5 trial-lesson HSK matrix: 30 deck files for banjia, luckin-coffee, mood-weather, many-ways, mood-weather-v2
+- [x] 2026-07-03 — Created `build_remaining_levels.py` generator for mood-weather, many-ways, mood-weather-v2 level variants
 - [x] 2026-07-02 — Added `.venv/` to `.gitignore` and removed virtualenv files from the repo
 - [x] 2026-07-02 — Wired all trial lesson quizzes to `/api/lessons/attempt` and `/api/lessons/complete` for score persistence
 
 ---
 
-## 🚧 In Progress / Blocked
+## ✅ Completed
 
-- Generate missing HSK level variants for trial-lesson stories
-  - `luckin-coffee`: generator ready for HSK 1, 2, 4, 5, 6 (run `python3 generate_luckin_levels.py`)
-  - `mood-weather`: `generate_mood_weather_levels.py` has data for HSK 1–2 but no output logic
-  - `many-ways`: no generator yet
-  - `mood-weather-v2`: no generator yet
+- [x] 2026-07-03 — Completed full 6 × 5 trial-lesson HSK matrix: 30 deck files for banjia, luckin-coffee, mood-weather, many-ways, mood-weather-v2
+- [x] 2026-07-03 — Created `build_remaining_levels.py` generator for mood-weather, many-ways, mood-weather-v2 level variants
+- [x] 2026-07-03 — Generated and pushed all missing HSK 1/2/4/5/6 variants to `stage`
 
 ---
 

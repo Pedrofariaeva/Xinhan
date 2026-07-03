@@ -154,3 +154,28 @@
     - many-ways: HSK 1, 2, 4, 5, 6
     - mood-weather-v2: HSK 1, 2, 4, 5, 6
     - luckin-coffee: HSK 1, 2, 4, 5, 6 (generator exists; needs to be run)
+
+
+## 2026-07-03 — Kimi (Maestro) — Complete 6 × 5 Trial-Lesson Matrix
+
+- **What:** Generated all missing HSK 1/2/4/5/6 variants for the 5 trial-lesson stories, completing the 30-deck matrix.
+- **Why:** Pedro asked to implement the plan for all 5 stories, not only banjia, and to save the plan before acting.
+- **What changed:**
+  - Wrote `.ai/plan.txt` documenting the 6 × 5 matrix goal and steps
+  - Generated `luckin-coffee` HSK 1/2/4/5/6 via `generate_luckin_levels.py`
+  - Wrote `build_remaining_levels.py` generator and produced HSK 1/2/4/5/6 variants for:
+    - `mood-weather`
+    - `many-ways`
+    - `mood-weather-v2`
+  - Confirmed all 30 deck files exist at `public/trial-lesson/<level>/<story>/index.html`
+  - Verified all `data-lesson-id` attributes match the new path format
+  - Confirmed `npm run build` passes
+- **Build status:** ✅ Clean build — `npm run build` passes. `npm run lint` still prompts for ESLint config (pre-existing).
+- **Commits:** `3dc889f`, `3b7a2d1` on `stage` branch; pushed to origin.
+- **Handoff to Pedro:**
+  - Deployed to `stage.xinhan.org/trial-lesson`
+  - Full matrix now live: 6 HSK levels × 5 stories = 30 interactive decks
+  - Generator scripts saved for future edits:
+    - `generate_luckin_levels.py`
+    - `generate_mood_weather_levels.py` (data only, no output)
+    - `build_remaining_levels.py`
