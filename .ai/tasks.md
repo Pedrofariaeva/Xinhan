@@ -14,7 +14,7 @@
 
 - [ ] Get Pedro's review on front page design at stage.xinhan.org
 - [ ] Get Pedro's review on sign-in / sign-up flow at stage.xinhan.org
-- [ ] Get Pedro's review on trial-lesson hub at `/trial-lesson` (now shows complete 6 HSK levels × 5 stories; all 30 decks available)
+- [ ] Get Pedro's review on trial-lesson hub at `/trial-lesson` and progress page at `/dashboard/progress`
 - [ ] Decide whether to fix ESLint setup (`npm run lint` prompts for config) or commit as-is
 - [ ] Set up proper build tooling if needed (ask Pedro first)
 - [ ] Clean up duplicate files across docs1/2/3 (ask Pedro first)
@@ -47,6 +47,7 @@
 - [x] 2026-07-03 — Audited trial-lesson HSK level matrix restructure, fixed lesson IDs, added coming-soon fallbacks, pushed to `stage`
 - [x] 2026-07-03 — Completed full 6 × 5 trial-lesson HSK matrix: 30 deck files for banjia, luckin-coffee, mood-weather, many-ways, mood-weather-v2
 - [x] 2026-07-03 — Created `build_remaining_levels.py` generator for mood-weather, many-ways, mood-weather-v2 level variants
+- [x] 2026-07-03 — Created `/dashboard/progress` page to display saved lesson scores from MongoDB
 - [x] 2026-07-02 — Added `.venv/` to `.gitignore` and removed virtualenv files from the repo
 - [x] 2026-07-02 — Wired all trial lesson quizzes to `/api/lessons/attempt` and `/api/lessons/complete` for score persistence
 

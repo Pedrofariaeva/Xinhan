@@ -179,3 +179,20 @@
     - `generate_luckin_levels.py`
     - `generate_mood_weather_levels.py` (data only, no output)
     - `build_remaining_levels.py`
+
+
+## 2026-07-03 — Kimi (Maestro) — My Progress Page for Saved Scores
+
+- **What:** Added a dashboard progress page so users can see their saved trial-lesson scores from MongoDB.
+- **Why:** Pedro asked about user scores saved on MongoDB after completing the 30-deck matrix.
+- **What changed:**
+  - Created `app/dashboard/progress/page.tsx` — server component that reads `lesson_results` for the signed-in user
+  - Shows: lessons completed, overall accuracy percentage, total correct answers, and a per-lesson breakdown
+  - Parses lesson IDs like `hsk-4/mood-weather` into friendly labels (`HSK 4 · 心情和天气 · Mood & Weather`)
+  - Updated dashboard "My Progress" card to link to `/dashboard/progress` instead of "Coming soon"
+- **Build status:** ✅ Clean build — `npm run build` passes.
+- **Commit:** `d214a29` on `stage` branch; pushed to origin.
+- **Handoff to Pedro:**
+  - Live at `stage.xinhan.org/dashboard/progress`
+  - Scores are saved to MongoDB `xinhan.lesson_results` whenever a student finishes a trial lesson
+  - Each answer is also logged to `xinhan.lesson_attempts` for potential future analytics
