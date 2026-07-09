@@ -29,6 +29,7 @@ const STORIES = [
   { id: 'banjia', titleZh: '搬家', titleEn: 'Moving House', icon: '🏠', color: '#d8f3dc' },
   { id: 'many-ways', titleZh: '一句话，几种说法？', titleEn: 'One Idea, Many Sentences', icon: '🗣️', color: '#fff5eb' },
   { id: 'mood-weather-v2', titleZh: '心情和天气', titleEn: 'Mood & Weather (new version)', icon: '☀️', color: '#e8f4fd' },
+  { id: 'party-game', titleZh: '是还是不是？', titleEn: 'Yes or No? Party Game', icon: '🎉', color: '#312e81' },
 ]
 
 function deckExists(level: string, storyId: string) {

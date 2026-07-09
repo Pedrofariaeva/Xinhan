@@ -22,6 +22,7 @@ const STORIES: Record<string, { titleZh: string; titleEn: string }> = {
   'banjia': { titleZh: '搬家', titleEn: 'Moving House' },
   'many-ways': { titleZh: '一句话，几种说法？', titleEn: 'One Idea, Many Sentences' },
   'mood-weather-v2': { titleZh: '心情和天气', titleEn: 'Mood & Weather (new version)' },
+  'party-game': { titleZh: '是还是不是？', titleEn: 'Yes or No? Party Game' },
 }
 
 function deckExists(level: string, storyId: string) {
