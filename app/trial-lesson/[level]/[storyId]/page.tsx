@@ -25,8 +25,12 @@ const STORIES: Record<string, { titleZh: string; titleEn: string }> = {
   'party-game': { titleZh: '是还是不是？', titleEn: 'Yes or No? Party Game' },
 }
 
+function deckFile(storyId: string) {
+  return storyId === 'party-game' ? 'game.html' : 'index.html'
+}
+
 function deckExists(level: string, storyId: string) {
-  const path = join(process.cwd(), 'public', 'trial-lesson', level, storyId, 'index.html')
+  const path = join(process.cwd(), 'public', 'trial-lesson', level, storyId, deckFile(storyId))
   return existsSync(path)
 }
 
@@ -68,7 +72,7 @@ export default async function TrialLessonStoryLevelPage({ params }: PageProps) {
 
         {hasDeck ? (
           <iframe
-            src={`/trial-lesson/${level}/${storyId}/index.html`}
+            src={`/trial-lesson/${level}/${storyId}/${deckFile(storyId)}`}
             title={`${story.titleZh} — ${story.titleEn} ${levelLabel} trial lesson`}
             style={{
               width: '100%',

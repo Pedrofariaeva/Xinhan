@@ -1,0 +1,517 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no"/>
+<title>是还是不是？· HSK 4 · Party Game · Xinhan</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+SC:wght@700;900&family=Inter:wght@400;600;700;800;900&display=swap" rel="stylesheet"/>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+:root {
+  --game:#312e81; --game-mid:#4c1d95; --game-light:#a78bfa; --game-pale:#f5f3ff;
+  --jade:#2d6a4f; --jade-mid:#40916c; --jade-pale:#d8f3dc;
+  --rust:#9b2226; --rust-light:#e76f51;
+  --ink:#1a1614; --white:#ffffff; --cream:#fffbf5;
+}
+html, body { height:100%; overflow:hidden; background:#1e1b4b; }
+body { font-family:'Inter',system-ui,sans-serif; color:var(--white); display:flex; align-items:center; justify-content:center; }
+
+/* ── screens ── */
+.screen { display:none; width:100%; height:100vh; align-items:center; justify-content:center; flex-direction:column; padding:1.5rem; text-align:center; }
+.screen.active { display:flex; }
+
+/* ── START ── */
+#s-start { background:linear-gradient(150deg,#0f0e1f 0%,#1e1b4b 45%,#312e81 100%); }
+.start-kicker { font-size:.6rem; font-weight:700; letter-spacing:.2em; text-transform:uppercase; color:var(--game-light); margin-bottom:1rem; }
+.start-title { font-family:'Noto Serif SC',serif; font-size:clamp(3rem,9vw,5.5rem); font-weight:900; line-height:1; margin-bottom:.3rem; }
+.start-sub { font-size:1rem; color:rgba(255,255,255,.55); font-style:italic; margin-bottom:2.5rem; }
+.diff-label { font-size:.6rem; font-weight:700; letter-spacing:.12em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:.7rem; }
+.diff-row { display:flex; gap:.75rem; margin-bottom:2rem; }
+.diff-btn { border:2px solid rgba(255,255,255,.2); background:rgba(255,255,255,.07); border-radius:14px; padding:.9rem 1.3rem; color:rgba(255,255,255,.65); cursor:pointer; font-family:inherit; font-size:.78rem; font-weight:600; transition:all .15s; min-width:90px; }
+.diff-btn:hover { border-color:var(--game-light); color:#fff; background:rgba(255,255,255,.12); }
+.diff-btn.sel { border-color:var(--game-light); color:#fff; background:rgba(167,139,250,.22); }
+.diff-time { display:block; font-size:1.5rem; font-weight:900; color:#fff; margin-bottom:.2rem; }
+.diff-name { display:block; font-size:.68rem; }
+.start-go { background:var(--game-light); color:var(--game); border:none; border-radius:18px; padding:1rem 3rem; font-size:1.1rem; font-weight:900; cursor:pointer; font-family:inherit; letter-spacing:.06em; text-transform:uppercase; box-shadow:0 4px 22px rgba(167,139,250,.55); transition:transform .1s,box-shadow .1s; }
+.start-go:hover { transform:translateY(-2px); box-shadow:0 7px 28px rgba(167,139,250,.7); }
+.start-go:active { transform:translateY(0); }
+.start-tags { display:flex; gap:.5rem; justify-content:center; margin-top:1.5rem; flex-wrap:wrap; }
+.tag { background:rgba(255,255,255,.09); border-radius:20px; padding:.22rem .75rem; font-size:.58rem; font-weight:600; letter-spacing:.06em; color:rgba(255,255,255,.5); }
+
+/* ── CHAPTER INTRO ── */
+#s-intro { background:radial-gradient(ellipse at center,#2d2566 0%,#1a1840 100%); }
+.ci-emoji { font-size:4.5rem; margin-bottom:1rem; }
+.ci-num { font-size:.6rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; color:var(--game-light); margin-bottom:.5rem; }
+.ci-title { font-family:'Noto Serif SC',serif; font-size:clamp(1.8rem,5vw,2.5rem); font-weight:700; margin-bottom:.4rem; }
+.ci-sub { font-size:.9rem; color:rgba(255,255,255,.55); margin-bottom:1.2rem; }
+.ci-meta { font-size:.62rem; color:rgba(255,255,255,.3); letter-spacing:.08em; }
+.ci-bar { width:200px; height:3px; background:rgba(255,255,255,.1); border-radius:2px; margin:.9rem auto 0; overflow:hidden; }
+.ci-bar-fill { height:100%; background:var(--game-light); border-radius:2px; animation:ci-load 1.6s linear forwards; }
+@keyframes ci-load { from{width:0} to{width:100%} }
+
+/* ── QUESTION ── */
+#s-q { background:#1a1840; padding:1.2rem 1.5rem 1.5rem; justify-content:space-between; }
+.q-header { display:flex; align-items:center; justify-content:space-between; width:100%; max-width:520px; }
+.q-chap { font-size:.58rem; font-weight:700; letter-spacing:.1em; text-transform:uppercase; color:rgba(255,255,255,.4); }
+.q-prog { font-size:.75rem; font-weight:700; color:var(--game-light); }
+.q-body { flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:.6rem; }
+.q-emoji { font-size:clamp(2.5rem,7vw,4.5rem); line-height:1; }
+.q-text { font-family:'Noto Serif SC',serif; font-size:clamp(1.9rem,5.5vw,3.2rem); font-weight:700; line-height:1.2; }
+.q-py { font-size:clamp(.82rem,2.2vw,1.05rem); color:rgba(255,255,255,.5); font-style:italic; }
+/* timer */
+.timer-wrap { position:relative; width:76px; height:76px; margin:.3rem auto; }
+.timer-svg { transform:rotate(-90deg); }
+.t-track { stroke:rgba(255,255,255,.1); }
+.t-ring { stroke:var(--game-light); stroke-dasharray:220; stroke-dashoffset:0; transition:stroke .25s; }
+.t-ring.urgent { stroke:#f87171; }
+.t-num { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:1.45rem; font-weight:900; }
+/* dots */
+.dots { display:flex; gap:6px; justify-content:center; }
+.dot { width:8px; height:8px; border-radius:50%; background:rgba(255,255,255,.18); transition:background .2s; }
+.dot.ok { background:#4ade80; }
+.dot.ng { background:#f87171; }
+.dot.now { background:var(--game-light); box-shadow:0 0 6px var(--game-light); }
+/* answer buttons */
+.ans-row { display:flex; gap:1rem; width:100%; max-width:480px; }
+.ans-btn { flex:1; border:none; border-radius:18px; padding:1.2rem .8rem; font-size:clamp(1.3rem,4vw,1.7rem); font-weight:900; font-family:'Noto Serif SC',serif; cursor:pointer; transition:transform .08s,box-shadow .1s; line-height:1; user-select:none; }
+.ans-btn:active:not(:disabled) { transform:scale(.95); }
+.ans-btn:disabled { opacity:.45; cursor:default; }
+.btn-shi { background:#14532d; color:#86efac; box-shadow:0 4px 18px rgba(20,83,45,.6); }
+.btn-shi:hover:not(:disabled) { background:#166534; box-shadow:0 6px 22px rgba(20,83,45,.8); }
+.btn-bushi { background:#7f1d1d; color:#fca5a5; box-shadow:0 4px 18px rgba(127,29,29,.6); }
+.btn-bushi:hover:not(:disabled) { background:#991b1b; box-shadow:0 6px 22px rgba(127,29,29,.8); }
+
+/* ── FEEDBACK ── */
+#s-fb { transition:background .15s; }
+.fb-result { font-size:clamp(2.2rem,7vw,4rem); font-weight:900; font-family:'Noto Serif SC',serif; margin-bottom:.7rem; animation:fb-pop .25s ease; }
+.fb-result.ok { color:#4ade80; }
+.fb-result.ng { color:#f87171; }
+.fb-fact { font-size:clamp(.85rem,2.3vw,1.05rem); color:rgba(255,255,255,.75); max-width:420px; line-height:1.6; }
+@keyframes fb-pop { 0%{transform:scale(.7);opacity:0} 60%{transform:scale(1.08)} 100%{transform:scale(1);opacity:1} }
+
+/* ── CHAPTER END ── */
+#s-ce { background:#0d0d24; }
+.ce-label { font-size:.6rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--game-light); margin-bottom:.5rem; }
+.ce-heading { font-family:'Noto Serif SC',serif; font-size:clamp(1.5rem,4vw,2.2rem); font-weight:700; margin-bottom:1rem; }
+.ce-ring-wrap { position:relative; width:130px; height:130px; margin:.5rem auto 1rem; }
+.ce-score-center { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); text-align:center; }
+.ce-big { font-size:2.4rem; font-weight:900; line-height:1; }
+.ce-of { font-size:.62rem; color:rgba(255,255,255,.4); }
+.ce-facts { display:flex; flex-direction:column; gap:.4rem; width:100%; max-width:460px; margin-bottom:1.2rem; max-height:35vh; overflow-y:auto; }
+.ce-fact-row { display:flex; align-items:flex-start; gap:.6rem; background:rgba(255,255,255,.05); border-radius:10px; padding:.5rem .8rem; font-size:.7rem; text-align:left; }
+.ce-dot { width:9px; height:9px; border-radius:50%; flex-shrink:0; margin-top:.2rem; }
+.ce-dot.ok { background:#4ade80; }
+.ce-dot.ng { background:#f87171; }
+.ce-fact-text { color:rgba(255,255,255,.72); line-height:1.45; }
+.ce-btn { background:var(--game-light); color:var(--game); border:none; border-radius:14px; padding:.9rem 2.5rem; font-size:1rem; font-weight:900; cursor:pointer; font-family:inherit; letter-spacing:.05em; text-transform:uppercase; box-shadow:0 4px 18px rgba(167,139,250,.4); transition:transform .1s; }
+.ce-btn:hover { transform:translateY(-2px); }
+
+/* ── END ── */
+#s-end { background:linear-gradient(135deg,#0a0918 0%,#1a1840 100%); }
+.end-trophy { font-size:4rem; margin-bottom:.5rem; }
+.end-h { font-family:'Noto Serif SC',serif; font-size:clamp(1.5rem,4vw,2.2rem); font-weight:700; margin-bottom:.2rem; }
+.end-sub-label { font-size:.65rem; color:rgba(255,255,255,.35); margin-bottom:1.2rem; letter-spacing:.1em; text-transform:uppercase; }
+.end-score { font-size:clamp(3rem,8vw,4.5rem); font-weight:900; color:var(--game-light); line-height:1; }
+.end-denom { font-size:1.2rem; color:rgba(255,255,255,.4); }
+.end-breakdown { display:flex; flex-direction:column; gap:.4rem; width:100%; max-width:420px; margin:1.2rem 0; }
+.end-row { display:flex; align-items:center; gap:.7rem; background:rgba(255,255,255,.05); border-radius:10px; padding:.5rem .9rem; font-size:.7rem; }
+.end-row-name { flex:1; color:rgba(255,255,255,.65); text-align:left; }
+.end-bar-wrap { width:80px; height:6px; background:rgba(255,255,255,.1); border-radius:3px; overflow:hidden; }
+.end-bar { height:100%; border-radius:3px; transition:width .5s ease; }
+.end-row-score { width:28px; text-align:right; font-weight:700; color:#fff; }
+.replay-btn { background:transparent; border:2px solid var(--game-light); color:var(--game-light); border-radius:14px; padding:.75rem 2rem; font-size:.88rem; font-weight:700; cursor:pointer; font-family:inherit; margin-top:.5rem; transition:background .15s,color .15s; }
+.replay-btn:hover { background:var(--game-light); color:var(--game); }
+
+@media(max-height:640px){
+  .q-emoji{font-size:2rem;}
+  .timer-wrap{width:58px;height:58px;}
+  .t-num{font-size:1.1rem;}
+  .ans-btn{padding:.9rem .6rem;font-size:1.1rem;}
+}
+</style>
+</head>
+<body>
+
+<!-- ① START -->
+<div id="s-start" class="screen active">
+  <div class="start-kicker">Xinhan · 派对游戏</div>
+  <div class="start-title">是还是不是？</div>
+  <div class="start-sub">shì háishi bú shì? · Yes or No?</div>
+  <div class="diff-label">Choose your speed · 选择难度</div>
+  <div class="diff-row">
+    <button class="diff-btn" data-secs="5" onclick="pickDiff(this)">
+      <span class="diff-time">5s</span><span class="diff-name">Easy 😌</span>
+    </button>
+    <button class="diff-btn sel" data-secs="3" onclick="pickDiff(this)">
+      <span class="diff-time">3s</span><span class="diff-name">Medium 😅</span>
+    </button>
+    <button class="diff-btn" data-secs="1" onclick="pickDiff(this)">
+      <span class="diff-time">1s</span><span class="diff-name">Hard 😱</span>
+    </button>
+  </div>
+  <button class="start-go" onclick="startGame()">开始游戏！ Start!</button>
+  <div class="start-tags">
+    <span class="tag">HSK 4</span><span class="tag">汉字 only</span>
+    <span class="tag">6 Rounds</span><span class="tag">24 Questions</span>
+  </div>
+</div>
+
+<!-- ② CHAPTER INTRO -->
+<div id="s-intro" class="screen">
+  <div class="ci-emoji" id="ci-emoji"></div>
+  <div class="ci-num" id="ci-num"></div>
+  <div class="ci-title" id="ci-title"></div>
+  <div class="ci-sub" id="ci-sub"></div>
+  <div class="ci-meta" id="ci-meta"></div>
+  <div class="ci-bar"><div class="ci-bar-fill" id="ci-fill"></div></div>
+</div>
+
+<!-- ③ QUESTION -->
+<div id="s-q" class="screen">
+  <div class="q-header">
+    <div class="q-chap" id="q-chap"></div>
+    <div class="q-prog" id="q-prog"></div>
+  </div>
+  <div class="q-body">
+    <div class="q-emoji" id="q-emoji"></div>
+    <div class="q-text" id="q-text"></div>
+    <div class="q-py" id="q-py"></div>
+    <div class="timer-wrap">
+      <svg class="timer-svg" width="76" height="76" viewBox="0 0 76 76">
+        <circle class="t-track" cx="38" cy="38" r="33" fill="none" stroke-width="6"/>
+        <circle class="t-ring" id="t-ring" cx="38" cy="38" r="33" fill="none" stroke-width="6" stroke-linecap="round"/>
+      </svg>
+      <div class="t-num" id="t-num"></div>
+    </div>
+    <div class="dots" id="dots"></div>
+  </div>
+  <div class="ans-row">
+    <button class="ans-btn btn-shi" id="btn-shi" onclick="answer(true)">是的</button>
+    <button class="ans-btn btn-bushi" id="btn-bushi" onclick="answer(false)">不是</button>
+  </div>
+</div>
+
+<!-- ④ FEEDBACK -->
+<div id="s-fb" class="screen">
+  <div class="fb-result" id="fb-result"></div>
+  <div class="fb-fact" id="fb-fact"></div>
+</div>
+
+<!-- ⑤ CHAPTER END -->
+<div id="s-ce" class="screen">
+  <div class="ce-label" id="ce-label"></div>
+  <div class="ce-heading" id="ce-heading"></div>
+  <div class="ce-ring-wrap">
+    <svg width="130" height="130" viewBox="0 0 130 130" style="transform:rotate(-90deg)">
+      <circle cx="65" cy="65" r="55" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="8"/>
+      <circle id="ce-ring" cx="65" cy="65" r="55" fill="none" stroke-width="8" stroke-linecap="round" stroke-dasharray="346" stroke-dashoffset="346"/>
+    </svg>
+    <div class="ce-score-center">
+      <div class="ce-big" id="ce-big"></div>
+      <div class="ce-of" id="ce-of"></div>
+    </div>
+  </div>
+  <div class="ce-facts" id="ce-facts"></div>
+  <button class="ce-btn" id="ce-btn" onclick="continueGame()">Continue →</button>
+</div>
+
+<!-- ⑥ END -->
+<div id="s-end" class="screen">
+  <div class="end-trophy" id="end-trophy"></div>
+  <div class="end-h" id="end-h"></div>
+  <div class="end-sub-label">24 questions · 6 rounds</div>
+  <div><span class="end-score" id="end-score"></span><span class="end-denom">/24</span></div>
+  <div class="end-breakdown" id="end-breakdown"></div>
+  <button class="replay-btn" onclick="resetGame()">再玩一次 · Play Again</button>
+</div>
+
+<script>
+var SHOW_PINYIN = false;
+var CIRC_TIMER = 2 * Math.PI * 33; // ~207
+var CIRC_CE    = 2 * Math.PI * 55; // ~346
+
+var CHAPTERS = [
+  { label:'Round 1', title:'牛 & 马 的陷阱', sub:'The Cow & Horse Trap', emoji:'🐄', questions:[
+    { zh:'蜗牛是牛吗？', py:'Wōniú shì niú ma?', ans:false, e:'🐌', fact:'蜗牛 = snail 🐌 — 不是牛！It is a mollusc, completely unrelated to cows.' },
+    { zh:'犀牛是牛吗？', py:'Xīniú shì niú ma?', ans:false, e:'🦏', fact:'犀牛 = rhinoceros 🦏 — 不是牛！It is an odd-toed ungulate, closer to horses.' },
+    { zh:'河马是马吗？', py:'Hémǎ shì mǎ ma?', ans:false, e:'🦛', fact:'河马 = hippo 🦛 — 不是马！Its closest living relatives are actually whales 🐬.' },
+    { zh:'海马是马吗？', py:'Hǎimǎ shì mǎ ma?', ans:false, e:'🌊', fact:'海马 = seahorse — 不是马！It is actually a fish 🐟. Males carry the babies!' }
+  ]},
+  { label:'Round 2', title:'"鱼"字陷阱', sub:'The Fish Trap', emoji:'🐟', questions:[
+    { zh:'鳄鱼是鱼吗？', py:'Èyú shì yú ma?', ans:false, e:'🐊', fact:'鳄鱼 = crocodile 🐊 — 不是鱼！A reptile 爬行动物, ancient apex predator.' },
+    { zh:'章鱼是鱼吗？', py:'Zhāngyú shì yú ma?', ans:false, e:'🐙', fact:'章鱼 = octopus 🐙 — 不是鱼！Mollusc with 3 hearts and blue blood.' },
+    { zh:'鲸鱼是鱼吗？', py:'Jīngyú shì yú ma?', ans:false, e:'🐋', fact:'鲸鱼 = whale 🐋 — 不是鱼！A mammal 哺乳动物 that breathes air.' },
+    { zh:'金鱼是鱼吗？', py:'Jīnyú shì yú ma?', ans:true, e:'🐠', fact:'金鱼 = goldfish 🐠 — 是！It really IS a fish (carp family 鲤科). Bred in China for 1000+ years 🎉' }
+  ]},
+  { label:'Round 3', title:'惊喜！原来是！', sub:'The Twist — YES!', emoji:'🎉', questions:[
+    { zh:'斑马是马吗？', py:'Bānmǎ shì mǎ ma?', ans:true, e:'🦓', fact:'斑马 = zebra 🦓 — 是！It IS in the horse family 马科 Equidae. Same genus as horses 🎉' },
+    { zh:'松鼠是鼠吗？', py:'Sōngshǔ shì shǔ ma?', ans:true, e:'🐿️', fact:'松鼠 = squirrel 🐿️ — 是！It IS a rodent 啮齿目, same order as rats and mice 🎉' },
+    { zh:'熊猫是熊吗？', py:'Xióngmāo shì xióng ma?', ans:true, e:'🐼', fact:'熊猫 = giant panda 🐼 — 是！DNA proved it IS a bear 熊科 Ursidae 🎉' },
+    { zh:'鸵鸟是鸟吗？', py:'Tuóniǎo shì niǎo ma?', ans:true, e:'🦤', fact:'鸵鸟 = ostrich 🦤 — 是！The world\'s biggest bird 鸟纲. Cannot fly, but IS a bird 🎉' }
+  ]},
+  { label:'Round 4', title:'食物大挑战', sub:'Food Challenge', emoji:'🍖', questions:[
+    { zh:'热狗是狗吗？', py:'Règǒu shì gǒu ma?', ans:false, e:'🌭', fact:'热狗 = hot dog 🌭 — 不是狗！Just a sausage 香肠. Borrowed from English. No dogs involved 🐶' },
+    { zh:'鸡尾酒是酒吗？', py:'Jīwěijiǔ shì jiǔ ma?', ans:true, e:'🍸', fact:'鸡尾酒 = cocktail 🍸 — 是！Definitely alcohol 含酒精. Translated as "rooster-tail liquor" 🎉' },
+    { zh:'火腿是腿吗？', py:'Huǒtuǐ shì tuǐ ma?', ans:true, e:'🍖', fact:'火腿 = ham 🍖 — 是！It literally IS a pig\'s hind leg 后腿. Perfectly named 🎉' },
+    { zh:'豆腐是腐的吗？', py:'Dòufu shì fǔ de ma?', ans:false, e:'🧊', fact:'豆腐 = tofu 🧊 — 不是腐的！腐 refers to a curing/curd process, not rotting. (臭豆腐 IS though 😅)' }
+  ]},
+  { label:'Round 5', title:'植物和自然', sub:'Plants & Nature', emoji:'🌿', questions:[
+    { zh:'玉米是米吗？', py:'Yùmǐ shì mǐ ma?', ans:false, e:'🌽', fact:'玉米 = corn 🌽 — 不是米！米 = rice grain. Corn is a cereal but a totally different plant.' },
+    { zh:'花生是花吗？', py:'Huāshēng shì huā ma?', ans:false, e:'🥜', fact:'花生 = peanut 🥜 — 不是花！Name means "flower-born" but it is a legume that grows underground.' },
+    { zh:'草莓是草吗？', py:'Cǎoméi shì cǎo ma?', ans:false, e:'🍓', fact:'草莓 = strawberry 🍓 — 不是草！草 = grass. Strawberries grow low but they are NOT grass.' },
+    { zh:'无花果有花吗？', py:'Wúhuāguǒ yǒu huā ma?', ans:true, e:'🫐', fact:'无花果 = fig 🫐 — 是有花！The name says "no-flower fruit" but flowers are HIDDEN inside. Sneaky! 🌸' }
+  ]},
+  { label:'Bonus', title:'最难一关！', sub:'Hardest Yet!', emoji:'⭐', questions:[
+    { zh:'猫头鹰是猫吗？', py:'Māotóuyīng shì māo ma?', ans:false, e:'🦉', fact:'猫头鹰 = owl 🦉 — 不是猫！Named for its round "cat-face" 😸, but it is a bird 鸟.' },
+    { zh:'变色龙是龙吗？', py:'Biànsèlóng shì lóng ma?', ans:false, e:'🦎', fact:'变色龙 = chameleon 🦎 — 不是龙！Just a small lizard 蜥蜴. No fire, no wings. Not a dragon 🐉' },
+    { zh:'熊猫是猫吗？', py:'Xióngmāo shì māo ma?', ans:false, e:'🐼', fact:'熊猫 = giant panda 🐼 — 不是猫！We proved it in Round 3: it is a bear 熊, not a cat.' },
+    { zh:'水母是母吗？', py:'Shuǐmǔ shì mǔ ma?', ans:false, e:'🪼', fact:'水母 = jellyfish 🪼 — 不是母！母 = mother/female, but jellyfish have zero parenting skills 😂' }
+  ]}
+];
+
+// ── state ──────────────────────────────────────────────────────────────────────
+var G = {
+  diff: 3,
+  cIdx: 0,      // chapter index
+  qIdx: 0,      // question index within chapter
+  cur: [],      // results for current chapter [{ok, fact, zh}]
+  all: [],      // [{label, title, correct, total}] — one entry per completed chapter
+  total: 0,     // total correct across all chapters
+  tick: null,   // interval id
+  tLeft: 0,
+  done: false
+};
+
+// ── helpers ────────────────────────────────────────────────────────────────────
+function show(id) {
+  document.querySelectorAll('.screen').forEach(function(s){ s.classList.remove('active'); });
+  document.getElementById(id).classList.add('active');
+}
+
+function pickDiff(btn) {
+  document.querySelectorAll('.diff-btn').forEach(function(b){ b.classList.remove('sel'); });
+  btn.classList.add('sel');
+  G.diff = parseInt(btn.dataset.secs, 10);
+}
+
+// ── flow ───────────────────────────────────────────────────────────────────────
+function startGame() {
+  G.cIdx = 0; G.qIdx = 0; G.cur = []; G.all = []; G.total = 0; G.done = false;
+  clearInterval(G.tick);
+  showIntro();
+}
+
+function resetGame() {
+  show('s-start');
+}
+
+function showIntro() {
+  var ch = CHAPTERS[G.cIdx];
+  document.getElementById('ci-emoji').textContent = ch.emoji;
+  document.getElementById('ci-num').textContent = ch.label + ' · ' + (G.cIdx+1) + ' of ' + CHAPTERS.length;
+  document.getElementById('ci-title').textContent = ch.title;
+  document.getElementById('ci-sub').textContent = ch.sub;
+  document.getElementById('ci-meta').textContent = '4 questions · ' + G.diff + 's per question';
+  // restart bar animation
+  var fill = document.getElementById('ci-fill');
+  fill.style.animation = 'none';
+  void fill.offsetWidth;
+  fill.style.animation = 'ci-load 1.6s linear forwards';
+  G.cur = [];
+  show('s-intro');
+  setTimeout(showQ, 1700);
+}
+
+function showQ() {
+  var ch = CHAPTERS[G.cIdx];
+  var q  = ch.questions[G.qIdx];
+  G.done = false;
+
+  document.getElementById('q-chap').textContent = ch.label + ' · ' + ch.title;
+  document.getElementById('q-prog').textContent = (G.qIdx+1) + ' / ' + ch.questions.length;
+  document.getElementById('q-emoji').textContent = q.e;
+  document.getElementById('q-text').textContent = q.zh;
+
+  var pyEl = document.getElementById('q-py');
+  if (SHOW_PINYIN) { pyEl.textContent = q.py; pyEl.style.display = ''; }
+  else { pyEl.style.display = 'none'; }
+
+  // dots
+  var dotsEl = document.getElementById('dots');
+  dotsEl.innerHTML = '';
+  ch.questions.forEach(function(_, i) {
+    var d = document.createElement('div');
+    d.className = 'dot' + (i < G.qIdx ? (G.cur[i] && G.cur[i].ok ? ' ok' : ' ng') : i === G.qIdx ? ' now' : '');
+    dotsEl.appendChild(d);
+  });
+
+  // reset buttons
+  var shi = document.getElementById('btn-shi'), bu = document.getElementById('btn-bushi');
+  shi.disabled = false; bu.disabled = false;
+
+  show('s-q');
+  startTimer();
+}
+
+// ── timer ──────────────────────────────────────────────────────────────────────
+function startTimer() {
+  clearInterval(G.tick);
+  G.tLeft = G.diff;
+  renderTimer(G.tLeft);
+  G.tick = setInterval(function() {
+    G.tLeft -= 0.05;
+    renderTimer(G.tLeft);
+    if (G.tLeft <= 0) { clearInterval(G.tick); if (!G.done) timeUp(); }
+  }, 50);
+}
+
+function renderTimer(left) {
+  var frac = Math.max(0, left / G.diff);
+  var offset = CIRC_TIMER * (1 - frac);
+  var ring = document.getElementById('t-ring');
+  ring.style.strokeDashoffset = offset;
+  ring.classList.toggle('urgent', left <= 1);
+  document.getElementById('t-num').textContent = Math.ceil(Math.max(0, left));
+}
+
+function timeUp() {
+  G.done = true;
+  var q = CHAPTERS[G.cIdx].questions[G.qIdx];
+  G.cur.push({ ok: false, zh: q.zh, fact: q.fact });
+  feedback(false, q.ans, q.fact, true);
+}
+
+// ── answer ─────────────────────────────────────────────────────────────────────
+function answer(userYes) {
+  if (G.done) return;
+  G.done = true;
+  clearInterval(G.tick);
+  document.getElementById('btn-shi').disabled = true;
+  document.getElementById('btn-bushi').disabled = true;
+
+  var q = CHAPTERS[G.cIdx].questions[G.qIdx];
+  var ok = (userYes === q.ans);
+  if (ok) G.total++;
+  G.cur.push({ ok: ok, zh: q.zh, fact: q.fact });
+  feedback(ok, q.ans, q.fact, false);
+}
+
+function feedback(ok, correctAns, fact, timeout) {
+  var fbEl = document.getElementById('s-fb');
+  var resEl = document.getElementById('fb-result');
+  var factEl = document.getElementById('fb-fact');
+
+  if (timeout) {
+    resEl.textContent = '⏱️ 时间到！Time\'s up!';
+    resEl.className = 'fb-result ng';
+    fbEl.style.background = '#3b0000';
+    factEl.textContent = (correctAns ? '正确答案: 是的！' : '正确答案: 不是！') + ' · ' + fact;
+  } else if (ok) {
+    resEl.textContent = '✓ 猜对了！Correct!';
+    resEl.className = 'fb-result ok';
+    fbEl.style.background = '#052e16';
+    factEl.textContent = fact;
+  } else {
+    resEl.textContent = '✗ 猜错了！Wrong!';
+    resEl.className = 'fb-result ng';
+    fbEl.style.background = '#3b0000';
+    factEl.textContent = (correctAns ? '正确答案: 是的！' : '正确答案: 不是！') + ' · ' + fact;
+  }
+
+  // force animation restart
+  resEl.style.animation = 'none';
+  void resEl.offsetWidth;
+  resEl.style.animation = 'fb-pop .25s ease';
+
+  show('s-fb');
+  setTimeout(nextQ, ok ? 1100 : 1700);
+}
+
+function nextQ() {
+  G.qIdx++;
+  if (G.qIdx >= CHAPTERS[G.cIdx].questions.length) showChapterEnd();
+  else showQ();
+}
+
+// ── chapter end ────────────────────────────────────────────────────────────────
+function showChapterEnd() {
+  var ch = CHAPTERS[G.cIdx];
+  var correct = G.cur.filter(function(r){ return r.ok; }).length;
+  var total   = ch.questions.length;
+
+  // save for final breakdown
+  G.all.push({ label: ch.label, title: ch.title, correct: correct, total: total });
+
+  var pct = correct / total;
+  document.getElementById('ce-label').textContent = ch.label + ' · ' + ch.title;
+  document.getElementById('ce-heading').textContent =
+    correct === total ? '完美！Perfect! 🎉' :
+    correct >= 3      ? '不错！Good job! 👍' :
+    correct >= 2      ? '还行！Not bad!' : '继续加油！Keep going! 💪';
+  document.getElementById('ce-big').textContent = correct;
+  document.getElementById('ce-of').textContent = 'out of ' + total;
+
+  // score ring
+  var ring = document.getElementById('ce-ring');
+  ring.style.strokeDashoffset = CIRC_CE * (1 - pct);
+  ring.style.stroke = pct >= .75 ? '#4ade80' : pct >= .5 ? '#facc15' : '#f87171';
+
+  // facts
+  var factsEl = document.getElementById('ce-facts');
+  factsEl.innerHTML = '';
+  G.cur.forEach(function(r) {
+    var d = document.createElement('div');
+    d.className = 'ce-fact-row';
+    d.innerHTML = '<div class="ce-dot ' + (r.ok ? 'ok' : 'ng') + '"></div>' +
+      '<div class="ce-fact-text">' + escHtml(r.fact) + '</div>';
+    factsEl.appendChild(d);
+  });
+
+  var isLast = G.cIdx >= CHAPTERS.length - 1;
+  document.getElementById('ce-btn').textContent = isLast ? '🏆 Final Score' : '继续 Continue →';
+
+  show('s-ce');
+}
+
+function continueGame() {
+  G.cIdx++;
+  G.qIdx = 0;
+  if (G.cIdx >= CHAPTERS.length) showEnd();
+  else showIntro();
+}
+
+// ── end ────────────────────────────────────────────────────────────────────────
+function showEnd() {
+  var pct = G.total / 24;
+  document.getElementById('end-trophy').textContent = pct >= .9 ? '🏆' : pct >= .7 ? '🎖️' : pct >= .5 ? '😅' : '🤣';
+  document.getElementById('end-h').textContent =
+    pct >= .9 ? '汉字大师！Chinese Master!' :
+    pct >= .7 ? '干得好！Well done!' :
+    pct >= .5 ? '不错！Not bad!' : '继续加油！Keep practicing!';
+  document.getElementById('end-score').textContent = G.total;
+
+  var bk = document.getElementById('end-breakdown');
+  bk.innerHTML = '';
+  G.all.forEach(function(ch) {
+    var pct2 = ch.correct / ch.total;
+    var row = document.createElement('div');
+    row.className = 'end-row';
+    row.innerHTML =
+      '<div class="end-row-name">' + escHtml(ch.label) + '</div>' +
+      '<div class="end-bar-wrap"><div class="end-bar" style="width:' + Math.round(pct2*100) + '%;background:' +
+        (pct2 >= .75 ? '#4ade80' : pct2 >= .5 ? '#facc15' : '#f87171') + '"></div></div>' +
+      '<div class="end-row-score">' + ch.correct + '/' + ch.total + '</div>';
+    bk.appendChild(row);
+  });
+
+  show('s-end');
+}
+
+function escHtml(s) {
+  return String(s).replace(/[&<>"]/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]; });
+}
+</script>
+</body>
+</html>
