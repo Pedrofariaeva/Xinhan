@@ -75,13 +75,9 @@ body { font-family:'Inter',system-ui,sans-serif; color:var(--white); display:fle
 .dot.now { background:var(--game-light); box-shadow:0 0 6px var(--game-light); }
 /* answer buttons */
 .ans-row { display:flex; gap:1rem; width:100%; max-width:480px; }
-.ans-btn { flex:1; border:none; border-radius:18px; padding:1.2rem .8rem; font-size:clamp(1.3rem,4vw,1.7rem); font-weight:900; font-family:'Noto Serif SC',serif; cursor:pointer; transition:transform .08s,box-shadow .1s; line-height:1; user-select:none; }
-.ans-btn:active:not(:disabled) { transform:scale(.95); }
+.ans-btn { flex:1; border:none; border-radius:18px; padding:1.2rem .8rem; font-size:clamp(1.3rem,4vw,1.7rem); font-weight:900; font-family:'Noto Serif SC',serif; cursor:pointer; transition:transform .08s, filter .1s; line-height:1; user-select:none; }
+.ans-btn:active:not(:disabled) { transform:scale(.95); filter:brightness(1.2); }
 .ans-btn:disabled { opacity:.45; cursor:default; }
-.btn-shi { background:#14532d; color:#86efac; box-shadow:0 4px 18px rgba(20,83,45,.6); }
-.btn-shi:hover:not(:disabled) { background:#166534; box-shadow:0 6px 22px rgba(20,83,45,.8); }
-.btn-bushi { background:#7f1d1d; color:#fca5a5; box-shadow:0 4px 18px rgba(127,29,29,.6); }
-.btn-bushi:hover:not(:disabled) { background:#991b1b; box-shadow:0 6px 22px rgba(127,29,29,.8); }
 
 /* ── FEEDBACK ── */
 #s-fb { transition:background .15s; }
@@ -188,8 +184,8 @@ body { font-family:'Inter',system-ui,sans-serif; color:var(--white); display:fle
     <div class="dots" id="dots"></div>
   </div>
   <div class="ans-row">
-    <button class="ans-btn btn-shi" id="btn-shi" onclick="answer(true)">是的</button>
-    <button class="ans-btn btn-bushi" id="btn-bushi" onclick="answer(false)">不是</button>
+    <button class="ans-btn" id="btn-a" onclick="answer(this)"></button>
+    <button class="ans-btn" id="btn-b" onclick="answer(this)"></button>
   </div>
 </div>
 
@@ -230,6 +226,25 @@ body { font-family:'Inter',system-ui,sans-serif; color:var(--white); display:fle
 <script>
 var SHOW_PINYIN = false;
 var CIRC_TIMER = 2 * Math.PI * 33; // ~207
+
+var PALETTES = [
+  { bg:'#7c2d12', txt:'#fdba74' }, // burnt orange
+  { bg:'#1e3a5f', txt:'#93c5fd' }, // deep blue
+  { bg:'#374151', txt:'#e5e7eb' }, // dark grey
+  { bg:'#134e4a', txt:'#5eead4' }, // dark teal
+  { bg:'#78350f', txt:'#fde68a' }, // amber
+  { bg:'#1a2e3b', txt:'#7dd3fc' }, // slate blue
+  { bg:'#292524', txt:'#d6d3d1' }, // warm grey
+  { bg:'#3b1f5e', txt:'#c4b5fd' }, // dark violet
+  { bg:'#1c3b2e', txt:'#86efac' }, // forest
+  { bg:'#4a2000', txt:'#fb923c' }, // deep amber
+];
+
+function randomPalette2() {
+  var idx = Array.from({length: PALETTES.length}, function(_, i){ return i; })
+    .sort(function(){ return Math.random() - 0.5; });
+  return [PALETTES[idx[0]], PALETTES[idx[1]]];
+}
 var CIRC_CE    = 2 * Math.PI * 55; // ~346
 
 var CHAPTERS = [
@@ -347,9 +362,17 @@ function showQ() {
     dotsEl.appendChild(d);
   });
 
-  // reset buttons
-  var shi = document.getElementById('btn-shi'), bu = document.getElementById('btn-bushi');
-  shi.disabled = false; bu.disabled = false;
+  // randomize button positions + colors
+  var leftIsYes = Math.random() < 0.5;
+  var cols = randomPalette2();
+  var btnA = document.getElementById('btn-a'), btnB = document.getElementById('btn-b');
+  btnA.textContent = leftIsYes ? '是的' : '不是';
+  btnA.dataset.answer = leftIsYes ? 'true' : 'false';
+  btnA.style.cssText = 'background:' + cols[0].bg + ';color:' + cols[0].txt + ';box-shadow:0 4px 18px ' + cols[0].bg + '99';
+  btnB.textContent = leftIsYes ? '不是' : '是的';
+  btnB.dataset.answer = leftIsYes ? 'false' : 'true';
+  btnB.style.cssText = 'background:' + cols[1].bg + ';color:' + cols[1].txt + ';box-shadow:0 4px 18px ' + cols[1].bg + '99';
+  btnA.disabled = false; btnB.disabled = false;
 
   show('s-q');
   startTimer();
@@ -378,19 +401,22 @@ function renderTimer(left) {
 
 function timeUp() {
   G.done = true;
+  document.getElementById('btn-a').disabled = true;
+  document.getElementById('btn-b').disabled = true;
   var q = CHAPTERS[G.cIdx].questions[G.qIdx];
   G.cur.push({ ok: false, zh: q.zh, fact: q.fact });
   feedback(false, q.ans, q.fact, true);
 }
 
 // ── answer ─────────────────────────────────────────────────────────────────────
-function answer(userYes) {
+function answer(btn) {
   if (G.done) return;
   G.done = true;
   clearInterval(G.tick);
-  document.getElementById('btn-shi').disabled = true;
-  document.getElementById('btn-bushi').disabled = true;
+  document.getElementById('btn-a').disabled = true;
+  document.getElementById('btn-b').disabled = true;
 
+  var userYes = btn.dataset.answer === 'true';
   var q = CHAPTERS[G.cIdx].questions[G.qIdx];
   var ok = (userYes === q.ans);
   if (ok) G.total++;
