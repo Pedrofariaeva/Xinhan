@@ -100,8 +100,7 @@
 - [ ] Pedro to confirm before sending: IAIAS 2027 details vs last report's "Prof. Tiago Navarro Marques / AiScholar" wording; whether to keep the "six months pending" phrasing in the reimbursement section.
 - [ ] Optional 6th point available: HNU Research Output Plan 2027 (6 outputs by Dec 2027) — say the word and it goes in.
 - [ ] Optional IIPF/ITAX special-issue line is in the txt, commented out — uncomment after checking the facts.
-- [ ] Pedro to fetch: GB 14922-2022, NY/T 1167-2006, and the 农场动物福利要求 group standards → drop into sources_incoming_2026-09-17/ for screening.
-- [ ] Then: technical report v11 (10 species, environment-as-disease-control chapter, the five tables in the annex).
+- [ ] Animal welfare tasks live in the research project, not here: see AnimalWelfare_Construction/technical_document/SESSION_2026-09-18_claude.md
 
 ## Reports to Maestro
-- 2026-09-18 (Claude): Week Report V20260915 built and rebuilt to Pedro's 5 points; bilingual docx+pdf pipeline with auto-rebuild watcher now lives in Xinhan (generate_/watch_weekreport_20260915.py, Chrome-based PDF). Animal welfare: 3 of 4 missing sources obtained (EU pigs + calves directives, ILAR Guide) and staged in sources_incoming_2026-09-17/; Chinese standards remain unreachable from this machine, exact identifiers documented for Pedro. NOTE: claudito history rewrite (Co-Authored-By removal) was completed by another session on 2026-09-15 — all clones are stale, fetch+reset before working there.
+- 2026-09-18 (Claude): Week Report V20260915 built and rebuilt to Pedro's 5 points; bilingual docx+pdf pipeline with auto-rebuild watcher now lives in Xinhan (generate_/watch_weekreport_20260915.py, Chrome-based PDF). Animal welfare work is tracked in its own project folder, not in this repo. NOTE: claudito history rewrite (Co-Authored-By removal) was completed by another session on 2026-09-15 — all clones are stale, fetch+reset before working there.
