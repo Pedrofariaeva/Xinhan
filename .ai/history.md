@@ -196,3 +196,33 @@
   - Live at `stage.xinhan.org/dashboard/progress`
   - Scores are saved to MongoDB `xinhan.lesson_results` whenever a student finishes a trial lesson
   - Each answer is also logged to `xinhan.lesson_attempts` for potential future analytics
+
+## 2026-08-31 — Kimi (Maestro) — IIPF Congress Week Report (2026-08-28)
+
+- **What:** Bilingual week report for Pedro's participation in the 82nd IIPF Annual Congress ("Public Finances in Turmoil", ISEG Lisbon 2-26 Aug) + Summer School workshop (27 Aug).
+- **Image edit:** blurred the airport "portas/gates" sign in `uncoveredDocs/V20260828/main.jpg` → `main_blurred.jpg` (original kept untouched).
+- **Photos:** 5 figures — Flickr official album banner + session shot (`iipf_banner.jpg`, `iipf_session.jpg`), opening session, plenary hall, blurred participation photo. Flickr album link included in report.
+- **Sources:** `uncoveredDocs/V20260828/IIPF2026/*.pdf` emails (paper ID 178 acceptance, awards, ITAX special issue deadline 15 Sep 2026); [IIPF program overview](https://www.iipf.org/PDF/program_overview%2019.05.2026_IIPF%202026.pdf); Flickr album.
+- **Files:** `generate_weekreport_20260828.py` (generator), output `.docx` + `.pdf` in `uncoveredDocs/V20260828/`. PDF via pandoc+xelatex (`CJKmainfont=PingFang SC`) — OpenOffice headless hangs on this machine; `/usr/local/bin/soffice` wrapper is broken (points to missing LibreOffice.app).
+- **Status:** done, not committed (awaiting Pedro).
+- Update (same day): Pedro feedback — blur redone as targeted glyph-only patches (`blur_sign.py`); photos reduced to 3 with banner+main side-by-side at top; report converted to txt-driven workflow: `uncoveredDocs/V20260828/weekReport_20260828_content.txt` (edit → watcher `watch_weekreport_20260828.py` rebuilds docx+pdf via pandoc/xelatex). If Pedro edits EN text, CN lines need manual sync by agent afterwards.
+- Update 2 (same day): report rebuilt to match the real sequential week-report template (from V20260724/V20260731/V20260817): Hainan University letterhead at top (`hainan_letterhead.png` + `hainan_shield.png` extracted from the 0817 docx into V20260828/), 会议纪要/Week REPORT header, 总结与下一步工作 first, then 详细内容 with 4 subjects: 1) IIPF congress (photos), 2) Claudito v2.7.30→v2.7.60 (30 releases, invitation/onboarding pipeline — from `~/Documents/GitHub/claudito` git log), 3) Elderly + Animal Welfare references quality check, 4) Évora conference chair invitation (permission request). Pedro moved photos into `V20260828/photos/` and added 8 Flickr downloads; generator resolves photos from `photos/` first. Keynote (Clausing) + dinner photos added as Fig. 4/5.
+
+## 2026-09-01 — Kimi (Maestro) — Session close: week report 20260828 finalized
+
+- **Deliverables (all in `uncoveredDocs/V20260828/`):**
+  - `weekReport_20260828_Bilingual_V20260828.docx` + `.pdf` — rebuilt on the real sequential template (Hainan letterhead, Summary & Next Steps first, 详细内容 with 4 subjects, standard closing/signature)
+  - `weekReport_20260828_content.txt` — editable source; watcher `watch_weekreport_20260828.py` rebuilds docx+pdf on save (watcher stopped at session end; restart with `python3 watch_weekreport_20260828.py`)
+  - `wechat_and_email_20260828.txt` — short WeChat (刘处 only) + email cover matching 20260817 style
+  - `main_blurred.jpg` — glyph-only blur of airport sign, head restored from original (`blur_sign.py`)
+- **Pedro's edits synced to CN:** congress framed as "supporting Prof. Tang"; paper "will be published in Springer" (noted caveat: it's a submission opportunity, deadline 15 Sept); Évora = invitation as Chair in the Committee board (wants to involve Hainan University more); "Elderly AI-Friendly Housing" naming.
+- **Not committed to git** — awaiting Pedro's word.
+
+## 2026-09-15/18 — Week Report V20260915 (bilingual, 5 points) + animal welfare sources
+- **Report built:** `uncoveredDocs/V20260915/` — `weekReport_20260915_content.txt` (editable source), `..._Bilingual_V20260915.docx` + `.pdf` (3 pp, 15 September), `wechat_and_email_20260915.txt`.
+- **Pipeline:** `generate_weekreport_20260915.py` (same txt tag format as 0828, plus TABLE/ROW/ENDTABLE/NOTE tags, **bold**, `<br>`, ✓ green / ✗ red cell shading) and `watch_weekreport_20260915.py` (auto-rebuild on save). PDF now via **Chrome headless print** (keeps table shading and CJK); pandoc kept as fallback; LibreOffice is NOT installed (`/usr/local/bin/soffice` is a dead wrapper).
+- **Two rounds:** first draft carried 5 comparison tables and 6 pp → Pedro: tables confusing, report too long, and 4 of his 5 points missing. Rewritten to 5 sections (animal welfare / IAIAS 2027 chair / Elderly AI + Sanda visit / reimbursement documents / HSK) with a plain non-analytical summary. Tables moved to `tables_draft_for_technical_report.txt` for the technical report.
+- **Facts corrected in the pasted draft** (all re-checked against the instruments): US dog area is a formula, not 0.74–1.20 m² (that was the NC3Rs error); EU cat is 1.5 m² + 0.5 m² shelves, not 0.50; US has no federal horse stall figure (12.96 m² is Penn State guidance); China is prescriptive on BOTH space and environment; "tropical" → none of the four systems regulates by climate zone.
+- **Wording:** Shanghai/Sanda trip reworded from "I plan to travel" to a request (拟…恳请二位领导审议并指示), matching the conference request; summary flags both requests.
+- **Animal welfare sources obtained** → `research/documents/ 2026/AnimalWelfare_Construction/sources_incoming_2026-09-17/`: EU 2008/120/EC (pigs, 9 pp), EU 2008/119/EC (calves, 7 pp), ILAR Guide 8th ed. (246 pp, via NCBI Bookshelf). All verified (%%EOF, text extracts). ILAR = **guidance, not law** — must be labelled at every use.
+- **Chinese standards still blocked** from this machine (every *.gov.cn, ndls, university and CDN host times out). Identifiers pinned instead in `01_FOR_PEDRO_TO_FETCH.md`: **GB 14922-2022** (in force 2023-07-01, replaces 14922.1-2001 + 14922.2-2011); **NY/T 388-1999 is ABOLISHED** → use **NY/T 1167-2006**; ruminant welfare only as 团体标准 (CAS 238-2014 肉牛, T/CAI 004-2021 奶牛, T/CAI 003-2019 绒山羊). Download routes given to Pedro (ttbz.org.cn free for group standards; openstd print-to-PDF; university CSSN/万方/CNKI).

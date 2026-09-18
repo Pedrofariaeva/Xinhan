@@ -1,0 +1,55 @@
+近两周功能与升级一览（2026-08-03 → 2026-08-17）
+
+一、团队协作与互联
+
+1. 团队项目同步彻底修复：自6月底失效至今，成员现在真正能收到共享项目。
+2. 项目目录自动发布与发现：负责人运行 clt 即自动发布，成员经 SSH 自动发现，无需任何令牌。
+3. 邀请即授权：发出邀请时系统自动开通全部团队仓库访问权限（按邮箱，无需用户名）。
+4. 邀请自带团队地址：成员零手动配置。
+5. 项目迁移至 GitLab：仅存于计算服务器的项目（testDahongli）已迁移，全员可获取。
+6. 三位成员完成接入并验证：Tiago 教授（埃武拉大学）、Aoni（Windows）、Tang 教授（管理员）。
+
+二、全自动化
+
+7. 工具自我更新：每次启动自动检查并安装最新版本，无需手动操作。
+8. 版本状态可见：启动即显示当前版本与最新版本。
+9. 本地 AI 自给自足：无云端密钥时自动启动 Ollama 并自动下载模型。
+10. 凭证自动续期：过期时自动打开预填页面，粘贴一次即继续原操作。
+11. 研究文件夹自动建议：回车即接受默认，永久记忆。
+
+三、质量与可靠性
+
+12. 全功能普查：修复 5 处失效命令 + 4 处功能退化。
+13. 新增“接线测试”机制：防止功能“看似存在实则失效”。
+14. 自动化测试规模增长 95%：89 → 174 项，全部通过。
+15. 全新设备端到端验证：下载→安装→配置→使用，全程无卡顿。
+16. 失败不再静默：目录发布等失败现在明确提示并给出原因。
+
+━━━━━━━━━━━━━━━━━━━━━━━━━━━━
+
+Features & Upgrades Index (2026-08-03 → 2026-08-17)
+
+I. Team Collaboration & Connectivity
+
+1. Team project sync fully repaired — broken since late June; members now actually receive shared projects.
+2. Automatic project catalog — the owner publishes simply by running clt; members discover over SSH, no tokens needed.
+3. Invite = access — sending an invitation automatically grants access to all team repositories (by email, no username needed).
+4. Invitations carry the team address — zero manual configuration for members.
+5. Projects migrated to GitLab — what lived only on the compute server (testDahongli) is now reachable by everyone.
+6. Three members fully onboarded and verified: Prof. Tiago (Universidade de Évora), Aoni (Windows), Prof. Tang (admin).
+
+II. Full Automation
+
+7. Self-updating tool — checks and installs the latest version on every launch, no manual action.
+8. Visible version status — current vs. latest shown at every startup.
+9. Self-sufficient local AI — Ollama starts itself and downloads its model when no cloud key exists.
+10. Self-driving credential renewal — opens the prefilled page automatically; one paste, then resumes.
+11. Research folder auto-proposed — Enter accepts the default, remembered forever.
+
+III. Quality & Reliability
+
+12. Full wiring sweep — 5 broken commands + 4 degraded paths fixed.
+13. New wiring tests — prevent silently-broken features from shipping.
+14. Test suite grew 95% — 89 → 174 tests, all passing.
+15. Clean-machine end-to-end verification — from download to daily use, stall-free.
+16. No more silent failures — publish/sync failures now report visibly with the cause.

@@ -1,0 +1,70 @@
+# ============================================================
+# Week Report 2026-09-15 — EDITABLE SOURCE FILE
+# Edit any line after the tag, save the file — the watcher
+# (python3 watch_weekreport_20260915.py) rebuilds the .docx and .pdf.
+#
+# Tags:
+#   LETTERHEAD: image     university letterhead at top
+#   TITLE_CN / TITLE_EN   report title
+#   META_CN / META_EN     header line (date, subject...)
+#   GREET_CN / GREET_EN   greeting
+#   H_CN / H_EN           section heading
+#   P_CN / P_EN           paragraph (repeat as needed)
+#   NOTE: text            small print (source note)
+#   PHOTO / PHOTOS2 / LINK           as in earlier reports
+#   TABLE: capCN | capEN ... ROW: ... ENDTABLE   (tables, not used here)
+#   CLOSE_CN / CLOSE_EN   closing line
+#   SIGN_CN / SIGN_EN     signature
+#   # at the start of a line = comment, not printed
+#
+# The five comparison tables are kept in
+#   tables_draft_for_technical_report.txt
+# for the technical report, not for this week report.
+# ============================================================
+
+LETTERHEAD: hainan_letterhead.png
+TITLE_CN: 会议纪要
+TITLE_EN: Week REPORT
+META_CN: 日期：2026年9月15日
+META_EN: Date: 15th September 2026
+META_CN: 主题：周报告
+META_EN: Subject: Week Report
+GREET_CN: 尊敬的刘处、曾老师，您好！
+GREET_EN: Dear Directors Liu and Zeng,
+
+H_CN: 总结 / Summary
+P_CN: 本期工作汇报包括五个方面：1）动物福利研究进展，已按刘处的指导意见调整；2）葡萄牙国际会议 IAIAS 2027 邀请本人担任主席及主旨演讲嘉宾，请示是否准许；3）老年AI研究项目与上海杉达大学的合作推进，并就赴上海一事请示；4）经费报销文件签署；5）HSK 汉语水平考试报名情况。
+P_EN: This week's report covers five items: (1) progress on the Animal Welfare research, adjusted following Director Liu's guidance; (2) an invitation to serve as Chair and Keynote Speaker at the IAIAS 2027 conference in Portugal, submitted for the directors' permission; (3) the Elderly AI research project and the collaboration with Sanda University in Shanghai, with a request for permission to make that visit; (4) the signing of funding reimbursement documents; and (5) registration for the HSK Chinese proficiency examination.
+
+H_CN: 1. 动物福利研究进展（已与刘处沟通，按指导意见调整）/ Animal Welfare Research Progress (adjusted following discussion with Director Liu)
+P_CN: 本周与刘处就动物福利研究方向进行了沟通，并根据指导意见对后续工作做出以下调整：
+P_EN: This week I discussed the Animal Welfare research direction with Director Liu. Based on her guidance, the work will be adjusted as follows:
+P_CN: **（1）扩展物种范围。**在原有犬、猫、马的基础上，将研究范围扩展至小鼠、兔、猴、反刍动物（牛、绵羊、山羊）、鸡、猪，形成更完整的物种比较矩阵。初步核查已完成：欧盟对上述全部物种均有规定；中国 GB 14925-2023 覆盖其中七种，牛、羊与马无规定；美国联邦法规仅覆盖四种，小鼠、鸡及食用或纤维用途的农场动物由法律明确排除。
+P_EN: **(1) Expanding the species scope.** Beyond dogs, cats and horses, the research will cover the mouse, rabbit, monkey, ruminants (cattle, sheep and goats), chicken and pig, forming a more complete species comparison matrix. A first check is complete: the EU regulates all of them; the Chinese standard GB 14925-2023 covers seven of the ten, with nothing for cattle, sheep, goats or horses; and US federal regulation covers only four, since mice, chickens and farm animals used for food or fibre are excluded by the Act itself.
+P_CN: **（2）强化环境与热带语境——以医学为导向。**热带方向的重点从农业视角转向医学与生物安全视角，包括人畜共患病、媒介传播疾病、真菌与细菌滋生，以及湿度与温差对建筑环境的影响。核查中的一个重要发现是：GB 14925-2023 的三类环境（普通、屏障、隔离）并非舒适度等级，而是按动物的微生物等级划分——该环境标准实质上是一项生物安全标准。而四个体系均未按气候分区作出规定，湿热地区的相关要求既无规定性数值也无性能化指引，这正是我们的研究空白，也是学院国际化的重要机会。
+P_EN: **(2) Strengthening the environment and the tropical context — with a medical focus.** The tropical dimension shifts from an agricultural framing to a medical and biosecurity one: zoonotic transmission, vector-borne disease, fungal and bacterial proliferation, and the effect of humidity and temperature variation on the built environment. A key finding: the three environment classes of GB 14925-2023 — conventional, barrier and isolation — are not comfort categories but are defined by the microbiological status of the animals, which makes the environmental standard a biosecurity standard in substance. None of the four systems regulates by climate zone, so hot and humid regions have neither prescriptive figures nor performance guidance. That is our research gap, and a significant opportunity for the School's international positioning.
+P_CN: **（3）建立更清晰的数据表格。**已按新方向整理出五张核查对比表：物种覆盖、最小空间要求、环境参数、热带医学风险矩阵、规定性与性能化标准对比。表中数值均取自各国法规与标准原文，标准未作规定之处如实注明，不以二手资料代替。
+P_EN: **(3) Creating clearer, more perceptible tables.** Five comparison tables have been prepared under the new direction: species coverage, minimum space requirements, environmental parameters, tropical-medical risk matrix, and prescriptive versus performance-based regulation. Every figure is taken from the laws and standards themselves; where an instrument is silent the table says so, and no secondary source is used in their place.
+P_CN: 下一步：完成各物种在欧盟、美国与中国标准下的全部数值并定稿表格，撰写“环境即疾病防控”章节，扩展结论中的热带部分；同时补充两份尚缺的标准原文——GB 14922《实验动物 微生物、寄生虫学等级及监测》，以及适用于牛、羊的中国畜禽福利或养殖环境标准。
+P_EN: Next steps: complete the EU, US and Chinese values for every species and finalise the tables; write the chapter on environment as disease control; extend the tropical part of the conclusion; and obtain the two standards still missing — GB 14922 on the microbiological grades of laboratory animals, and a Chinese livestock welfare or farm-environment standard for cattle, sheep and goats.
+
+H_CN: 2. 葡萄牙国际会议——受邀担任主席 / International Conference in Portugal — Invitation to Serve as Chair
+P_CN: 埃武拉大学（我方团队成员之一为该校正院长）已邀请我以主席及主旨演讲嘉宾身份参加2027年7月举行的国际会议 IAIAS 2027（International Conference on Industrial AI and Autonomous Systems，由 IEEE 出版/赞助支持）。我需要征得二位领导的意见和批准，是否允许我以我校名义出席并代表学校。
+P_EN: The University of Évora, where one member of our team serves as Dean, has invited me to serve as Chair and Keynote Speaker at IAIAS 2027 — the International Conference on Industrial AI and Autonomous Systems, with IEEE publication and sponsorship — to be held in July 2027. I respectfully seek the directors' opinion and permission to attend and represent Hainan University.
+
+H_CN: 3. 老年AI研究项目——上海/杉达大学 / Elderly AI Research Project — Shanghai / Sanda University
+P_CN: CLI 工具（Claudito）在团队协作方面已可正常运行，本期完成多项更新：团队邀请与成员接入流程修复、项目同步问题修复、Windows 与 macOS 安装路径问题修复，并新增离线写作模块与新成员使用教程。同时，我已向杉达大学张傲妮教授发送正式邀请函，邀请她再次会面，以推进 Claudito 原型的实施以及老年AI研究项目的深入交流，此行也可实地参观该校并了解其院系情况。该行程不影响正常工作安排，拟利用周五下午及周六前往，具体时间可按二位领导的意见安排。此事同样恳请二位领导审议并指示，是否准许成行。
+P_EN: The CLI tool (Claudito) is now operational for team collaboration, with several updates completed this period: fixes to team invitations and member onboarding, to project synchronisation, and to the installation path on Windows and macOS, plus a new offline writing module and a getting-started tutorial for new members. In parallel, I have sent a formal invitation letter to Professor Aoni Zhang at Sanda University, inviting her to meet again in order to advance the implementation of the Claudito prototype and to deepen the exchange on the Elderly AI research project; the visit would also allow me to see the university and its department. It would not interfere with my work schedule, as I would travel on a Friday afternoon and Saturday, and I would of course arrange the dates according to the directors' instruction. I respectfully ask the directors to consider whether I may make this visit.
+
+H_CN: 4. 经费报销文件签署 / Funding Reimbursement Documents
+P_CN: 目前我手上还有一些经费报销文件需要签署，其中部分已积压约六个月，行政部门已多次催促尽快提交。这些文件目前由同事 Meng 保管，我会尽快与她对接并完成签署。
+P_EN: I currently have several funding reimbursement documents awaiting my signature, some of them pending for about six months, and the administration has asked several times for them to be submitted as soon as possible. The documents are with my colleague Meng, and I will coordinate with her to complete the signing as quickly as possible.
+
+H_CN: 5. HSK 汉语水平考试 / HSK Chinese Language Proficiency Examination
+P_CN: 我的中文水平正在持续提高。已报名参加10月17日在海南大学 HSK 考点举行的 HSK 三级考试，并计划于2027年第一季度完成 HSK 四级，届时应能达到较为流畅的中文交流水平。
+P_EN: My Chinese continues to improve. I have registered for the HSK Level 3 examination on 17 October at the Hainan University HSK centre, and plan to take HSK Level 4 in the first quarter of 2027, which should bring my Chinese to a comfortable working fluency.
+
+CLOSE_CN: 如有任何问题或需要进一步说明，请随时告知。感谢二位领导的支持！
+CLOSE_EN: If you have any questions or need further clarification, please let me know. Thank you for your support!
+SIGN_CN: 方础予
+SIGN_EN: Pedro M. Faria

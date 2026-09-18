@@ -1,0 +1,71 @@
+# ============================================================
+# Week Report 2026-08-28 — EDITABLE SOURCE FILE
+# Edit any line after the tag, save the file — the watcher
+# rebuilds the .docx and .pdf automatically.
+#
+# Tags:
+#   LETTERHEAD: image     university letterhead at top
+#   TITLE_CN / TITLE_EN   report title
+#   META_CN / META_EN     header line (date, subject...)
+#   GREET_CN / GREET_EN   greeting
+#   H_CN / H_EN           section heading
+#   P_CN / P_EN           paragraph (repeat as needed)
+#   PHOTOS2: f1 | capCN | capEN || f2 | capCN | capEN
+#                         two photos side by side
+#   PHOTO: file | capCN | capEN | width_inches(optional)
+#   LINK: url
+#   CLOSE_CN / CLOSE_EN   closing line
+#   SIGN_CN / SIGN_EN     signature
+# Photos live in: uncoveredDocs/V20260828/
+# ============================================================
+
+LETTERHEAD: hainan_letterhead.png
+TITLE_CN: 会议纪要
+TITLE_EN: Week REPORT
+META_CN: 日期：2026年8月28日（星期五）
+META_EN: Date: 28th August 2026
+META_CN: 主题：周报告
+META_EN: Subject: Week Report
+GREET_CN: 尊敬的刘处、曾老师，您好！
+GREET_EN: Dear Directors Liu and Zeng,
+
+H_CN: 总结与下一步工作 / Summary & Next Steps
+P_CN: 近两周（8月17日至28日）的工作围绕以下方面展开：支持唐畅教授赴葡萄牙里斯本参加国际公共财政学会（IIPF）第82届年会（8月24日至26日）及其暑期学校（8月27日），我们合作的论文在会上正式报告；Claudito 工具经过多轮实施测试，从 v2.7.30 迭代至 v2.7.60（共30个版本），重点完善了成员邀请与全自动接入流程；老年人工智能友好住宅与动物福利两个项目按计划推进了文献质量核查与更新；此外，埃武拉大学拟邀请我担任筹备中的 IEEE 国际会议主席，特向二位领导请示是否准许本人接受邀请。
+P_EN: The past two weeks (17–28 August) covered the following: Support for Professor Tang in Lisbon for the 82nd Annual Congress of the International Institute of Public Finance (IIPF) in Lisbon (24–26 August) and its Summer School (27 August), where our co-authored paper was presented; the Claudito tool evolved after several implementation tests from v2.7.30 to v2.7.60 (30 releases), focusing on the member invitation and fully automatic onboarding pipeline; the Elderly AI-Friendly Housing and Animal Welfare projects advanced with the scheduled quality check and update of the literature; and the Universidade de Évora wants to invite me to serve as chair of a international conference IEEE in preparation — in which, I hereby ask the directors for permission to accept this invitation.
+
+H_CN: 详细内容 / Details
+
+H_CN: 1. 支持我校唐畅教授参加国际公共财政学会（IIPF）第82届年会 / Support for Professor Tang, Hainan University, 82nd Annual Congress of the IIPF
+PHOTOS2: iipf_banner.jpg | 图1：IIPF第82届年会会标（里斯本 ISEG，2026年8月24–26日） | Fig. 1: IIPF 82nd Annual Congress banner, ISEG Lisbon, 24–26 August 2026 || main_blurred.jpg | 图2：参会纪念（会议资料与胸牌） | Fig. 2: Congress participation — with conference materials and badge
+P_CN: 8月24日至26日，我赴葡萄牙里斯本迎接并支持唐畅教授参加国际公共财政学会（IIPF）第82届年会。本届年会主题为“动荡中的公共财政”（Public Finances in Turmoil），由里斯本大学经济管理学院（ISEG）主办，UECE 与 ISEG Research 协办，学术委员会主席为 Naomi Feldman 教授与 Dirk Foremny 教授。8月24日的开幕式暨首场全体会议由 James Hines（密歇根大学）、Paulo Lopes Henriques、António Afonso（ISEG）与 Eckhard Janeba（曼海姆大学）等学者出席，围绕当前全球公共财政面临的挑战展开讨论。
+P_EN: From 24 to 26 August I support Professor Tang to her welcoming for the 82nd Annual Congress of the International Institute of Public Finance (IIPF) in Lisbon, Portugal. The congress theme was "Public Finances in Turmoil", hosted by ISEG – Lisbon School of Economics and Management, University of Lisbon, co-organised with UECE and ISEG Research, with Prof. Naomi Feldman and Prof. Dirk Foremny as Scientific Chairs. The Opening Session on 24 August featured James Hines (University of Michigan), Paulo Lopes Henriques, António Afonso (ISEG) and Eckhard Janeba (University of Mannheim), discussing the current challenges facing public finances worldwide.
+PHOTO: a72c51c133b9f60de4dd968ab8e29859.jpg | 图3：开幕式全体会议现场 | Fig. 3: Opening Session of the congress | 4.0
+PHOTOS2: c892ec2998ca69ae37dbcd318d324037.jpg | 图4：全体会议（Musgrave 访问教授聘任公告） | Fig. 4: Plenary session (Musgrave Professorship announcement) || 55493655941_0fb3fbd436_c.jpg | 图5：大会报告厅 | Fig. 5: Plenary hall
+P_CN: 本次年会上，我作为合作作者参与的论文《税收中性、供应链传导与新能源企业开放式创新》（Tax Neutrality, Supply Chain Transmission, and Open Innovation in New Energy Enterprises，论文编号178）被正式接收并列入会议议程，将由 Springer 出版社出版（https://www.springer.com/journal/10797），由唐畅教授代表作者团队进行报告，合作者包括张沥壬、吴海涛等。该论文同时申报了本届年会的 Peggy and Richard Musgrave 奖及青年经济学家奖，获奖名单于8月26日的会议晚宴上公布。会议期间，我参加了多场与税收、供应链及创新政策相关的平行分会场，与各国学者进行了交流，为后续研究合作奠定了基础。
+P_EN: Our co-authored paper "Tax Neutrality, Supply Chain Transmission, and Open Innovation in New Energy Enterprises" (Submission ID 178) was accepted and included in the congress programme, and will be published in Springer (https://www.springer.com/journal/10797) presented by Prof. Chang Tang on behalf of the author team (co-authors include Liting Zhang, Haitao Wu and myself). The paper was also entered into the congress award competitions (IIPF Peggy and Richard Musgrave Prize / Young Economists Award), with the prizes announced at the Conference Dinner on 26 August. During the congress I attended several parallel sessions on taxation, supply chains and innovation policy, exchanging ideas with scholars from around the world and laying the groundwork for future research collaboration.
+P_CN: 8月27日，作为年会的配套活动，IIPF 在 ISEG 举办了面向（博士）青年学者的暑期学校（工作坊）。工作坊围绕公共财政领域的前沿研究方法展开，包括论文宣讲、资深学者点评与讨论环节，帮助青年学者完善在研论文并了解国际顶级期刊的发表要求。
+P_EN: On 27 August, as a side event of the congress, the IIPF held its Summer School (workshop) for (PhD) students and early-career researchers at ISEG. The workshop focused on frontier research methods in public finance, with paper presentations, feedback from senior scholars and discussions on publishing in leading international journals.
+PHOTOS2: 55493597158_3a6c5d6a11_c.jpg | 图6：主旨演讲——Kimberly Clausing（UCLA） | Fig. 6: Keynote lecture — Kimberly Clausing (UCLA) || 55493082991_dbd7529272_c.jpg | 图7：平行分会场（一） | Fig. 7: Parallel session (1)
+PHOTOS2: 55493481445_bdf221ed45_c.jpg | 图8：平行分会场（二） | Fig. 8: Parallel session (2) || 55493601048_a6cf78492b_c.jpg | 图9：会议晚宴（颁奖典礼） | Fig. 9: Conference dinner (award ceremony)
+PHOTOS2: 55493663139_e2e4e392ed_c.jpg | 图10：会议晚宴现场 | Fig. 10: Conference dinner || 55492153092_a4188ff3ca_c.jpg | 图11：晚宴文艺演出 | Fig. 11: Live music at the dinner
+PHOTO: 55493494120_1c1b6864ab_c.jpg | 图12：里斯本社会文化活动 | Fig. 12: Social programme in Lisbon | 4.0
+P_CN: 后续计划：组委会通知，本次年会上报告的部分论文将有机会发表于《International Tax and Public Finance》（ITAX）特刊（编辑：Dirk Foremny 与 James Hines），投稿截止日期为2026年9月15日，建议篇幅不超过40页，我们计划按期提交修改稿。会议官方相册已上线，可供存档与宣传使用：
+P_EN: Next steps: a selection of papers presented at the congress will be published in a special issue of International Tax and Public Finance (editors: Dirk Foremny and James Hines). The submission deadline is 15 September 2026 (recommended maximum 40 pages); we plan to submit the revised paper on time. The official congress photo album is available online for archiving and communication purposes:
+LINK: https://www.flickr.com/photos/a_m_p_a/albums/72177720334981030/
+
+H_CN: 2. Claudito 工具升级 / Claudito Tool Upgrades
+P_CN: Claudito 从 v2.7.30 迭代至 v2.7.60，共发布30个版本，本期重点是成员邀请与全自动接入流程：邀请邮件确认机制（发送确认码、可重新发送、过期邀请自动完成、管理员永不被降级）；新成员接入完全自动化——自动安装 Git、自动配置 SSH 密钥、不再要求 AWS 设置、成员无需拥有自己的账号即可下载团队项目；项目列表改用成员本人凭证获取，网络操作增加超时保护；邮件回复现在直接送达邀请人，不再进入无回复黑洞。这些改进确保了工具在九月各团队正式部署前的稳定性。
+P_EN: Claudito evolved from v2.7.30 to v2.7.60 — 30 releases — with the focus on the member invitation and fully automatic onboarding pipeline: e-mail confirmation for invitations (confirmation codes, resend on request, stale invitations completed automatically, admins never demoted); member onboarding now fully automatic — git is installed automatically, the SSH key is set up automatically, members are no longer asked for AWS settings, and a member can download the team's projects without an account of their own; the team project list is now fetched with the member's own credential and network calls have real timeouts; mail replies now reach the inviter instead of a no-reply black hole. These improvements secure the tool's stability ahead of the teams' formal deployment in September.
+
+H_CN: 3. 项目文献质量核查与更新 / Project References Quality Check and Update
+P_CN: 老年人工智能友好住宅项目（Elderly AI-Friendly Housing Project）与动物福利（Animal Welfare）项目方面，本期按计划开展了参考文献的质量核查工作：对已检索到的文献逐一检查质量，与项目计划的要求进行匹配，剔除了不符合要求的文献，并更新了项目的文献库，确保项目资料库的准确性与完整性。
+P_EN: For the Elderly AI-Friendly Housing and Animal Welfare projects, the scheduled quality check of the references was carried out this period: each retrieved paper was reviewed for quality and matched against the project plan requirements; papers that did not meet the criteria were removed and the project bibliography was updated, ensuring the accuracy and completeness of the project literature base.
+
+H_CN: 4. 埃武拉大学国际会议：受邀担任委员会主席 / International Conference with Universidade de Évora: Invitation as Chair in the Committee board
+P_CN: 关于由埃武拉大学 Tiago Navarro Marques 教授（艺术学院院长）与艾思科蓝公司（AiScholar，广州）筹备的国际学术会议，葡方拟正式邀请我担任会议委员会主席（Chair）。鉴于我将正式代表我校的学术形象与学术影响力，特向二位领导请示：是否准许本人接受该邀请并担任此职。恳请二位领导审议并指示，我将按照领导的意见推进后续筹备工作。如蒙准许，我还希望尝试推动海南大学更多地参与其中。
+P_EN: Regarding the international academic conference from Prof. Tiago Navarro Marques (Director of the School of Arts, Universidade de Évora) with AiScholar (Guangzhou), the Évora side wants formally to invite me to serve as part of the Conference Board as Chair. As this is a recognition in which I represent officially our university's academic standing, I hereby respectfully ask the directors for permission to accept this invitation and take the role. I will be grateful for the directors' consideration and instructions, and will proceed with the preparations according to the directors' guidance. If Possible, I would like to try to involve more the University too.
+
+CLOSE_CN: 如有任何问题或需要进一步说明，请随时告知。感谢二位领导的支持！
+CLOSE_EN: If you have any questions or need further clarification, please let me know. Thank you for your support!
+SIGN_CN: 方础予
+SIGN_EN: Pedro M. Faria

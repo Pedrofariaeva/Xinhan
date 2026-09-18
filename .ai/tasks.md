@@ -88,3 +88,20 @@
   - Files: `app/trial-lesson/page.tsx`, `app/trial-lesson/[lessonId]/page.tsx`, `.gitignore`
   - Features: hub lists `luckin-coffee` → `mood-weather` → `banjia` → `many-ways` → `mood-weather-v2` as Step 1–5; player recognizes all 5 IDs; `.venv/` ignored
   - Status: done — `npm run build` passes; pushed to `stage`
+
+- [2026-08-31] **Kimi (Maestro)** — IIPF congress week report 2026-08-28
+  - Files: `uncoveredDocs/V20260828/weekReport_20260828_Bilingual_V20260828.docx` + `.pdf`, `uncoveredDocs/V20260828/main_blurred.jpg`, `iipf_banner.jpg`, `iipf_session.jpg`, `generate_weekreport_20260828.py`
+  - Status: done — not committed, awaiting Pedro review
+- [2026-09-01] **Kimi (Maestro)** — Week report 20260828 cycle CLOSED
+  - Report finalized after Pedro's EN edits + CN sync; photos in `V20260828/photos/`; WeChat (short, 刘处 only) + email done in `wechat_and_email_20260828.txt`
+  - Status: done — not committed to git; watcher stopped (restart: `python3 watch_weekreport_20260828.py`)
+
+## Week Report V20260915 — open items (2026-09-18)
+- [ ] Pedro to confirm before sending: IAIAS 2027 details vs last report's "Prof. Tiago Navarro Marques / AiScholar" wording; whether to keep the "six months pending" phrasing in the reimbursement section.
+- [ ] Optional 6th point available: HNU Research Output Plan 2027 (6 outputs by Dec 2027) — say the word and it goes in.
+- [ ] Optional IIPF/ITAX special-issue line is in the txt, commented out — uncomment after checking the facts.
+- [ ] Pedro to fetch: GB 14922-2022, NY/T 1167-2006, and the 农场动物福利要求 group standards → drop into sources_incoming_2026-09-17/ for screening.
+- [ ] Then: technical report v11 (10 species, environment-as-disease-control chapter, the five tables in the annex).
+
+## Reports to Maestro
+- 2026-09-18 (Claude): Week Report V20260915 built and rebuilt to Pedro's 5 points; bilingual docx+pdf pipeline with auto-rebuild watcher now lives in Xinhan (generate_/watch_weekreport_20260915.py, Chrome-based PDF). Animal welfare: 3 of 4 missing sources obtained (EU pigs + calves directives, ILAR Guide) and staged in sources_incoming_2026-09-17/; Chinese standards remain unreachable from this machine, exact identifiers documented for Pedro. NOTE: claudito history rewrite (Co-Authored-By removal) was completed by another session on 2026-09-15 — all clones are stale, fetch+reset before working there.
