@@ -17,9 +17,9 @@
 #   SIGN_CN / SIGN_EN     signature
 #   # at the start of a line = comment, not printed
 #
-# The five comparison tables are kept in
-#   tables_draft_for_technical_report.txt
-# for the technical report, not for this week report.
+# The five comparison tables belong to the research project, not here:
+#   AnimalWelfare_Construction/technical_document/
+#     TABLES_DRAFT_species_extension_2026-09-18.txt
 # ============================================================
 
 LETTERHEAD: hainan_letterhead.png
