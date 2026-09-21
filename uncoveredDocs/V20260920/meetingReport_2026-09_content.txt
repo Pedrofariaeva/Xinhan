@@ -1,0 +1,110 @@
+# ============================================================
+# Meeting Report — Aoni Zhang & Pedro Faria — September 2026
+# EDITABLE SOURCE FILE (same tags as the week report).
+# Edit any line after a tag and save: the watcher
+# (python3 watch_meetingreport_202609.py) rebuilds the .docx and .pdf.
+#
+# TO FILL before it goes out (search for 待定 / TBC):
+#   - meeting date and location
+#   - assistant's name, weekly hours, start date
+#   - deadlines in Table 3, next meeting date
+#
+# TO CHECK (my reading of your words; change if wrong):
+#   - Aoni is co-author of ALL six outputs (five Q1 papers + the Claudito conference paper)
+#   - the animalWelfare paper is AW2, the design framework (the architecture one).
+#     Other Q1 options in the plan: AW1 standards review, AW3 tropical climates
+#   - first authorship of paper 11 is NOT written. The prep note proposes it, your words say co-author
+#   - the assistant rhythm (packs of 1,000 images, ~6 h/week, one pack a month) comes from the prep note
+#   - 3.5 Research training is optional: delete the whole block if it should not go to the directors
+#
+# LEFT OUT ON PURPOSE: the plan's other 18 papers (this report is only the six for the directors);
+# conference registration and travel costs (not in the plan).
+# Tags: TITLE_CN/EN, META_CN/EN, H_CN, P_CN/EN, TABLE/ROW/ENDTABLE, NOTE, CLOSE_CN/EN, SIGN_CN.
+# ============================================================
+
+TITLE_CN: 会议报告与合作框架（后续会议）
+TITLE_EN: Meeting Report & Collaboration Framework (Follow-up Meeting)
+META_CN: 项目：将技术融入建筑功能（老年家庭设备）
+META_EN: Project: Integration of Technology into Architecture functionalities such as Elder Household Equipment
+META_CN: 日期：2026年9月（具体日期待定）
+META_EN: Date: September 2026 (exact date to be confirmed)
+META_CN: 地点：（待定）
+META_EN: Location: (to be confirmed)
+META_CN: 参会人：方础予 Pedro Faria（项目负责人）；张傲妮 Aoni Zhang（杉达学院）
+META_EN: Participants: Pedro Faria (Project Leader); Aoni Zhang (Sanda University)
+META_CN: 依据文件：杭州会议报告（2026年7月15–16日）；战略出版计划《三个项目，十六个月》（2026年9月11日）
+META_EN: Basis: Hangzhou meeting report (15–16 July 2026); strategic publication plan “Three Projects, Sixteen Months” (11 September 2026)
+
+H_CN: 1. 会议目的 / Purpose of the Meeting
+P_CN: 本次会议是杭州会议（2026年7月15–16日）约定的后续会议，目的是确认双方共同承担的发表任务与资源安排，包括五篇 Q1 期刊论文和一篇会议论文的分工、学生助理、上海专项经费申请，并形成双方签字的正式记录，供后续呈报领导。
+P_EN: This was the follow-up meeting agreed in the Hangzhou report (15–16 July 2026). Its purpose was to confirm the publication commitments and resources both parties share — the division of work on five Q1 journal papers and one conference paper, a student assistant, and an application for specific funding in Shanghai — and to produce a signed record for later submission to the directors.
+
+H_CN: 2. 背景 / Background
+P_CN: 杭州会议确认的合作框架（研究目标、评分方法、技术路线、数据与训练策略、阶段时间表、团队分工、知识产权与衍生项目安排）继续有效。战略出版计划把研究成果落实为具体的论文与投稿窗口；本报告只列出本合作需向领导汇报的六项成果：五篇 Q1 期刊论文和一篇会议论文。
+P_EN: The collaboration framework confirmed in Hangzhou (objectives, grading method, technical route, data and training strategy, phase schedule, roles, IP and spin-off arrangements) remains in force. The strategic publication plan turns the research into specific papers and submission windows; this report lists only the six outputs this collaboration reports to the directors: five Q1 journal papers and one conference paper.
+
+H_CN: 3. 会议决议 / Meeting Resolutions
+
+H_CN: 3.1 发表任务 / Publication Commitments
+P_CN: 双方共同承担六项成果：四篇老年AI（ElderlyAI）期刊论文、一篇动物福利（animalWelfare）期刊论文——均以 Q1 期刊为目标——以及一篇 Claudito 会议论文。张傲妮为六项成果的共同作者。
+P_EN: Both parties share six outputs: four ElderlyAI journal papers and one animalWelfare journal paper, all aimed at Q1 journals, and one Claudito conference paper. Aoni Zhang is a co-author of all six.
+
+TABLE: 表1：发表任务 | Table 1. Publication commitments
+ROW: 编号 / No. | 题目 / Output | 目标期刊或会议 / Target venue | 张傲妮 / Aoni Zhang | 工作窗口（末月投稿） / Window (submit in the last month)
+ROW: 08 | An object taxonomy of accessibility-critical elements in dwellings<br>住宅无障碍关键要素的物体分类体系 | IEEE Transactions on Automation Science and Engineering (Q1) | 共同作者<br>Co-author | 2027年1–3月<br>Jan–Mar 2027
+ROW: 09 | Materials and finishes: which accessibility-relevant surface properties can vision actually see<br>材料与饰面：视觉能够识别哪些与无障碍相关的表面属性 | IEEE Transactions on Instrumentation and Measurement (Q1) | 共同作者<br>Co-author | 2027年2–4月<br>Feb–Apr 2027
+ROW: 11 | Safety, Reachability, Independence, Comfort: a four-dimension instrument for grading dwelling accessibility<br>安全、可达、独立、舒适：住宅无障碍评分的四维评价工具 | IEEE Transactions on Human-Machine Systems (Q1) | 共同作者<br>Co-author | 2027年5–7月<br>May–Jul 2027
+ROW: 16 | From deficiency to retrofit: prioritising adaptations automatically<br>从缺陷到改造：适老改造的自动化优先级排序 | IEEE Systems Journal (Q1) | 共同作者<br>Co-author | 2027年10–12月<br>Oct–Dec 2027
+ROW: AW2 | A design framework and decision matrix for animal housing<br>动物饲养设施的设计框架与决策矩阵 | Architectural Science Review (Q1) | 共同作者<br>Co-author | 2027年1–4月<br>Jan–Apr 2027
+ROW: C1 | Using AI in the research workflow: practice and ethics (conference paper)<br>科研工作流中的人工智能应用：实践与伦理（会议论文） | JCDL / TPDL / iConference (conference proceedings) | 共同作者<br>Co-author | 2026年9–12月<br>Sep–Dec 2026
+ENDTABLE
+NOTE: 说明：Q1 指 Scopus CiteScore 四分位（数据取自战略出版计划）；JCR 与中科院分区尚未核实。五家期刊均按免费途径投稿（不选开放获取选项），未列版面费预算。
+NOTE: Note: Q1 is the Scopus CiteScore quartile, as recorded in the strategic publication plan; JCR and CAS (中科院) partitions have not been verified. All five journals are planned on the free route (open-access option declined), so no article processing charges are budgeted.
+
+H_CN: 3.2 角色与署名 / Roles and Authorship
+P_CN: 方础予 Pedro Faria 为项目负责人：负责总体方向、技术路线、Claudito 共享工作流与文献库、方法论文档、投稿事务，以及六项成果的贡献记录。
+P_EN: Pedro Faria is the Project Leader, responsible for overall direction, technical roadmap, the shared Claudito workflow and reference library, methodology documents, submission logistics, and the contribution record of the six outputs.
+P_CN: 张傲妮 Aoni Zhang 为杉达学院合作方负责人：负责协调杉达学院资源、学生助理与试点场景，以及设计与评分工作包（各维度的检查内容、通过/部分通过/不通过规则、评分汇总规则，以及试点住宅的人工评分）。
+P_EN: Aoni Zhang is the Sanda University collaboration lead, responsible for coordinating Sanda resources, the student assistant and pilot scenes, and the design and grading work package (the checks in each dimension, the pass/partial/fail rules, the aggregation rule, and hand-grading of the pilot dwellings).
+P_CN: 署名顺序依据 Claudito 记录的实际贡献（撰写字数、文献筛选、引用文献等）确定；通讯作者由项目负责人确定；双方在每次投稿前确认。杭州报告中的知识产权与衍生项目条款保持不变。
+P_EN: Authorship order follows the contribution recorded in Claudito (words drafted, papers screened, references cited); the corresponding author(s) are determined by the Project Leader; both parties confirm before each submission. The IP and spin-off clauses of the Hangzhou report remain unchanged.
+
+H_CN: 3.3 学生助理 / Student Assistant
+P_CN: 张傲妮将招募一名学生助理（杉达学院学生），在 train.astrolaby 中承担人工图像标注。候选学生先观看 video.astrolaby 的成果演示，再完成一次 4–6 小时的标注试做，据此确定人选。标注以每包约 1,000 张图像为单位：认真标注约 30–60 张/小时，即每包约需 20–35 小时；每周投入约 6 小时，则每月完成一包。学生首先作为贡献者（在成果中致谢）；若同时参与文稿撰写或审阅，可成为共同作者。助理姓名、每周投入时间与开始日期：（待定）。
+P_EN: Aoni Zhang will recruit one student assistant (a Sanda University student) for human image labelling in train.astrolaby. Candidates first see the result on video.astrolaby and then do a 4–6 hour labelling trial, which decides the appointment. Labelling is organised in packs of about 1,000 images: careful labelling runs at roughly 30–60 images per hour, so one pack takes about 20–35 hours; at about 6 hours per week, one pack is completed per month. The student is first a contributor (acknowledged in the outputs) and may become a co-author if they also help write or review the text. Name, weekly hours and start date: (to be entered).
+
+H_CN: 3.4 上海专项经费 / Specific Funding in Shanghai
+P_CN: 张傲妮将争取上海的专项科研经费（通过杉达学院和/或上海相关项目，具体项目待确认），并在下次会议上报告申请进展。经费能否获批无法保证；如获批，其用途与分配由双方另行商定。
+P_EN: Aoni Zhang will apply for specific research funding in Shanghai (through Sanda University and/or Shanghai programmes; the programme is to be identified) and will report the status of the application at the next meeting. Approval cannot be guaranteed; if funding is obtained, its use and allocation will be agreed separately.
+
+H_CN: 3.5 研究方法培养 / Research Training
+P_CN: 分四个阶段培养文献检索、引用与写作能力；每阶段成果交项目负责人审阅后再进入下一阶段。
+P_EN: Four stages build reference search, citation and writing skills; each result goes to the Project Leader before the next stage starts.
+
+TABLE: 表2：研究方法培养阶段 | Table 2. Research training stages
+ROW: 阶段 / Stage | 内容 / Content | 成果 / Result
+ROW: 1 | 认识论文结构：阅读 3 篇近期 Q1 论文，并填写 Claudito 项目计划<br>See how a paper is built: read 3 recent Q1 papers and fill the Claudito project plan | 3 份已填写的计划<br>3 filled plans
+ROW: 2 | 检索与引用：用 Claudito 检索、保留并筛选 15 篇文献<br>Find and cite: search, keep and screen 15 references with Claudito | 15 篇文献，每篇一句话说明<br>15 references, each summarised in one sentence
+ROW: 3 | 撰写一个部分：写“1.1 背景”约一页，所有论断均有引用<br>Write one part: “1.1 Background”, about one page, every claim cited | 一页文稿<br>One page
+ROW: 4 | 完成一篇初稿：逐节完成其余章节并导出参考文献<br>Finish a draft: fill the remaining sections and export the bibliography | 完整初稿<br>A complete draft
+ENDTABLE
+
+H_CN: 4. 行动事项 / Action Items
+TABLE: 表3：行动事项 | Table 3. Action items
+ROW: 负责人 / Who | 行动 / Action | 期限 / Deadline
+ROW: 张傲妮 Aoni Zhang | 招募一名学生助理，并组织 4–6 小时标注试做<br>Recruit one student assistant and run the 4–6 hour labelling trial | （待定）<br>TBC
+ROW: 张傲妮 Aoni Zhang | 确认并提交上海专项经费申请<br>Identify and submit the application for specific funding in Shanghai | （待定）<br>TBC
+ROW: 方础予 Pedro Faria | 签字后将本报告呈报领导；在 Claudito 中记录六项成果的贡献（署名记录）<br>Send this signed report to the directors; keep the contribution (authorship) record of the six outputs in Claudito | 签字后<br>On signature
+ROW: 方础予 Pedro Faria | 为学生助理准备首个训练包与 train.astrolaby 使用说明<br>Prepare the first training pack and train.astrolaby instructions for the assistant | （待定）<br>TBC
+ROW: 双方 Both | Claudito 会议论文（C1）：确定提纲，2026年12月投稿<br>Claudito conference paper (C1): agree the outline and submit in December 2026 | 2026年12月<br>December 2026
+ENDTABLE
+
+H_CN: 5. 下次会议 / Next Meeting
+P_CN: 下次会议日期待定。议题：六项成果的进度、学生助理的首个训练包、上海经费申请的进展，以及 Claudito 会议论文的初稿。
+P_EN: The next meeting date is to be confirmed. Agenda: progress on the six outputs, the assistant's first training pack, the status of the Shanghai funding application, and the draft of the Claudito conference paper.
+
+H_CN: 6. 签字确认 / Signatures
+CLOSE_CN: 双方确认上述会议内容属实，并同意按本报告执行。
+CLOSE_EN: Both parties confirm that the above record is accurate and agree to act on it.
+SIGN_CN: 方础予 Pedro Faria（项目负责人 / Project Leader）：________________　日期 / Date：__________
+SIGN_CN: 张傲妮 Aoni Zhang（杉达学院 / Sanda University）：________________　日期 / Date：__________

@@ -1,0 +1,57 @@
+# ============================================================
+# Aoni Zhang — personal to-do, September 2026
+# Built from the signed meeting report (meetingReport_2026-09_content_v3.txt).
+# Only her items: nothing here belongs to Pedro or to "both".
+# Edit and rebuild with:  python3 generate_aoni_todo.py
+# ============================================================
+
+LETTERHEAD: hainan_letterhead.png
+TITLE_CN: 张傲妮老师 — 个人任务清单
+TITLE_EN: Aoni Zhang — Personal To-Do
+META_CN: 依据：2026年9月会议纪要（方础予 — 张傲妮）
+META_EN: Based on: meeting report, September 2026 (Pedro Faria — Aoni Zhang)
+META_CN: 日期：2026年9月21日
+META_EN: Date: 21 September 2026
+GREET_CN: 傲妮老师，您好！以下仅为您个人的任务，方便跟进。
+GREET_EN: Aoni, this is your list only — the items that are yours to act on.
+
+H_CN: 1. 近期截止 / Immediate deadlines
+TABLE: 表1：有明确期限的任务 | Table 1. Items with a fixed date
+ROW: 任务<br>Task | 说明<br>What it means | 期限<br>Deadline
+ROW: ✗ AI4EI 会议论文（C1）<br>AI4EI conference paper (C1) | 与方础予共同完成关于 Claudito 的会议论文：确定提纲、完成初稿并提交。AI4EI 为 ACM 会议（安徽）。<br>With Pedro: agree the outline, write the draft and submit the Claudito conference paper. AI4EI is an ACM conference in Anhui. | **2026年10月14日**<br>**14 October 2026**
+ENDTABLE
+
+H_CN: 2. 待您启动 / Yours to start
+TABLE: 表2：无固定期限，但由您负责 | Table 2. No fixed date, but yours
+ROW: 任务<br>Task | 具体内容<br>Detail | 状态<br>Status
+ROW: 招募学生助理<br>Recruit the student assistant | 一名杉达大学学生，负责 train.astrolaby 的人像标注。候选人先观看 video.astrolaby 的成果，再进行 4–6 小时标注试做，以此决定是否录用。<br>One Sanda University student for human image labelling in train.astrolaby. Candidates first see the result on video.astrolaby, then do a 4–6 hour labelling trial, which decides the appointment. | 待定<br>TBC
+ROW: 上海专项经费申请<br>Shanghai funding application | 通过杉达大学和/或上海市相关计划申请专项科研经费；先确认具体计划，再提交申请，并在下次会议上汇报进展。<br>Identify the programme (through Sanda and/or Shanghai schemes), submit the application, and report the status at the next meeting. | 待定<br>TBC
+ENDTABLE
+
+H_CN: 3. 您负责的工作包 / Your work package
+P_CN: 作为杉达大学方面的合作负责人，您负责：协调杉达的资源、学生助理与试点场景；以及设计与评分工作包——各维度的检查项、通过／部分通过／不通过的判定，以及评分工具的可用性。
+P_EN: As Sanda University collaboration lead you are responsible for: coordinating Sanda's resources, the student assistant and the pilot scenes; and the design and grading work package — the checks in each dimension, the pass / partial / fail decision, and the usability of the grading instrument.
+
+H_CN: 4. 六项成果中的署名 / Your authorship in the six outputs
+P_CN: 您是全部六项成果的共同作者：四篇老年AI期刊论文、一篇动物福利期刊论文（均以 Q1 为目标），以及一篇 AI4EI（ACM）会议论文。署名顺序依据 Claudito 中记录的贡献（撰写字数、筛选文献数、引用文献数）确定，投稿前双方确认。另有一篇 Smart Cities 论文（论文01）计划于2026年12月发表，您的角色待确认。
+P_EN: You are a co-author of all six outputs: four ElderlyAI journal papers and one animalWelfare journal paper, all aimed at Q1 journals, plus the AI4EI (ACM) conference paper. Authorship order follows the contribution recorded in Claudito — words drafted, papers screened, references cited — and both parties confirm before each submission. One further paper, Smart Cities (paper 01), is planned for December 2026 and your role there is still to be confirmed.
+
+H_CN: 5. 研究方法培养（四个阶段）/ Research training, four stages
+P_CN: 每完成一个阶段，请先将成果交给项目负责人，再开始下一阶段。
+P_EN: Each stage goes to the Project Leader before the next one starts.
+TABLE: 表3：培养阶段 | Table 3. Training stages
+ROW: 阶段<br>Stage | 内容<br>Content | 成果<br>Result
+ROW: 1 | 阅读 3 篇近期 Q1 论文，并填写 Claudito 项目计划<br>Read 3 recent Q1 papers and fill the Claudito project plan | 3 份已填写的计划<br>3 filled plans
+ROW: 2 | 用 Claudito 检索、保留并筛选 15 篇文献<br>Search, keep and screen 15 references with Claudito | 15 篇文献，每篇一句话说明<br>15 references, one sentence each
+ROW: 3 | 撰写“1.1 背景”约一页，所有论断均有引用<br>Write "1.1 Background", about one page, every claim cited | 一页文稿<br>One page
+ROW: 4 | 逐节完成其余章节并导出参考文献<br>Fill the remaining sections and export the bibliography | 完整初稿<br>A complete draft
+ENDTABLE
+
+H_CN: 6. 下次会议 / Next meeting
+P_CN: 日期待定。议题：六项成果进展、学生助理的首个训练包、上海经费申请进展，以及 AI4EI 会议论文初稿。请准备前三项中与您相关的部分。
+P_EN: Date to be confirmed. Agenda: progress on the six outputs, the assistant's first training pack, the status of the Shanghai funding application, and the draft of the AI4EI conference paper. Please come ready on the items above that are yours.
+
+CLOSE_CN: 如有任何疑问，请随时与我联系。
+CLOSE_EN: Any questions, just tell me.
+SIGN_CN: 方础予
+SIGN_EN: Pedro M. Faria

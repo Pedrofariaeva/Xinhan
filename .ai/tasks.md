@@ -104,3 +104,13 @@
 
 ## Reports to Maestro
 - 2026-09-18 (Claude): Week Report V20260915 built and rebuilt to Pedro's 5 points; bilingual docx+pdf pipeline with auto-rebuild watcher now lives in Xinhan (generate_/watch_weekreport_20260915.py, Chrome-based PDF). Animal welfare work is tracked in its own project folder, not in this repo. NOTE: claudito history rewrite (Co-Authored-By removal) was completed by another session on 2026-09-15 — all clones are stale, fetch+reset before working there.
+
+## Open after 2026-09-21 (Claude)
+- [ ] Week report V20260915: confirm the IAIAS 2027 details before sending — last period's report named Prof. Tiago Navarro Marques and AiScholar, this one names IAIAS 2027 with IEEE. They should agree. (AI4EI, the Anhui conference in the meeting report, is ACM and is a different event.)
+- [ ] Decide whether the reimbursement paragraph keeps the "six months pending" wording.
+- [ ] Optional sixth point for the week report: the HNU Research Output Plan 2027.
+- [ ] Aoni to-do: two deadlines are TBC (student assistant, Shanghai funding). Fill them in when agreed and rebuild.
+
+## Reports to Maestro
+- 2026-09-21 (Claude): AI4EI is an ACM conference — corrected in the September meeting report and rebuilt. Added a separate personal to-do for Aoni Zhang, built from the signed report and containing only her items, with its own editable txt and builder. Animal welfare work is tracked in the research project, not in this repo: see `AnimalWelfare_Construction/technical_document/SESSION_2026-09-21_claude.md`.
+

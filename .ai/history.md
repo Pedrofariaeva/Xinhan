@@ -225,3 +225,9 @@
 - **Facts corrected in the pasted draft** (all re-checked against the instruments): US dog area is a formula, not 0.74–1.20 m² (that was the NC3Rs error); EU cat is 1.5 m² + 0.5 m² shelves, not 0.50; US has no federal horse stall figure (12.96 m² is Penn State guidance); China is prescriptive on BOTH space and environment; "tropical" → none of the four systems regulates by climate zone.
 - **Wording:** Shanghai/Sanda trip reworded from "I plan to travel" to a request (拟…恳请二位领导审议并指示), matching the conference request; summary flags both requests.
 - **Animal welfare source work is NOT recorded here** — it belongs to the research project, not this repo. See `research/documents/ 2026/AnimalWelfare_Construction/technical_document/SESSION_2026-09-18_claude.md`.
+
+## 2026-09-21 — week report, meeting report, Aoni to-do (Claude)
+- **Week report V20260915** — unchanged since 16 Sept: 3 pp, five points, docx + pdf + WeChat/email cover, pushed to `origin/stage`.
+- **Meeting report V20260920** — AI4EI corrected to an **ACM** conference (three places: the shared-outputs paragraph CN and EN, and the Table 1 row). Rebuilt `meetingReport_2026-09_Aoni_Pedro_Bilingual_v3.docx` and `.pdf`.
+- **New: Aoni's personal to-do** — `uncoveredDocs/V20260920/aoniTodo_2026-09_content.txt` with its builder `generate_aoni_todo.py`, producing `aoniTodo_2026-09_Aoni.docx/.pdf` (2 pp, bilingual, letterhead). Contains **only her items** from the signed meeting report: the AI4EI paper due 14 Oct 2026; recruiting the Sanda student assistant and running the 4–6 h labelling trial; identifying and submitting the Shanghai funding application; her design-and-grading work package; her authorship in all six outputs; the four training stages; and what to prepare for the next meeting.
+- `hainan_letterhead.png` copied into V20260920 — the builder needs it in the same folder.
